@@ -32,13 +32,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public abstract class AbstractServiceImpl<T extends AuditBusinessObject, H extends HistBusinessObject, CRITERIA extends BaseCriteria, HC extends HistCriteria, REPO extends AbstractRepository<T, Long>, HISTREPO extends AbstractHistoryRepository<H, Long>> extends AbstractServiceImplHelper<T> {
@@ -423,7 +425,7 @@ public abstract class AbstractServiceImpl<T extends AuditBusinessObject, H exten
     }
 
     public List<T> importExcel(MultipartFile file) {
-        if (isValidExcelFile(file)) {
+        /*if (isValidExcelFile(file)) {
             try {
                 List<T> items = read(file.getInputStream(), getAttributes());
                 this.dao.saveAll(items);
@@ -431,7 +433,7 @@ public abstract class AbstractServiceImpl<T extends AuditBusinessObject, H exten
             } catch (IOException e) {
                 throw new IllegalArgumentException("The file is not a valid excel file");
             }
-        }
+        }*/
         return null;
     }
 
@@ -446,7 +448,8 @@ public abstract class AbstractServiceImpl<T extends AuditBusinessObject, H exten
     // create a methode that reade the file and take an inputStream as object and return a liste of commandes
     private List<T> read(InputStream inputStream, List<Attribute> attributes) {
         List<T> items = new ArrayList<>();
-        try {
+       /*
+       try {
             XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
             XSSFSheet sheet = workbook.getSheetAt(0);
             int rowIndex;
@@ -487,6 +490,7 @@ public abstract class AbstractServiceImpl<T extends AuditBusinessObject, H exten
         } catch (Exception e) {
             e.printStackTrace();
         }
+        */
         return items;
     }
 

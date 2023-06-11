@@ -8,10 +8,10 @@
         <version>2.2.6.RELEASE</version>
         <relativePath/>
     </parent>
-    <groupId>ma.sir</groupId>
-    <artifactId>walo</artifactId>
+    <groupId>com.sir</groupId>
+    <artifactId>react</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>walo</name>
+    <name>react</name>
     <description>Demo project generated</description>
 
     <properties>

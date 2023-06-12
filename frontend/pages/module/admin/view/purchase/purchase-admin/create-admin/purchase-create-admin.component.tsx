@@ -18,16 +18,16 @@ import {MultiSelect} from "primereact/multiselect";
 
 import {MessageService} from "/pages/controller/service/MessageService";
 
-import {PurchaseService} from '/pages/controller/service/PurchaseService';
+import {PurchaseService} from '/pages/controller/service/admin/PurchaseAdminService';
 
 import  {PurchaseDto}  from '/pages/controller/model/Purchase.model';
 
-import PurchaseItemDto from '/pages/controller/model/purchaseItem';
-import {PurchaseItemService} from '/pages/controller/service/PurchaseItemService';
-import ProductDto from '/pages/controller/model/product';
-import {ProductService} from '/pages/controller/service/ProductService';
-import ClientDto from '/pages/controller/model/client';
-import {ClientService} from '/pages/controller/service/ClientService';
+import {PurchaseItemDto} from '/pages/controller/model/PurchaseItem.model';
+import {PurchaseItemService} from '/pages/controller/service/admin/PurchaseItemAdminService';
+import {ProductDto} from '/pages/controller/model/Product.model';
+import {ProductService} from '/pages/controller/service/admin/ProductAdminService';
+import {ClientDto} from '/pages/controller/model/Client.model';
+import {ClientService} from '/pages/controller/service/admin/ClientAdminService';
 
 const Create = ({visible, onClose, add, showToast, list}) => {
 
@@ -55,13 +55,12 @@ const Create = ({visible, onClose, add, showToast, list}) => {
             const fetchData = async () => {
              try {
             // if pojo = Commande this line must dispolay client (in command), product(in commanandItem)
-               const [productResponseclientResponse] = await Promise.all<ProductsResponseClientsResponse>([
+               const [productsResponse, clientsResponse] = await Promise.all<ProductResponse, ClientResponse>([
                 ProductService.getList(),
                 ClientService.getList(),
                ]);
                 setProducts(productsResponse.data);
                 setClients(clientsResponse.data);
-
              } catch (error) {
                  console.error(error);
              }
@@ -82,7 +81,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
             const addPurchaseItems = () => {
                  setSubmitted(true);
-                 let _items = [...item.addpurchaseItems];
+                 let _items = [...item.purchaseItems];
                  let _item = {...purchaseItem};
                  if (!_item.id) {
                                     _item.product = selectedProduct;
@@ -326,7 +325,7 @@ return(
                 </div>
 
             </TabPanel>
-            <TabPanel header="Liste {{item.purchaseItems?.length > 0 ? '(' + item.purchaseItems?.length + ')' : ''}}">
+                <TabPanel header={`Liste ${item.purchaseItems && item.purchaseItems.length > 0 ? '(' + item.purchaseItems.length + ')' : ''}`}>
                     <div className="card">
                         <DataTable value={purchaseItems} tableStyle={{minWidth: '50rem'}} dataKey="id">
 

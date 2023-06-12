@@ -2,6 +2,12 @@ package  com.sir.react;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sir.react.zynerator.security.bean.Permission;
+import com.sir.react.zynerator.security.bean.Role;
+import com.sir.react.zynerator.security.bean.User;
+import com.sir.react.zynerator.security.common.AuthoritiesConstants;
+import com.sir.react.zynerator.security.service.facade.RoleService;
+import com.sir.react.zynerator.security.service.facade.UserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -18,12 +24,6 @@ import org.springframework.cache.annotation.EnableCaching;
 import com.sir.react.bean.core.*;
 import com.sir.react.service.facade.admin.*;
 
-import com.sir.react.zynerator.security.common.AuthoritiesConstants;
-import com.sir.react.zynerator.security.bean.User;
-import com.sir.react.zynerator.security.bean.Permission;
-import com.sir.react.zynerator.security.bean.Role;
-import com.sir.react.zynerator.security.service.facade.UserService;
-import com.sir.react.zynerator.security.service.facade.RoleService;
 
 
 import org.springframework.web.client.RestTemplate;

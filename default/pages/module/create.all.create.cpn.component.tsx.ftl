@@ -25,7 +25,7 @@ import  {${pojo.name?cap_first}Dto}  from '/pages/controller/model/${pojo.name?c
 <#if pojo.dependencies??>
     <#list pojo.dependencies as dependency>
         <#if dependency?? && dependency.name??>
-import ${dependency.name?cap_first}Dto from '/pages/controller/model/${dependency.name?uncap_first}';
+import {${dependency.name?cap_first}Dto} from '/pages/controller/model/${dependency.name?cap_first}.model';
 import {${dependency.name?cap_first}Service} from '/pages/controller/service/${dependency.name?cap_first}Service';
         </#if>
     </#list>
@@ -61,7 +61,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
             const fetchData = async () => {
              try {
             // if pojo = Commande this line must dispolay client (in command), product(in commanandItem)
-               const [<#list pojo.fieldsGenericIncludingInnerTypeInListField as fieldGeneric><#if fieldGeneric.typeAsPojo.ignoreFront == false &&  fieldGeneric.typeAsPojo.subModule.name == pojo.subModule.name>${fieldGeneric.name?uncap_first}Response</#if></#list>] = await Promise.all<<#list pojo.fieldsGenericIncludingInnerTypeInListField as fieldGeneric><#if fieldGeneric.typeAsPojo.ignoreFront == false &&  fieldGeneric.typeAsPojo.subModule.name == pojo.subModule.name>${fieldGeneric.name?cap_first}sResponse</#if></#list>>([
+               const [<#list pojo.fieldsGenericIncludingInnerTypeInListField as fieldGeneric><#if fieldGeneric.typeAsPojo.ignoreFront == false &&  fieldGeneric.typeAsPojo.subModule.name == pojo.subModule.name>${fieldGeneric.name?uncap_first}sResponse,</#if></#list>] = await Promise.all<<#list pojo.fieldsGenericIncludingInnerTypeInListField as fieldGeneric><#if fieldGeneric.typeAsPojo.ignoreFront == false &&  fieldGeneric.typeAsPojo.subModule.name == pojo.subModule.name>${fieldGeneric.name?cap_first}Response,</#if></#list>>([
                 <#list pojo.fieldsGenericIncludingInnerTypeInListField as fieldGeneric>
                     <#if fieldGeneric.typeAsPojo.ignoreFront == false &&  fieldGeneric.typeAsPojo.subModule.name == pojo.subModule.name>
                 ${fieldGeneric.name?cap_first}Service.getList(),
@@ -96,7 +96,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
       <#if field.list && !field.association>
            const add${field.name?cap_first} = () => {
                  setSubmitted(true);
-                 let _items = [...item.add${field.name?uncap_first}];
+                 let _items = [...item.${field.name?uncap_first}];
                  let _item = {...${pojo.name?uncap_first}Item};
                  if (!_item.id) {
                          <#list field.typeAsPojo.fields as innerField>
@@ -515,7 +515,7 @@ return(
 
                 <#if !field.createAndListPageInOneTab>
             </TabPanel>
-            <TabPanel header="Liste {{item.${field.name?uncap_first}?.length > 0 ? '(' + item.${field.name?uncap_first}?.length + ')' : ''}}">
+            <TabPanel header={`Liste ${item.${field.name?uncap_first} && item.${field.name?uncap_first}.length > 0 ? '(' + item.${field.name?uncap_first}.length + ')' : ''}`}>
                 </#if>
                 <#if field.createAndListPageInOneTab>
                 <div class="p-col">

@@ -1,7 +1,5 @@
 package com.sir.react.zynerator.security.bean;
 
-import com.sir.react.zynerator.bean.Etablissement;
-import com.sir.react.zynerator.audit.AuditBusinessObject;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -19,6 +17,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Table;
 
+import com.sir.react.zynerator.audit.AuditBusinessObject;
+import com.sir.react.zynerator.bean.Etablissement;
 import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -29,7 +29,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "user_app")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class User  extends AuditBusinessObject  implements UserDetails {
+public class User  extends AuditBusinessObject implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected Long id;

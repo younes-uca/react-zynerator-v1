@@ -12,11 +12,14 @@ import {Toolbar} from 'primereact/toolbar';
 import React, {useEffect, useRef, useState} from 'react';
 import { Paginator } from 'primereact/paginator';
 import {BaseCriteria} from '/pages/zynerator/criteria/BaseCriteria.model';
-import {MessageService} from '/pages/controller/service/MessageService';
-import {ProductDto} from "../../../../../../controller/model/Product.model";
-import {ProductService} from "../../../../../../controller/service/admin/ProductAdminService";
-import Create from "../create-admin/product-create-admin.component";
+import {MessageService} from '/pages/controller/service/Message.service';
 
+import {ProductService} from '/pages/controller/service/admin/ProductService';
+import  {ProductDto}  from '/pages/controller/model/Product.model';
+
+  //import Edit from "/pages/module/admin/view/product/edit-admin";
+  import Create from "/pages/module/admin/view/components/product/create-admin";
+  //import View from "/pages/module/admin/view/components/product/view-admin";
 
 const List = () => {
 const emptyItem = new ProductDto();
@@ -206,8 +209,8 @@ const [items, setItems] = useState<ProductDto[]>([]);
                         globalFilter={globalFilter} header={header} responsiveLayout="scroll"
                     >
                      <Column selectionMode="multiple" headerStyle={{ width: '4rem' }}></Column>
-                          <Column field="code" header="{{'Code' | translate}}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
-                          <Column field="reference" header="{{'Reference' | translate}}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                          <Column field="code" header="Code" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                          <Column field="reference" header="Reference" sortable headerStyle={{ minWidth: '15rem' }}></Column>
                       <Column header="Actions" body={actionBodyTemplate} headerStyle={{minWidth: '10rem'}}></Column>
 
                     </DataTable>
@@ -222,9 +225,9 @@ const [items, setItems] = useState<ProductDto[]>([]);
         </div>
 
              <Create visible={showCreateDialog} onClose={() => setShowCreateDialog(false)} add={add} showToast={toast} list={items} />
-       {/*     <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update}/>
-            <View visible={showViewDialog} onClose={() =>  { setShowViewDialog(false); setSelectedItem(null); }} selectedItem={selectedItem} />*/}
-
+            /* <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update}/>
+             <View visible={showViewDialog} onClose={() =>  { setShowViewDialog(false); setSelectedItem(null); }} selectedItem={selectedItem} />
+          */
  <Dialog visible={deleteItemDialog} style={{width: '450px'}} header="Confirm" modal
           footer={deleteItemDialogFooter} onHide={hideDeleteItemDialog}>
          <div className="flex align-items-center justify-content-center">
@@ -241,7 +244,7 @@ const [items, setItems] = useState<ProductDto[]>([]);
                             footer={deleteItemsDialogFooter} onHide={hideDeleteItemsDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{fontSize: '2rem'}}/>
-                            {item && <span>Are you sure you want to delete the selected 'products'?</span>}
+                            {item && <span>Are you sure you want to delete the selected products?</span>}
                         </div>
                     </Dialog>
                      </div>

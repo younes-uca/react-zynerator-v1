@@ -12,11 +12,14 @@ import {Toolbar} from 'primereact/toolbar';
 import React, {useEffect, useRef, useState} from 'react';
 import { Paginator } from 'primereact/paginator';
 import {BaseCriteria} from '/pages/zynerator/criteria/BaseCriteria.model';
-import {MessageService} from '/pages/controller/service/MessageService';
-import {ClientDto} from "../../../../../../controller/model/Client.model";
-import {ClientService} from "../../../../../../controller/service/admin/ClientAdminService";
-import Create from "../create-admin/client-create-admin.component";
+import {MessageService} from '/pages/controller/service/Message.service';
 
+import {ClientService} from '/pages/controller/service/admin/ClientService';
+import  {ClientDto}  from '/pages/controller/model/Client.model';
+
+  //import Edit from "/pages/module/admin/view/client/edit-admin";
+  import Create from "/pages/module/admin/view/components/client/create-admin";
+  //import View from "/pages/module/admin/view/components/client/view-admin";
 
 const List = () => {
 const emptyItem = new ClientDto();
@@ -206,8 +209,8 @@ const [items, setItems] = useState<ClientDto[]>([]);
                         globalFilter={globalFilter} header={header} responsiveLayout="scroll"
                     >
                      <Column selectionMode="multiple" headerStyle={{ width: '4rem' }}></Column>
-                          <Column field="fullName" header="{{'Full name' | translate}}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
-                          <Column field="email" header="{{'Email' | translate}}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                          <Column field="fullName" header="FullName" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                          <Column field="email" header="Email" sortable headerStyle={{ minWidth: '15rem' }}></Column>
                       <Column header="Actions" body={actionBodyTemplate} headerStyle={{minWidth: '10rem'}}></Column>
 
                     </DataTable>
@@ -222,9 +225,9 @@ const [items, setItems] = useState<ClientDto[]>([]);
         </div>
 
              <Create visible={showCreateDialog} onClose={() => setShowCreateDialog(false)} add={add} showToast={toast} list={items} />
-         {/*   <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update}/>
-             <View visible={showViewDialog} onClose={() =>  { setShowViewDialog(false); setSelectedItem(null); }} selectedItem={selectedItem} />*/}
-
+            /* <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update}/>
+             <View visible={showViewDialog} onClose={() =>  { setShowViewDialog(false); setSelectedItem(null); }} selectedItem={selectedItem} />
+          */
  <Dialog visible={deleteItemDialog} style={{width: '450px'}} header="Confirm" modal
           footer={deleteItemDialogFooter} onHide={hideDeleteItemDialog}>
          <div className="flex align-items-center justify-content-center">
@@ -241,7 +244,7 @@ const [items, setItems] = useState<ClientDto[]>([]);
                             footer={deleteItemsDialogFooter} onHide={hideDeleteItemsDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{fontSize: '2rem'}}/>
-                            {item && <span>Are you sure you want to delete the selected 'clients'?</span>}
+                            {item && <span>Are you sure you want to delete the selected clients?</span>}
                         </div>
                     </Dialog>
                      </div>

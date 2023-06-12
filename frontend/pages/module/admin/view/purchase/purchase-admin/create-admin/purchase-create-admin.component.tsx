@@ -18,16 +18,16 @@ import {MultiSelect} from "primereact/multiselect";
 
 import {MessageService} from "/pages/controller/service/MessageService";
 
-import {PurchaseService} from '/pages/controller/service/admin/PurchaseAdminService';
+import {PurchaseService} from '/pages/controller/service/PurchaseService';
 
 import  {PurchaseDto}  from '/pages/controller/model/Purchase.model';
 
-import {PurchaseItemDto} from '/pages/controller/model/PurchaseItem.model';
-import {PurchaseItemService} from '/pages/controller/service/admin/PurchaseItemAdminService';
-import {ProductDto} from '/pages/controller/model/Product.model';
-import {ProductService} from '/pages/controller/service/admin/ProductAdminService';
 import {ClientDto} from '/pages/controller/model/Client.model';
-import {ClientService} from '/pages/controller/service/admin/ClientAdminService';
+import {ClientService} from '/pages/controller/service/ClientService';
+import {ProductDto} from '/pages/controller/model/Product.model';
+import {ProductService} from '/pages/controller/service/ProductService';
+import {PurchaseItemDto} from '/pages/controller/model/PurchaseItem.model';
+import {PurchaseItemService} from '/pages/controller/service/PurchaseItemService';
 
 const Create = ({visible, onClose, add, showToast, list}) => {
 
@@ -38,15 +38,15 @@ const Create = ({visible, onClose, add, showToast, list}) => {
       const [submitted, setSubmitted] = useState(false); const [activeIndex, setActiveIndex] = useState<number>(0);
       const [activeTab, setActiveTab] = useState(0);
 
-      const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
-      const [selectedPurchaseItem, setSelectedPurchaseItem] = useState(null);
-      type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
-      const [products, setProducts] = useState<ProductDto[]>([]);
-      const [selectedProduct, setSelectedProduct] = useState(null);
-      type ProductResponse = AxiosResponse<ProductDto[]>;
       const [clients, setClients] = useState<ClientDto[]>([]);
       const [selectedClient, setSelectedClient] = useState(null);
       type ClientResponse = AxiosResponse<ClientDto[]>;
+      const [products, setProducts] = useState<ProductDto[]>([]);
+      const [selectedProduct, setSelectedProduct] = useState(null);
+      type ProductResponse = AxiosResponse<ProductDto[]>;
+      const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
+      const [selectedPurchaseItem, setSelectedPurchaseItem] = useState(null);
+      type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
 
       const [purchaseItem, setPurchaseItem] = useState<PurchaseItemDto>(new PurchaseItemDto());
 
@@ -55,12 +55,13 @@ const Create = ({visible, onClose, add, showToast, list}) => {
             const fetchData = async () => {
              try {
             // if pojo = Commande this line must dispolay client (in command), product(in commanandItem)
-               const [productsResponse, clientsResponse] = await Promise.all<ProductResponse, ClientResponse>([
+               const [productsResponse,clientsResponse,] = await Promise.all<ProductResponse,ClientResponse,>([
                 ProductService.getList(),
                 ClientService.getList(),
                ]);
                 setProducts(productsResponse.data);
                 setClients(clientsResponse.data);
+
              } catch (error) {
                  console.error(error);
              }
@@ -79,7 +80,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
 
 
-            const addPurchaseItems = () => {
+           const addPurchaseItems = () => {
                  setSubmitted(true);
                  let _items = [...item.purchaseItems];
                  let _item = {...purchaseItem};
@@ -325,7 +326,7 @@ return(
                 </div>
 
             </TabPanel>
-                <TabPanel header={`Liste ${item.purchaseItems && item.purchaseItems.length > 0 ? '(' + item.purchaseItems.length + ')' : ''}`}>
+            <TabPanel header="Liste">
                     <div className="card">
                         <DataTable value={purchaseItems} tableStyle={{minWidth: '50rem'}} dataKey="id">
 
@@ -334,19 +335,27 @@ return(
                                     <Column field="prix" header="Quantity"></Column>
                         <Column header="Actions" body={(rowData) => (
                         <div>
-                            <Button icon="pi pi-times" rounded severity="warning" className="mr-2 p-button-danger"
+                            <Button icon="pi pi-times" rounded severity="warning"
+                                    className="mr-2 p-button-danger"
                                     onClick={() => deletePurchaseItem(rowData)}/>
                             <Button icon="pi pi-pencil" rounded severity="success" className="mr-2"
                                     onClick={() => editPurchaseItem(rowData)}/>
                         </div>
                         )}></Column>
+
                         </DataTable>
                     </div>
+
             </TabPanel>
         </TabView>
         </TabPanel>
+
+
 </TabView>
+
 </Dialog>
+
+
 );
 
 

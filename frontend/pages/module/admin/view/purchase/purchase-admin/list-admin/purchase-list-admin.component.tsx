@@ -12,19 +12,14 @@ import {Toolbar} from 'primereact/toolbar';
 import React, {useEffect, useRef, useState} from 'react';
 import { Paginator } from 'primereact/paginator';
 import {BaseCriteria} from '/pages/zynerator/criteria/BaseCriteria.model';
-import {MessageService} from '/pages/controller/service/Message.service';
-
-import { ClientService } from '/pages/controller/service/Client.service';
-
-
+import {MessageService} from '/pages/controller/service/Messageservice';
+import {PurchaseDto} from "../../../../../../controller/model/Purchase.model";
+//import Create from "/pages/module/admin/view/purchase/purchase-admin/create-admin";
+import {PurchaseService} from "../../../../../../controller/service/admin/PurchaseAdminService";
   //import Edit from "/pages/module/admin/view/purchase/edit-admin";
-  import Create from "/pages/module/admin/view/components/purchase/create-admin";
   //import View from "/pages/module/admin/view/components/purchase/view-admin";
 
 
-  //import Edit from "/pages/module/admin/view/purchase/edit-admin";
-  import Create from "/pages/module/admin/view/components/purchase/create-admin";
-  //import View from "/pages/module/admin/view/components/purchase/view-admin";
 
 const List = () => {
 const emptyItem = new PurchaseDto();
@@ -232,10 +227,10 @@ const [items, setItems] = useState<PurchaseDto[]>([]);
 
         </div>
 
-             <Create visible={showCreateDialog} onClose={() => setShowCreateDialog(false)} add={add} showToast={toast} list={items} />
-            // <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update}/>
-            // <View visible={showViewDialog} onClose={() =>  { setShowViewDialog(false); setSelectedItem(null); }} selectedItem={selectedItem} />
-
+             {/*<Create visible={showCreateDialog} onClose={() => setShowCreateDialog(false)} add={add} showToast={toast} list={items} />
+             <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update}/>
+            <View visible={showViewDialog} onClose={() =>  { setShowViewDialog(false); setSelectedItem(null); }} selectedItem={selectedItem} />
+*/}
  <Dialog visible={deleteItemDialog} style={{width: '450px'}} header="Confirm" modal
           footer={deleteItemDialogFooter} onHide={hideDeleteItemDialog}>
          <div className="flex align-items-center justify-content-center">

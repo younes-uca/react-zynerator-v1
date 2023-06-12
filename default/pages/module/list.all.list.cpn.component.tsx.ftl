@@ -14,20 +14,13 @@ import { Paginator } from 'primereact/paginator';
 import {BaseCriteria} from '/pages/zynerator/criteria/BaseCriteria.model';
 import {MessageService} from '/pages/controller/service/Message.service';
 
-<#list pojo.fieldsGeneric as field>
-import { ${field.typeAsPojo.name?cap_first}Service } from '/pages/controller/service/${field.typeAsPojo.name?cap_first}.service';
-</#list>
-
-<#list pojo.types as type>
-  <#if pojo.name != pojo.name>
-import ${pojo.name}Dto from '/pages/controller/model/${pojo.name}.model';
-    </#if>
+import {${pojo.name}Service} from '/pages/controller/service/admin/${pojo.name}Service';
+import  {${pojo.name?cap_first}Dto}  from '/pages/controller/model/${pojo.name?cap_first}.model';
 
   //import Edit from "/pages/module/admin/view/${pojo.name?uncap_first}/edit-admin";
   import Create from "/pages/module/admin/view/components/${pojo.name?uncap_first}/create-admin";
   //import View from "/pages/module/admin/view/components/${pojo.name?uncap_first}/view-admin";
 
-</#list>
 <#list pojo.fieldsSimple as simpleField>
   <#if simpleField.dateTime>
       <#assign dateFieldName = simpleField.name>
@@ -225,7 +218,7 @@ const [items, setItems] = useState<${pojo.name}Dto[]>([]);
                       <#list pojo.fields as field>
                         <#if field.name != pojo.id.name && !field.large && !field.list>
                           <#assign i++>
-                          <Column field="${field.name}" header="${field.name18nList}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                          <Column field="${field.name}" header="${field.name?cap_first}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
                         </#if>
                       </#list>
                       <Column header="Actions" body={actionBodyTemplate} headerStyle={{minWidth: '10rem'}}></Column>
@@ -242,9 +235,9 @@ const [items, setItems] = useState<${pojo.name}Dto[]>([]);
         </div>
 
              <Create visible={showCreateDialog} onClose={() => setShowCreateDialog(false)} add={add} showToast={toast} list={items} />
-            // <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update}/>
-            // <View visible={showViewDialog} onClose={() =>  { setShowViewDialog(false); setSelectedItem(null); }} selectedItem={selectedItem} />
-
+            /* <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update}/>
+             <View visible={showViewDialog} onClose={() =>  { setShowViewDialog(false); setSelectedItem(null); }} selectedItem={selectedItem} />
+          */
  <Dialog visible={deleteItemDialog} style={{width: '450px'}} header="Confirm" modal
           footer={deleteItemDialogFooter} onHide={hideDeleteItemDialog}>
          <div className="flex align-items-center justify-content-center">
@@ -261,7 +254,7 @@ const [items, setItems] = useState<${pojo.name}Dto[]>([]);
                             footer={deleteItemsDialogFooter} onHide={hideDeleteItemsDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{fontSize: '2rem'}}/>
-                            {item && <span>Are you sure you want to delete the selected '${pojo.formatedNameLowerCase?uncap_first}s'?</span>}
+                            {item && <span>Are you sure you want to delete the selected ${pojo.formatedNameLowerCase?uncap_first}s?</span>}
                         </div>
                     </Dialog>
                      </div>

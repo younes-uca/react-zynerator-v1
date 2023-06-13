@@ -22,7 +22,7 @@ export default function MyApp({ Component, pageProps }: Props) {
     }, []);
 
     if (!hydrated) {
-        return null; // Masquer complètement le contenu de la page pendant l'hydratation
+        return null;
     }
 
     if (Component.getLayout) {

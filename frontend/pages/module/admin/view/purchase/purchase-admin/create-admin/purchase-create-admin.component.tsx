@@ -22,246 +22,237 @@ import {PurchaseService} from '/pages/controller/service/Purchase.service';
 
 import  {PurchaseDto}  from '/pages/controller/model/Purchase.model';
 
-import {ClientDto} from '/pages/controller/model/Client.model';
-import {ClientService} from '/pages/controller/service/Client.service';
-import {ProductDto} from '/pages/controller/model/Product.model';
-import {ProductService} from '/pages/controller/service/Product.service';
 import {PurchaseItemDto} from '/pages/controller/model/PurchaseItem.model';
 import {PurchaseItemService} from '/pages/controller/service/PurchaseItem.service';
+import {ProductDto} from '/pages/controller/model/Product.model';
+import {ProductService} from '/pages/controller/service/Product.service';
+import {ClientDto} from '/pages/controller/model/Client.model';
+import {ClientService} from '/pages/controller/service/Client.service';
 
 const Create = ({visible, onClose, add, showToast, list}) => {
 
-      const emptyItem = new PurchaseDto();
+    const emptyItem = new PurchaseDto();
 
-      const [items, setItems] = useState<PurchaseDto[]>([list]);
-      const [item, setItem] = useState<PurchaseDto>(emptyItem);
-      const [submitted, setSubmitted] = useState(false);
-      const [activeIndex, setActiveIndex] = useState<number>(0);
-      const [activeTab, setActiveTab] = useState(0);
+    const [items, setItems] = useState<PurchaseDto[]>([list]);
+    const [item, setItem] = useState<PurchaseDto>(emptyItem);
+    const [submitted, setSubmitted] = useState(false); const [activeIndex, setActiveIndex] = useState<number>(0);
+    const [activeTab, setActiveTab] = useState(0);
 
-      const [clients, setClients] = useState<ClientDto[]>([]);
-      const [selectedClient, setSelectedClient] = useState(null);
-      type ClientResponse = AxiosResponse<ClientDto[]>;
-      const [products, setProducts] = useState<ProductDto[]>([]);
-      const [selectedProduct, setSelectedProduct] = useState(null);
-      type ProductResponse = AxiosResponse<ProductDto[]>;
-      const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
-      const [selectedPurchaseItem, setSelectedPurchaseItem] = useState(null);
-      type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
-      const [purchaseItem, setPurchaseItem] = useState<PurchaseItemDto>(new PurchaseItemDto());
+    const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
+    const [selectedPurchaseItem, setSelectedPurchaseItem] = useState(null);
+    type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
+    const [products, setProducts] = useState<ProductDto[]>([]);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    type ProductResponse = AxiosResponse<ProductDto[]>;
+    const [clients, setClients] = useState<ClientDto[]>([]);
+    const [selectedClient, setSelectedClient] = useState(null);
+    type ClientResponse = AxiosResponse<ClientDto[]>;
+
+    const [purchaseItem, setPurchaseItem] = useState<PurchaseItemDto>(new PurchaseItemDto());
 
 
-      useEffect(() => {
-            const fetchData = async () => {
-             try {
-            // if pojo = Commande this line must dispolay client (in command), product(in commanandItem)
-               const [productsResponse,clientsResponse] = await Promise.all<ProductResponse,ClientResponse>([
-                ProductService.getList(),
-                ClientService.getList(),
-               ]);
-                setProducts(productsResponse.data);
-                setClients(clientsResponse.data);
+    useEffect(() => {
+        const fetchData = async () => {
+         try {
+        // if pojo = Commande this line must dispolay client (in command), product(in commanandItem)
+           const [productsResponse,  clientsResponse,  ] = await Promise.all<ProductResponse,ClientResponse,>([
+            ProductService.getList(),
+            ClientService.getList(),
+           ]);
+            setProducts(productsResponse.data);
+            setClients(clientsResponse.data);
 
-             } catch (error) {
-                 console.error(error);
-             }
-            };
+         } catch (error) {
+             console.error(error);
+         }
+        };
 
-            fetchData();
-      }, []);
+        fetchData();
+    }, []);
 
-      const onDropdownChange = (e, field) => {
-             setItem((prevState) => ({
-                ...prevState,
-                [field]: e.value,
-             }));
-      };
+    const onDropdownChange = (e, field) => {
+         setItem((prevState) => ({
+            ...prevState,
+            [field]: e.value,
+         }));
+    };
+
 
 
 
     const addPurchaseItems = () => {
-        setSubmitted(true);
-        if( item.purchaseItems == null )
-        item.purchaseItems = new Array<PurchaseItemDto>();
-        let _items = Array.isArray(item.purchaseItems) ? item.purchaseItems : [];
-        let _item = purchaseItem ;
+         setSubmitted(true);
+         if( item.purchaseItems == null )
+         item.purchaseItems = new Array<PurchaseItemDto>();
+         let _items = Array.isArray(item.purchaseItems) ? item.purchaseItems : [];
+         let _item = purchaseItem;
+         if (!_item.id) {
+                            _item.product = selectedProduct;
+                _items.push(_item);
 
-        if (!_item.id) {
-            _item.product = { ...selectedProduct };
-            _items.push(_item);
+                MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Created', life: 3000 });
 
-            MessageService.showToast(showToast, {
-                severity: 'success',
-                summary: 'Successful',
-                detail: 'PurchaseItem Created',
-                life: 3000
-            });
+                setPurchaseItems(_items);
+         } else {
+                const updatedItems = purchaseItems.map((item) =>
+                  item.id === purchaseItem.id ? { ...item, product: { ...selectedProduct } } : item,
+                );
 
-            setPurchaseItems(_items);
-        } else {
-            const updatedItems = purchaseItems.map((item) =>
-                item.id === purchaseItem.id ? { ...item, product: { ...selectedProduct } } : item
-            );
+                if (purchaseItems.find((item) => item.id === purchaseItem.id)) {
+                MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Updated', life: 3000 });
 
-            if (purchaseItems.find((item) => item.id === purchaseItem.id)) {
-                MessageService.showToast(showToast, {
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'PurchaseItem Updated',
-                    life: 3000
-                });
-            }
+         }
 
-            setPurchaseItems(updatedItems);
-            setSelectedPurchaseItem(null);
-        }
+                setPurchaseItems(updatedItems);
+                setSelectedPurchaseItem(null);
+                }
 
-        setPurchaseItem(new PurchaseItemDto());
-        setSelectedProduct(null);
+                setPurchaseItem(new PurchaseItemDto());
+               setSelectedProduct(null);
+
     };
 
 
-           const deletePurchaseItem = (item) => {
-                  const updatedItems = purchaseItems.filter((val) => val.id !== item.id);
-                  setPurchaseItems(updatedItems);
-                  setPurchaseItem(new PurchaseItemDto());
-               MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000 });
-           };
+    const deletePurchaseItem = (item) => {
+          const updatedItems = purchaseItems.filter((val) => val.id !== item.id);
+          setPurchaseItems(updatedItems);
+          setPurchaseItem(new PurchaseItemDto());
+                showToast?.show({severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000});
+    };
 
-           const editPurchaseItem = (rowData) => {
-                 setSelectedPurchaseItem(rowData);
-                 setActiveTab(0);
-                 setPurchaseItem(rowData);
-                setSelectedProduct(rowData.product);
+    const editPurchaseItem = (rowData) => {
+         setSelectedPurchaseItem(rowData);
+         setActiveTab(0);
+         setPurchaseItem(rowData);
+        setSelectedProduct(rowData.product);
 
-           };
+    };
 
-          const onInputNumerChangePurchaseItems = (e, name) => {
-                 const val = e.value || 0;
-                 setPurchaseItem((prevPurchaseItems) => ({
-                     ...prevPurchaseItems,
-                     [name]: val,
-          }));
-          };
+    const onInputNumerChangePurchaseItems = (e, name) => {
+         const val = e.value || 0;
+         setPurchaseItem((prevPurchaseItems) => ({
+             ...prevPurchaseItems,
+             [name]: val,
+    }));
+    };
 
-          const onMultiSelectChangePurchaseItems = (e, field) => {
-                if (e && e.value && Array.isArray(e.value)) {
-                    const selectedValues = e.value.map(option => option && option.value);
-                    setPurchaseItem(prevState => ({
-                          ...prevState,
-                          [field]: selectedValues,
-                    }));
-                }
-          };
+    const onMultiSelectChangePurchaseItems = (e, field) => {
+        if (e && e.value && Array.isArray(e.value)) {
+            const selectedValues = e.value.map(option => option && option.value);
+            setPurchaseItem(prevState => ({
+                  ...prevState,
+                  [field]: selectedValues,
+            }));
+        }
+    };
 
-          const onBooleanInputChangePurchaseItems = (e: any, name: string) => {
-               const val = e.value;
-               setPurchaseItem((prevItem) => ({
-                   ...prevItem,
-                   [name]: val,
-               }));
-          };
+    const onBooleanInputChangePurchaseItems = (e: any, name: string) => {
+       const val = e.value;
+       setPurchaseItem((prevItem) => ({
+           ...prevItem,
+           [name]: val,
+       }));
+    };
 
 
-          const onInputDateChangePurchaseItems = (e: CalendarChangeEvent, name: string) => {
-                 const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
-                  let _item = { ...purchaseItem};
-                 _item[`${name}`] = val;
-
-          setPurchaseItem(_item);
-          };
-
-      const onInputTextChangePurchaseItems = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
-         const val = (e.target && e.target.value) || '';
-         let _item = {...purchaseItem};
+    const onInputDateChangePurchaseItems = (e: CalendarChangeEvent, name: string) => {
+         const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
+          let _item = { ...purchaseItem};
          _item[`${name}`] = val;
-          setPurchaseItem(_item);
-      };
+
+    setPurchaseItem(_item);
+    };
+
+    const onInputTextChangePurchaseItems = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
+     const val = (e.target && e.target.value) || '';
+     let _item = {...purchaseItem};
+     _item[`${name}`] = val;
+      setPurchaseItem(_item);
+    };
 
 
-       const onTabChange = (e: { index: number }) => {
-                setActiveIndex(e.index);
-       };
+    const onTabChange = (e: { index: number }) => {
+            setActiveIndex(e.index);
+    };
 
 
-       const hideDialog = () => {
-                setSubmitted(false);
-                onClose();
-       };
+    const hideDialog = () => {
+            setSubmitted(false);
+            onClose();
+    };
 
 
-       const saveItem = async () => {
-                setSubmitted(true);
-                 item.purchaseItems = purchaseItems;
+    const saveItem = async () => {
+            setSubmitted(true);
+             item.purchaseItems = purchaseItems;
+            let _items = [...items];
+            let _item = {...item};
 
-                let _items = [...items];
+            if (!_item.id) {
+                 await PurchaseService.save(_item);
+                  _items.push(_item);
+                 add(_item);
+                 MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'Purchase Created', life: 3000 });
+            }
+
+            setItems(_items);
+            onClose();
+            setItem(emptyItem);
+
+    };
+
+
+    const onInputTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
+                const val = (e.target && e.target.value) || '';
                 let _item = {...item};
+                _item[`${name}`] = val;
 
-                if (!_item.id) {
-                     await PurchaseService.save(_item);
-                      _items.push(_item);
-                     add(_item);
-                     MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'Purchase Created', life: 3000 });
-                }
+                setItem(_item);
+    };
 
-                setItems(_items);
-                onClose();
-                setItem(emptyItem);
+    const onInputDateChange = (e: CalendarChangeEvent, name: string) => {
+                const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
+                let _item = { ...item};
+                _item[`${name}`] = val;
 
-       };
-
-
-       const onInputTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
-                    const val = (e.target && e.target.value) || '';
-                    let _item = {...item};
-                    _item[`${name}`] = val;
-
-                    setItem(_item);
-       };
-
-       const onInputDateChange = (e: CalendarChangeEvent, name: string) => {
-                    const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
-                    let _item = { ...item};
-                    _item[`${name}`] = val;
-
-                    setItem(_item);
-       };
+                setItem(_item);
+    };
 
 
 
-       const onInputNumerChange = (e: InputNumberChangeEvent, name: string) => {
-                    const val = e.value === null ? null : +e.value;
-                    setItem((prevItem) => ({
-                           ...prevItem,
-                            [name]: val,
-                    }));
-       };
+    const onInputNumerChange = (e: InputNumberChangeEvent, name: string) => {
+                const val = e.value === null ? null : +e.value;
+                setItem((prevItem) => ({
+                       ...prevItem,
+                        [name]: val,
+                }));
+    };
 
-       const onMultiSelectChange = (e, field) => {
-          if (e && e.value && Array.isArray(e.value)) {
-             const selectedValues = e.value.map(option => option && option.value);
-             setItem(prevState => ({
-                    ...prevState,
-                    [field]: selectedValues,
-             }));
-          }
-       };
+    const onMultiSelectChange = (e, field) => {
+      if (e && e.value && Array.isArray(e.value)) {
+         const selectedValues = e.value.map(option => option && option.value);
+         setItem(prevState => ({
+                ...prevState,
+                [field]: selectedValues,
+         }));
+      }
+    };
 
-       const onBooleanInputChange = (e: any, name: string) => {
-           const val = e.value;
-           setItem((prevItem) => ({
-                    ...prevItem,
-                    [name]: val,
-           }));
-       };
+    const onBooleanInputChange = (e: any, name: string) => {
+       const val = e.value;
+       setItem((prevItem) => ({
+                ...prevItem,
+                [name]: val,
+       }));
+    };
 
 
-       const itemDialogFooter = (
-            <>
-                    <Button label="Cancel" icon="pi pi-times" text onClick={hideDialog}/>
-                    <Button label="Save" icon="pi pi-check" text onClick={saveItem}/>
-            </>
-       );
+    const itemDialogFooter = (
+        <>
+                <Button label="Cancel" icon="pi pi-times" text onClick={hideDialog}/>
+                <Button label="Save" icon="pi pi-check" text onClick={saveItem}/>
+        </>
+    );
 
 return(
 <Dialog visible={visible} style={{width: '70vw'}} header="Purchase" modal className="p-fluid" footer={itemDialogFooter} onHide={hideDialog}>
@@ -277,10 +268,12 @@ return(
                 <small className="p-invalid">Reference is required.</small>}
             </div>
 
-     {/*   <div className="field col-6">
+
+
+        <div className="field col-6">
             <label htmlFor="purchaseDate">PurchaseDate</label>
             <Calendar id="purchaseDate" value={item.purchaseDate} onChange={(e) => onInputDateChange(e, 'purchaseDate')} dateFormat="dd/mm/yy" showTime />
-        </div>*/}
+        </div>
 
             <div className="field col-6">
                 <label htmlFor="image">Image</label>
@@ -338,6 +331,7 @@ return(
             <TabPanel header="Liste">
                     <div className="card">
                         <DataTable value={purchaseItems} tableStyle={{minWidth: '50rem'}} dataKey="id">
+
                                     <Column field="product.reference" header="Product"></Column>
                                     <Column field="price" header="Price"></Column>
                                     <Column field="quantity" header="Quantity"></Column>

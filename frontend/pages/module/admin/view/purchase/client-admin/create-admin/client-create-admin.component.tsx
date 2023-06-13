@@ -25,123 +25,123 @@ import  {ClientDto}  from '/pages/controller/model/Client.model';
 
 const Create = ({visible, onClose, add, showToast, list}) => {
 
-      const emptyItem = new ClientDto();
+    const emptyItem = new ClientDto();
 
-      const [items, setItems] = useState<ClientDto[]>([list]);
-      const [item, setItem] = useState<ClientDto>(emptyItem);
-      const [submitted, setSubmitted] = useState(false); const [activeIndex, setActiveIndex] = useState<number>(0);
-      const [activeTab, setActiveTab] = useState(0);
-
-
-
-
-      useEffect(() => {
-            const fetchData = async () => {
-             try {
-            // if pojo = Commande this line must dispolay client (in command), product(in commanandItem)
-               const [] = await Promise.all<>([
-               ]);
-
-             } catch (error) {
-                 console.error(error);
-             }
-            };
-
-            fetchData();
-      }, []);
-
-      const onDropdownChange = (e, field) => {
-             setItem((prevState) => ({
-                ...prevState,
-                [field]: e.value,
-             }));
-      };
+    const [items, setItems] = useState<ClientDto[]>([list]);
+    const [item, setItem] = useState<ClientDto>(emptyItem);
+    const [submitted, setSubmitted] = useState(false); const [activeIndex, setActiveIndex] = useState<number>(0);
+    const [activeTab, setActiveTab] = useState(0);
 
 
 
 
+    useEffect(() => {
+        const fetchData = async () => {
+         try {
+        // if pojo = Commande this line must dispolay client (in command), product(in commanandItem)
+           const [] = await Promise.all<>([
+           ]);
 
-       const onTabChange = (e: { index: number }) => {
-                setActiveIndex(e.index);
-       };
+         } catch (error) {
+             console.error(error);
+         }
+        };
+
+        fetchData();
+    }, []);
+
+    const onDropdownChange = (e, field) => {
+         setItem((prevState) => ({
+            ...prevState,
+            [field]: e.value,
+         }));
+    };
 
 
-       const hideDialog = () => {
-                setSubmitted(false);
-                onClose();
-       };
 
 
-       const saveItem = async () => {
-                setSubmitted(true);
-                let _items = [...items];
+
+    const onTabChange = (e: { index: number }) => {
+            setActiveIndex(e.index);
+    };
+
+
+    const hideDialog = () => {
+            setSubmitted(false);
+            onClose();
+    };
+
+
+    const saveItem = async () => {
+            setSubmitted(true);
+            let _items = [...items];
+            let _item = {...item};
+
+            if (!_item.id) {
+                 await ClientService.save(_item);
+                  _items.push(_item);
+                 add(_item);
+                 MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'Client Created', life: 3000 });
+            }
+
+            setItems(_items);
+            onClose();
+            setItem(emptyItem);
+
+    };
+
+
+    const onInputTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
+                const val = (e.target && e.target.value) || '';
                 let _item = {...item};
+                _item[`${name}`] = val;
 
-                if (!_item.id) {
-                     await ClientService.save(_item);
-                      _items.push(_item);
-                     add(_item);
-                     MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'Client Created', life: 3000 });
-                }
+                setItem(_item);
+    };
 
-                setItems(_items);
-                onClose();
-                setItem(emptyItem);
+    const onInputDateChange = (e: CalendarChangeEvent, name: string) => {
+                const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
+                let _item = { ...item};
+                _item[`${name}`] = val;
 
-       };
-
-
-       const onInputTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
-                    const val = (e.target && e.target.value) || '';
-                    let _item = {...item};
-                    _item[`${name}`] = val;
-
-                    setItem(_item);
-       };
-
-       const onInputDateChange = (e: CalendarChangeEvent, name: string) => {
-                    const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
-                    let _item = { ...item};
-                    _item[`${name}`] = val;
-
-                    setItem(_item);
-       };
+                setItem(_item);
+    };
 
 
 
-       const onInputNumerChange = (e: InputNumberChangeEvent, name: string) => {
-                    const val = e.value === null ? null : +e.value;
-                    setItem((prevItem) => ({
-                           ...prevItem,
-                            [name]: val,
-                    }));
-       };
+    const onInputNumerChange = (e: InputNumberChangeEvent, name: string) => {
+                const val = e.value === null ? null : +e.value;
+                setItem((prevItem) => ({
+                       ...prevItem,
+                        [name]: val,
+                }));
+    };
 
-       const onMultiSelectChange = (e, field) => {
-          if (e && e.value && Array.isArray(e.value)) {
-             const selectedValues = e.value.map(option => option && option.value);
-             setItem(prevState => ({
-                    ...prevState,
-                    [field]: selectedValues,
-             }));
-          }
-       };
+    const onMultiSelectChange = (e, field) => {
+      if (e && e.value && Array.isArray(e.value)) {
+         const selectedValues = e.value.map(option => option && option.value);
+         setItem(prevState => ({
+                ...prevState,
+                [field]: selectedValues,
+         }));
+      }
+    };
 
-       const onBooleanInputChange = (e: any, name: string) => {
-           const val = e.value;
-           setItem((prevItem) => ({
-                    ...prevItem,
-                    [name]: val,
-           }));
-       };
+    const onBooleanInputChange = (e: any, name: string) => {
+       const val = e.value;
+       setItem((prevItem) => ({
+                ...prevItem,
+                [name]: val,
+       }));
+    };
 
 
-       const itemDialogFooter = (
-            <>
-                    <Button label="Cancel" icon="pi pi-times" text onClick={hideDialog}/>
-                    <Button label="Save" icon="pi pi-check" text onClick={saveItem}/>
-            </>
-       );
+    const itemDialogFooter = (
+        <>
+                <Button label="Cancel" icon="pi pi-times" text onClick={hideDialog}/>
+                <Button label="Save" icon="pi pi-check" text onClick={saveItem}/>
+        </>
+    );
 
 return(
 <Dialog visible={visible} style={{width: '70vw'}} header="Client" modal className="p-fluid" footer={itemDialogFooter} onHide={hideDialog}>

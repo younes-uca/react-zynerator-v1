@@ -42,13 +42,22 @@ const AppMenu = () => {
                     label: 'Crud',
                     icon: 'pi pi-fw pi-pencil',
                     items: [
-
-                      {
-                     label: 'Commande',
-
-                     to: ['/module/admin/view/components/purchasee/list-admin']
+                        {
+                            label: 'Client',
+                            to: '/module/admin/view/subModule/client-admin/list-admin/client-list-admin.component'
                         },
-
+                        {
+                            label: 'PurchaseItem',
+                            to: '/module/admin/view/purchaseItem-admin/list-admin/purchaseItem-list-admin.component'
+                        },
+                        {
+                            label: 'Product',
+                            to: '/module/admin/view/product-admin/list-admin/product-list-admin.component'
+                        },
+                        {
+                            label: 'Purchase',
+                            to: '/module/admin/view/purchase-admin/list-admin/purchase-list-admin.component'
+                        },
 
                     ]
                 },

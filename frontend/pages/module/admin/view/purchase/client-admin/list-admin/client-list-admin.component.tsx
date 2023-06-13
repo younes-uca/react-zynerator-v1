@@ -12,14 +12,14 @@ import {Toolbar} from 'primereact/toolbar';
 import React, {useEffect, useRef, useState} from 'react';
 import { Paginator } from 'primereact/paginator';
 import {BaseCriteria} from '/pages/zynerator/criteria/BaseCriteria.model';
-import {MessageService} from '/pages/controller/service/MessageService';
+import {MessageService} from '/pages/controller/service/Message.service';
 
-import {ClientService} from '/pages/controller/service/Client.service';
+import {ClientService} from '/pages/controller/service/admin/Client.service';
 import  {ClientDto}  from '/pages/controller/model/Client.model';
-import Create from "../create-admin/client-create-admin.component";
 
-  //import Edit from "/pages/module/admin/view/client/edit-admin";
-  //import View from "/pages/module/admin/view/components/client/view-admin";
+  //import Edit from "/pages/module/admin/view/pojo.subModule.name/client-admin/edit-admin/client-edit-admin.component";
+  import Create from "/pages/module/admin/view/pojo.subModule.name/client-admin/create-admin/client-create-admin.component";
+  //import View from "/pages/module/admin/view/pojo.subModule.name/client-admin/view-admin/client-view-admin.component";
 
 const List = () => {
 const emptyItem = new ClientDto();
@@ -173,7 +173,7 @@ const [items, setItems] = useState<ClientDto[]>([]);
 
  const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 className="m-0">Manage 'Clients'</h5>
+            <h5 className="m-0">Manage Clients</h5>
             <span className="block mt-2 md:mt-0 p-input-icon-left">
                 <i className="pi pi-search"/>
                 <InputText type="search" onInput={(e) => setGlobalFilter(e.currentTarget.value)}
@@ -209,7 +209,9 @@ const [items, setItems] = useState<ClientDto[]>([]);
                         globalFilter={globalFilter} header={header} responsiveLayout="scroll"
                     >
                      <Column selectionMode="multiple" headerStyle={{ width: '4rem' }}></Column>
+                          
                           <Column field="fullName" header="FullName" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                          
                           <Column field="email" header="Email" sortable headerStyle={{ minWidth: '15rem' }}></Column>
                       <Column header="Actions" body={actionBodyTemplate} headerStyle={{minWidth: '10rem'}}></Column>
 
@@ -225,7 +227,7 @@ const [items, setItems] = useState<ClientDto[]>([]);
         </div>
 
              <Create visible={showCreateDialog} onClose={() => setShowCreateDialog(false)} add={add} showToast={toast} list={items} />
-                    {  /* <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update}/>
+           { /* <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update}/>
              <View visible={showViewDialog} onClose={() =>  { setShowViewDialog(false); setSelectedItem(null); }} selectedItem={selectedItem} />
           */}
  <Dialog visible={deleteItemDialog} style={{width: '450px'}} header="Confirm" modal

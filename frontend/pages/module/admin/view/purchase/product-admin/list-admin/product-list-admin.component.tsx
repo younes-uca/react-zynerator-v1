@@ -12,14 +12,14 @@ import {Toolbar} from 'primereact/toolbar';
 import React, {useEffect, useRef, useState} from 'react';
 import { Paginator } from 'primereact/paginator';
 import {BaseCriteria} from '/pages/zynerator/criteria/BaseCriteria.model';
-import {MessageService} from '/pages/controller/service/MessageService';
+import {MessageService} from '/pages/controller/service/Message.service';
 
-import {ProductService} from '/pages/controller/service/Product.service';
+import {ProductService} from '/pages/controller/service/admin/Product.service';
 import  {ProductDto}  from '/pages/controller/model/Product.model';
-import Create from "../create-admin/product-create-admin.component";
 
-  //import Edit from "/pages/module/admin/view/product/edit-admin";
-  //import View from "/pages/module/admin/view/components/product/view-admin";
+  //import Edit from "/pages/module/admin/view/pojo.subModule.name/product-admin/edit-admin/product-edit-admin.component";
+  import Create from "/pages/module/admin/view/pojo.subModule.name/product-admin/create-admin/product-create-admin.component";
+  //import View from "/pages/module/admin/view/pojo.subModule.name/product-admin/view-admin/product-view-admin.component";
 
 const List = () => {
 const emptyItem = new ProductDto();
@@ -173,7 +173,7 @@ const [items, setItems] = useState<ProductDto[]>([]);
 
  const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 className="m-0">Manage 'Products'</h5>
+            <h5 className="m-0">Manage Products</h5>
             <span className="block mt-2 md:mt-0 p-input-icon-left">
                 <i className="pi pi-search"/>
                 <InputText type="search" onInput={(e) => setGlobalFilter(e.currentTarget.value)}
@@ -206,9 +206,12 @@ const [items, setItems] = useState<ProductDto[]>([]);
                         onSelectionChange={(e) => setSelectedItems(e.value as ProductDto[])}
                         dataKey="id"
                         className="datatable-responsive"
-                        globalFilter={globalFilter} header={header} responsiveLayout="scroll">
+                        globalFilter={globalFilter} header={header} responsiveLayout="scroll"
+                    >
                      <Column selectionMode="multiple" headerStyle={{ width: '4rem' }}></Column>
-                       <Column field="code" header="Code" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                          
+                          <Column field="code" header="Code" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                          
                           <Column field="reference" header="Reference" sortable headerStyle={{ minWidth: '15rem' }}></Column>
                       <Column header="Actions" body={actionBodyTemplate} headerStyle={{minWidth: '10rem'}}></Column>
 
@@ -224,7 +227,7 @@ const [items, setItems] = useState<ProductDto[]>([]);
         </div>
 
              <Create visible={showCreateDialog} onClose={() => setShowCreateDialog(false)} add={add} showToast={toast} list={items} />
-                    { /* <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update}/>
+           { /* <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update}/>
              <View visible={showViewDialog} onClose={() =>  { setShowViewDialog(false); setSelectedItem(null); }} selectedItem={selectedItem} />
           */}
  <Dialog visible={deleteItemDialog} style={{width: '450px'}} header="Confirm" modal

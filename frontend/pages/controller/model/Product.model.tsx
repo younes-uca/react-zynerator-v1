@@ -7,10 +7,4 @@ export class ProductDto extends BaseDto{
     public code: string;
     public reference: string;
 
-
-
-
-
-
-
 }

@@ -7,7 +7,4 @@ export class ClientDto extends BaseDto{
     public fullName: string;
     public email: string;
 
-
-
-
 }

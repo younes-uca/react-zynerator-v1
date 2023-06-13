@@ -12,14 +12,14 @@ import {Toolbar} from 'primereact/toolbar';
 import React, {useEffect, useRef, useState} from 'react';
 import { Paginator } from 'primereact/paginator';
 import {BaseCriteria} from '/pages/zynerator/criteria/BaseCriteria.model';
-import {MessageService} from '/pages/controller/service/MessageService';
+import {MessageService} from '/pages/controller/service/Message.service';
 
-import {PurchaseService} from '/pages/controller/service/Purchase.service';
+import {PurchaseService} from '/pages/controller/service/admin/Purchase.service';
 import  {PurchaseDto}  from '/pages/controller/model/Purchase.model';
-import Create from "../create-admin/purchase-create-admin.component";
 
-  //import Edit from "/pages/module/admin/view/purchase/edit-admin";
-  //import View from "/pages/module/admin/view/components/purchase/view-admin";
+  //import Edit from "/pages/module/admin/view/pojo.subModule.name/purchase-admin/edit-admin/purchase-edit-admin.component";
+  import Create from "/pages/module/admin/view/pojo.subModule.name/purchase-admin/create-admin/purchase-create-admin.component";
+  //import View from "/pages/module/admin/view/pojo.subModule.name/purchase-admin/view-admin/purchase-view-admin.component";
 
 const List = () => {
 const emptyItem = new PurchaseDto();
@@ -173,7 +173,7 @@ const [items, setItems] = useState<PurchaseDto[]>([]);
 
  const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 className="m-0">Manage 'Purchases'</h5>
+            <h5 className="m-0">Manage Purchases</h5>
             <span className="block mt-2 md:mt-0 p-input-icon-left">
                 <i className="pi pi-search"/>
                 <InputText type="search" onInput={(e) => setGlobalFilter(e.currentTarget.value)}
@@ -209,11 +209,15 @@ const [items, setItems] = useState<PurchaseDto[]>([]);
                         globalFilter={globalFilter} header={header} responsiveLayout="scroll"
                     >
                      <Column selectionMode="multiple" headerStyle={{ width: '4rem' }}></Column>
+                          
                           <Column field="reference" header="Reference" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                          
                           <Column field="purchaseDate" header="PurchaseDate" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                          
                           <Column field="image" header="Image" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                          
                           <Column field="total" header="Total" sortable headerStyle={{ minWidth: '15rem' }}></Column>
-                          <Column field="client.fullName" header="Client" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                          
                       <Column header="Actions" body={actionBodyTemplate} headerStyle={{minWidth: '10rem'}}></Column>
 
                     </DataTable>
@@ -228,7 +232,7 @@ const [items, setItems] = useState<PurchaseDto[]>([]);
         </div>
 
              <Create visible={showCreateDialog} onClose={() => setShowCreateDialog(false)} add={add} showToast={toast} list={items} />
-                    { /* <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update}/>
+           { /* <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update}/>
              <View visible={showViewDialog} onClose={() =>  { setShowViewDialog(false); setSelectedItem(null); }} selectedItem={selectedItem} />
           */}
  <Dialog visible={deleteItemDialog} style={{width: '450px'}} header="Confirm" modal

@@ -14,4 +14,5 @@ export class ProductCriteria  extends  BaseCriteria {
     public reference: string;
     public referenceLike: string;
 
+
 }

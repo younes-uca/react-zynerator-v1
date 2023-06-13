@@ -7,13 +7,7 @@ export class ProductDto extends BaseDto{
     public code: string;
     public reference: string;
 
-   constructor(
-     public id: number = 0,
-     public code: string = '',
-     public reference: string = '',
-   ) {
-     super();
-   }
+
 
 
 

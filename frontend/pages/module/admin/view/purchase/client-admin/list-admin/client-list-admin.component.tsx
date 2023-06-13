@@ -14,7 +14,7 @@ import { Paginator } from 'primereact/paginator';
 import {BaseCriteria} from '/pages/zynerator/criteria/BaseCriteria.model';
 import {MessageService} from '/pages/controller/service/MessageService';
 
-import {ClientService} from '/pages/controller/service/ClientService';
+import {ClientService} from '/pages/controller/service/Client.service';
 import  {ClientDto}  from '/pages/controller/model/Client.model';
 import Create from "../create-admin/client-create-admin.component";
 

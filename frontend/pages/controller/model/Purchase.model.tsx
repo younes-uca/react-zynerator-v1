@@ -10,29 +10,9 @@ export class PurchaseDto extends BaseDto{
     public image: string;
     public total: number;
     public description: string;
-    public purchaseDateMax: string ;
-    public purchaseDateMin: string ;
-    public totalMax: string ;
-    public totalMin: string ;
     public client: ClientDto ;
-     public purchaseItems: Array<PurchaseItemDto>;
+     public purchaseItems: PurchaseItemDto[];
 
-   constructor(
-     public id: number = 0,
-     public reference: string = '',
-     public purchaseDate: Date = new Date(),
-     public image: string = '',
-     public total: number = 0,
-     public description: string = '',
-     public purchaseDateMax: string = '',
-     public purchaseDateMin: string = '',
-     public totalMax: string = '',
-     public totalMin: string = '',
-     public client: ClientDto = new ClientDto(),
-     public purchaseItems: Array<PurchaseItemDto> = [],
-   ) {
-     super();
-   }
 
 
 

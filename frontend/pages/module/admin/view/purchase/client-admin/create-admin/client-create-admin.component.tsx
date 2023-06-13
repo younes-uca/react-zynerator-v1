@@ -18,7 +18,7 @@ import {MultiSelect} from "primereact/multiselect";
 
 import {MessageService} from "/pages/controller/service/MessageService";
 
-import {ClientService} from '/pages/controller/service/ClientService';
+import {ClientService} from '/pages/controller/service/Client.service';
 
 import  {ClientDto}  from '/pages/controller/model/Client.model';
 

@@ -18,16 +18,16 @@ import {MultiSelect} from "primereact/multiselect";
 
 import {MessageService} from "/pages/controller/service/MessageService";
 
-import {PurchaseService} from '/pages/controller/service/PurchaseService';
+import {PurchaseService} from '/pages/controller/service/Purchase.service';
 
 import  {PurchaseDto}  from '/pages/controller/model/Purchase.model';
 
 import {ClientDto} from '/pages/controller/model/Client.model';
-import {ClientService} from '/pages/controller/service/ClientService';
+import {ClientService} from '/pages/controller/service/Client.service';
 import {ProductDto} from '/pages/controller/model/Product.model';
-import {ProductService} from '/pages/controller/service/ProductService';
+import {ProductService} from '/pages/controller/service/Product.service';
 import {PurchaseItemDto} from '/pages/controller/model/PurchaseItem.model';
-import {PurchaseItemService} from '/pages/controller/service/PurchaseItemService';
+import {PurchaseItemService} from '/pages/controller/service/PurchaseItem.service';
 
 const Create = ({visible, onClose, add, showToast, list}) => {
 
@@ -79,38 +79,46 @@ const Create = ({visible, onClose, add, showToast, list}) => {
       };
 
 
+    const addPurchaseItems = () => {
+        setSubmitted(true);
+        if( item.purchaseItems == null )
+        item.purchaseItems = new Array<PurchaseItemDto>();
+        let _items = Array.isArray(item.purchaseItems) ? item.purchaseItems : [];
+        let _item = purchaseItem ;
 
+        if (!_item.id) {
+            _item.product = { ...selectedProduct };
+            _items.push(_item);
 
-           const addPurchaseItems = () => {
-                 setSubmitted(true);
-                 let _items = [...item.purchaseItems];
-                 let _item = {...purchaseItem};
-                 if (!_item.id) {
-                                    _item.product = selectedProduct;
-                        _items.push(_item);
+            MessageService.showToast(showToast, {
+                severity: 'success',
+                summary: 'Successful',
+                detail: 'PurchaseItem Created',
+                life: 3000
+            });
 
-                        MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Created', life: 3000 });
+            setPurchaseItems(_items);
+        } else {
+            const updatedItems = purchaseItems.map((item) =>
+                item.id === purchaseItem.id ? { ...item, product: { ...selectedProduct } } : item
+            );
 
-                        setPurchaseItems(_items);
-                 } else {
-                        const updatedItems = purchaseItems.map((item) =>
-                          item.id === purchaseItem.id ? { ...item, product: { ...selectedProduct } } : item,
-                        );
+            if (purchaseItems.find((item) => item.id === purchaseItem.id)) {
+                MessageService.showToast(showToast, {
+                    severity: 'success',
+                    summary: 'Successful',
+                    detail: 'PurchaseItem Updated',
+                    life: 3000
+                });
+            }
 
-                        if (purchaseItems.find((item) => item.id === purchaseItem.id)) {
-                        MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Updated', life: 3000 });
+            setPurchaseItems(updatedItems);
+            setSelectedPurchaseItem(null);
+        }
 
-                 }
-
-                        setPurchaseItems(updatedItems);
-                        setSelectedPurchaseItem(null);
-                        }
-
-                        setPurchaseItem(new PurchaseItemDto());
-                       setSelectedProduct(null);
-
-           };
-
+        setPurchaseItem(new PurchaseItemDto());
+        setSelectedProduct(null);
+    };
 
            const deletePurchaseItem = (item) => {
                   const updatedItems = purchaseItems.filter((val) => val.id !== item.id);
@@ -328,10 +336,10 @@ return(
             <TabPanel header="Liste">
                     <div className="card">
                         <DataTable value={purchaseItems} tableStyle={{minWidth: '50rem'}} dataKey="id">
-                            <Column field="id" header="Id"></Column>
-                                    <Column field="product?.reference" header="Product"></Column>
-                                    <Column field="prix" header="Price"></Column>
-                                    <Column field="prix" header="Quantity"></Column>
+
+                                    <Column field="product.reference" header="Product"></Column>
+                                    <Column field="price" header="Price"></Column>
+                                    <Column field="quantity" header="Quantity"></Column>
                         <Column header="Actions" body={(rowData) => (
                         <div>
                             <Button icon="pi pi-times" rounded severity="warning"

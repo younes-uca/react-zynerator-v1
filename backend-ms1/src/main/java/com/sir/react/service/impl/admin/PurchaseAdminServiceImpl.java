@@ -34,10 +34,11 @@ PurchaseHistoryDao> implements PurchaseAdminService {
     public Purchase create(Purchase t) {
         super.create(t);
         if (t.getPurchaseItems() != null) {
-                t.getPurchaseItems().forEach(element-> {
-                    element.setPurchase(t);
-                    purchaseItemService.create(element);
-            });
+            for (PurchaseItem element : t.getPurchaseItems()) {
+                element.setPurchase(t);
+                purchaseItemService.create(element);
+            }
+
         }
         return t;
     }

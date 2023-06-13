@@ -7,15 +7,6 @@ export class ClientDto extends BaseDto{
     public fullName: string;
     public email: string;
 
-   constructor(
-     public id: number = 0,
-     public fullName: string = '',
-     public email: string = '',
-   ) {
-     super();
-   }
-
-
 
 
 

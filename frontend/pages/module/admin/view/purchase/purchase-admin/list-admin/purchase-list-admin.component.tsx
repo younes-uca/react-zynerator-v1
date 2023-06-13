@@ -14,7 +14,7 @@ import { Paginator } from 'primereact/paginator';
 import {BaseCriteria} from '/pages/zynerator/criteria/BaseCriteria.model';
 import {MessageService} from '/pages/controller/service/MessageService';
 
-import {PurchaseService} from '/pages/controller/service/PurchaseService';
+import {PurchaseService} from '/pages/controller/service/Purchase.service';
 import  {PurchaseDto}  from '/pages/controller/model/Purchase.model';
 import Create from "../create-admin/purchase-create-admin.component";
 
@@ -213,7 +213,7 @@ const [items, setItems] = useState<PurchaseDto[]>([]);
                           <Column field="purchaseDate" header="PurchaseDate" sortable headerStyle={{ minWidth: '15rem' }}></Column>
                           <Column field="image" header="Image" sortable headerStyle={{ minWidth: '15rem' }}></Column>
                           <Column field="total" header="Total" sortable headerStyle={{ minWidth: '15rem' }}></Column>
-                          <Column field="client" header="Client" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                          <Column field="client.fullName" header="Client" sortable headerStyle={{ minWidth: '15rem' }}></Column>
                       <Column header="Actions" body={actionBodyTemplate} headerStyle={{minWidth: '10rem'}}></Column>
 
                     </DataTable>

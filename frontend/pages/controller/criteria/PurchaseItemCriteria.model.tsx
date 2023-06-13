@@ -21,18 +21,6 @@ export class PurchaseItemCriteria  extends  BaseCriteria {
   public products: Array<ProductCriteria> ;
   public purchase: PurchaseCriteria ;
   public purchases: Array<PurchaseCriteria> ;
- constructor(
-   public id: number = 0,
-   public price: number = 0,
-   public quantity: number = 0,
-   public priceMax: string = '',
-   public priceMin: string = '',
-   public quantityMax: string = '',
-   public quantityMin: string = '',
-   public product: ProductDto = new ProductDto(),
-   public purchase: PurchaseDto = new PurchaseDto(),
- ) {
-   super();
- }
+
 
 }

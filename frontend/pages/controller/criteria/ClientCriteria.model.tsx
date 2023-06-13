@@ -13,12 +13,6 @@ export class ClientCriteria  extends  BaseCriteria {
     public fullNameLike: string;
     public email: string;
     public emailLike: string;
- constructor(
-   public id: number = 0,
-   public fullName: string = '',
-   public email: string = '',
- ) {
-   super();
- }
+
 
 }

@@ -147,8 +147,8 @@ const Create = ({visible, onClose, add, showToast, list}) => {
                   const updatedItems = ${field.name?uncap_first}.filter((val) => val.id !== item.id);
                   set${field.name?cap_first}(updatedItems);
                   set${pojo.name?cap_first}Item(new ${field.typeAsPojo.name}Dto());
-                        showToast?.show({severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first}Item Deleted', life: 3000});
-           };
+                        MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000 });
+                          };
 
            const edit${field.typeAsPojo.name} = (rowData) => {
                  setSelected${pojo.name?cap_first}Item(rowData);

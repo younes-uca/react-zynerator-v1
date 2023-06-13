@@ -10,9 +10,6 @@ public class PurchaseCriteria extends  BaseCriteria  {
 
     private String reference;
     private String referenceLike;
-    private LocalDateTime purchaseDate;
-    private LocalDateTime purchaseDateFrom;
-    private LocalDateTime purchaseDateTo;
     private String image;
     private String imageLike;
     private String total;
@@ -38,25 +35,6 @@ public class PurchaseCriteria extends  BaseCriteria  {
     }
     public void setReferenceLike(String referenceLike){
         this.referenceLike = referenceLike;
-    }
-
-    public LocalDateTime getPurchaseDate(){
-        return this.purchaseDate;
-    }
-    public void setPurchaseDate(LocalDateTime purchaseDate){
-        this.purchaseDate = purchaseDate;
-    }
-    public LocalDateTime getPurchaseDateFrom(){
-        return this.purchaseDateFrom;
-    }
-    public void setPurchaseDateFrom(LocalDateTime purchaseDateFrom){
-        this.purchaseDateFrom = purchaseDateFrom;
-    }
-    public LocalDateTime getPurchaseDateTo(){
-        return this.purchaseDateTo;
-    }
-    public void setPurchaseDateTo(LocalDateTime purchaseDateTo){
-        this.purchaseDateTo = purchaseDateTo;
     }
     public String getImage(){
         return this.image;

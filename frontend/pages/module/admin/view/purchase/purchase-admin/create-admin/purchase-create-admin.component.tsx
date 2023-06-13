@@ -35,7 +35,8 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
       const [items, setItems] = useState<PurchaseDto[]>([list]);
       const [item, setItem] = useState<PurchaseDto>(emptyItem);
-      const [submitted, setSubmitted] = useState(false); const [activeIndex, setActiveIndex] = useState<number>(0);
+      const [submitted, setSubmitted] = useState(false);
+      const [activeIndex, setActiveIndex] = useState<number>(0);
       const [activeTab, setActiveTab] = useState(0);
 
       const [clients, setClients] = useState<ClientDto[]>([]);
@@ -55,7 +56,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
             const fetchData = async () => {
              try {
             // if pojo = Commande this line must dispolay client (in command), product(in commanandItem)
-               const [productsResponse,clientsResponse,] = await Promise.all<ProductResponse,ClientResponse,>([
+               const [productsResponse,clientsResponse] = await Promise.all<ProductResponse,ClientResponse>([
                 ProductService.getList(),
                 ClientService.getList(),
                ]);
@@ -266,12 +267,10 @@ return(
                 <small className="p-invalid">Reference is required.</small>}
             </div>
 
-
-
-        <div className="field col-6">
+     {/*   <div className="field col-6">
             <label htmlFor="purchaseDate">PurchaseDate</label>
             <Calendar id="purchaseDate" value={item.purchaseDate} onChange={(e) => onInputDateChange(e, 'purchaseDate')} dateFormat="dd/mm/yy" showTime />
-        </div>
+        </div>*/}
 
             <div className="field col-6">
                 <label htmlFor="image">Image</label>
@@ -329,7 +328,7 @@ return(
             <TabPanel header="Liste">
                     <div className="card">
                         <DataTable value={purchaseItems} tableStyle={{minWidth: '50rem'}} dataKey="id">
-
+                            <Column field="id" header="Id"></Column>
                                     <Column field="product?.reference" header="Product"></Column>
                                     <Column field="prix" header="Price"></Column>
                                     <Column field="prix" header="Quantity"></Column>

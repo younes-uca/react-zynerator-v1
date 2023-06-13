@@ -17,7 +17,6 @@ public class PurchaseSpecification extends  AbstractSpecification<PurchaseCriter
     public void constructPredicates() {
         addPredicateId("id", criteria);
         addPredicate("reference", criteria.getReference(),criteria.getReferenceLike());
-        addPredicate("purchaseDate", criteria.getPurchaseDate(), criteria.getPurchaseDateFrom(), criteria.getPurchaseDateTo());
         addPredicate("image", criteria.getImage(),criteria.getImageLike());
         addPredicateBigDecimal("total", criteria.getTotal(), criteria.getTotalMin(), criteria.getTotalMax());
         addPredicateFk("client","id", criteria.getClient()==null?null:criteria.getClient().getId());

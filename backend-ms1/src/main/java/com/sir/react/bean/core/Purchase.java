@@ -30,7 +30,6 @@ public class Purchase   extends AuditBusinessObject     {
 
     @Column(length = 500)
     private String reference;
-    private LocalDateTime purchaseDate ;
     @Column(length = 500)
     private String image;
     private BigDecimal total = BigDecimal.ZERO;
@@ -69,12 +68,7 @@ public class Purchase   extends AuditBusinessObject     {
     public void setReference(String reference){
         this.reference = reference;
     }
-    public LocalDateTime getPurchaseDate(){
-        return this.purchaseDate;
-    }
-    public void setPurchaseDate(LocalDateTime purchaseDate){
-        this.purchaseDate = purchaseDate;
-    }
+
     public String getImage(){
         return this.image;
     }

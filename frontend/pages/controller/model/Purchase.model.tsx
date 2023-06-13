@@ -7,7 +7,6 @@ export class PurchaseDto extends BaseDto{
 
     public id: number;
     public reference: string;
-   public purchaseDate: Date;
     public image: string;
     public total: number;
     public description: string;

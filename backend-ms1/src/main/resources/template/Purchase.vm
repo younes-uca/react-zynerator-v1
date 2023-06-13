@@ -103,9 +103,6 @@
                         <td style="text-align: left;border-bottom: 0"><span style="font-weight: bold;">Reference:</span> $reference</td>
                     </tr>
                     <tr>
-                        <td style="text-align: left;border-bottom: 0"><span style="font-weight: bold;">PurchaseDate:</span> $purchaseDate</td>
-                    </tr>
-                    <tr>
                         <td style="text-align: left;border-bottom: 0"><span style="font-weight: bold;">Image:</span> $image</td>
                     </tr>
                     <tr>

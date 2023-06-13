@@ -29,7 +29,8 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
       const [items, setItems] = useState<ProductDto[]>([list]);
       const [item, setItem] = useState<ProductDto>(emptyItem);
-      const [submitted, setSubmitted] = useState(false); const [activeIndex, setActiveIndex] = useState<number>(0);
+      const [submitted, setSubmitted] = useState(false);
+      const [activeIndex, setActiveIndex] = useState<number>(0);
       const [activeTab, setActiveTab] = useState(0);
 
 

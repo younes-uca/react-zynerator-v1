@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 public class PurchaseDto  extends AuditBaseDto {
 
     private String reference  ;
-    private String purchaseDate ;
+
     private String image  ;
     private BigDecimal total  ;
     private String description  ;
@@ -40,14 +40,6 @@ public class PurchaseDto  extends AuditBaseDto {
         this.reference = reference;
     }
 
-    @Log
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
-    public String getPurchaseDate(){
-        return this.purchaseDate;
-    }
-    public void setPurchaseDate(String purchaseDate){
-        this.purchaseDate = purchaseDate;
-    }
 
     @Log
     public String getImage(){

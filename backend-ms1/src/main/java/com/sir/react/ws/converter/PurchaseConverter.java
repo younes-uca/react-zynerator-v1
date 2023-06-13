@@ -7,7 +7,6 @@ import com.sir.react.zynerator.util.ListUtil;
 
 import com.sir.react.zynerator.util.StringUtil;
 import com.sir.react.zynerator.converter.AbstractConverter;
-import com.sir.react.zynerator.util.DateUtil;
 import com.sir.react.bean.history.PurchaseHistory;
 import com.sir.react.bean.core.Purchase;
 import com.sir.react.ws.dto.PurchaseDto;
@@ -39,8 +38,6 @@ public class PurchaseConverter extends AbstractConverter<Purchase, PurchaseDto, 
                 item.setId(dto.getId());
             if(StringUtil.isNotEmpty(dto.getReference()))
                 item.setReference(dto.getReference());
-            if(StringUtil.isNotEmpty(dto.getPurchaseDate()))
-                item.setPurchaseDate(DateUtil.stringEnToDate(dto.getPurchaseDate()));
             if(StringUtil.isNotEmpty(dto.getImage()))
                 item.setImage(dto.getImage());
             if(StringUtil.isNotEmpty(dto.getTotal()))
@@ -68,8 +65,6 @@ public class PurchaseConverter extends AbstractConverter<Purchase, PurchaseDto, 
                 dto.setId(item.getId());
             if(StringUtil.isNotEmpty(item.getReference()))
                 dto.setReference(item.getReference());
-            if(item.getPurchaseDate()!=null)
-                dto.setPurchaseDate(DateUtil.dateTimeToString(item.getPurchaseDate()));
             if(StringUtil.isNotEmpty(item.getImage()))
                 dto.setImage(item.getImage());
             if(StringUtil.isNotEmpty(item.getTotal()))

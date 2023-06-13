@@ -12,13 +12,13 @@ import {Toolbar} from 'primereact/toolbar';
 import React, {useEffect, useRef, useState} from 'react';
 import { Paginator } from 'primereact/paginator';
 import {BaseCriteria} from '/pages/zynerator/criteria/BaseCriteria.model';
-import {MessageService} from '/pages/controller/service/Message.service';
+import {MessageService} from '/pages/controller/service/MessageService';
 
-import {ClientService} from '/pages/controller/service/admin/ClientService';
+import {ClientService} from '/pages/controller/service/ClientService';
 import  {ClientDto}  from '/pages/controller/model/Client.model';
+import Create from "../create-admin/client-create-admin.component";
 
   //import Edit from "/pages/module/admin/view/client/edit-admin";
-  import Create from "/pages/module/admin/view/components/client/create-admin";
   //import View from "/pages/module/admin/view/components/client/view-admin";
 
 const List = () => {
@@ -225,9 +225,9 @@ const [items, setItems] = useState<ClientDto[]>([]);
         </div>
 
              <Create visible={showCreateDialog} onClose={() => setShowCreateDialog(false)} add={add} showToast={toast} list={items} />
-            /* <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update}/>
+                    {  /* <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update}/>
              <View visible={showViewDialog} onClose={() =>  { setShowViewDialog(false); setSelectedItem(null); }} selectedItem={selectedItem} />
-          */
+          */}
  <Dialog visible={deleteItemDialog} style={{width: '450px'}} header="Confirm" modal
           footer={deleteItemDialogFooter} onHide={hideDeleteItemDialog}>
          <div className="flex align-items-center justify-content-center">

@@ -48,7 +48,6 @@ const Create = ({visible, onClose, add, showToast, list}) => {
       const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
       const [selectedPurchaseItem, setSelectedPurchaseItem] = useState(null);
       type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
-
       const [purchaseItem, setPurchaseItem] = useState<PurchaseItemDto>(new PurchaseItemDto());
 
 
@@ -86,7 +85,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
                  let _items = [...item.purchaseItems];
                  let _item = {...purchaseItem};
                  if (!_item.id) {
-                                    _item.product = selectedProduct;
+                     _item.product = selectedProduct;
                         _items.push(_item);
 
                         MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Created', life: 3000 });
@@ -116,7 +115,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
                   const updatedItems = purchaseItems.filter((val) => val.id !== item.id);
                   setPurchaseItems(updatedItems);
                   setPurchaseItem(new PurchaseItemDto());
-                        showToast?.show({severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000});
+               MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000 });
            };
 
            const editPurchaseItem = (rowData) => {
@@ -184,6 +183,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
        const saveItem = async () => {
                 setSubmitted(true);
                  item.purchaseItems = purchaseItems;
+
                 let _items = [...items];
                 let _item = {...item};
 
@@ -330,8 +330,8 @@ return(
                         <DataTable value={purchaseItems} tableStyle={{minWidth: '50rem'}} dataKey="id">
                             <Column field="id" header="Id"></Column>
                                     <Column field="product?.reference" header="Product"></Column>
-                                    <Column field="prix" header="Price"></Column>
-                                    <Column field="prix" header="Quantity"></Column>
+                                    <Column field="price" header="Price"></Column>
+                                    <Column field="quantity" header="Quantity"></Column>
                         <Column header="Actions" body={(rowData) => (
                         <div>
                             <Button icon="pi pi-times" rounded severity="warning"

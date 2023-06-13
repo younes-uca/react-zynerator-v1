@@ -17,9 +17,9 @@ import {MessageService} from '/pages/controller/service/Message.service';
 import {${pojo.name}Service} from '/pages/controller/service/admin/${pojo.name}Service';
 import  {${pojo.name?cap_first}Dto}  from '/pages/controller/model/${pojo.name?cap_first}.model';
 
-  //import Edit from "/pages/module/admin/view/${pojo.name?uncap_first}/edit-admin";
-  import Create from "/pages/module/admin/view/components/${pojo.name?uncap_first}/create-admin";
-  //import View from "/pages/module/admin/view/components/${pojo.name?uncap_first}/view-admin";
+  //import Edit from "/pages/module/admin/view/pojo.subModule.name/${pojo.name?uncap_first}-admin/edit-admin/${pojo.name?uncap_first}-edit-admin.component";
+  import Create from "/pages/module/admin/view/pojo.subModule.name/${pojo.name?uncap_first}-admin/create-admin/${pojo.name?uncap_first}-create-admin.component";
+  //import View from "/pages/module/admin/view/pojo.subModule.name/${pojo.name?uncap_first}-admin/view-admin/${pojo.name?uncap_first}-view-admin.component";
 
 <#list pojo.fieldsSimple as simpleField>
   <#if simpleField.dateTime>
@@ -178,7 +178,7 @@ const [items, setItems] = useState<${pojo.name}Dto[]>([]);
 
  const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 className="m-0">Manage '${pojo.name}s'</h5>
+            <h5 className="m-0">Manage ${pojo.name}s</h5>
             <span className="block mt-2 md:mt-0 p-input-icon-left">
                 <i className="pi pi-search"/>
                 <InputText type="search" onInput={(e) => setGlobalFilter(e.currentTarget.value)}
@@ -218,7 +218,13 @@ const [items, setItems] = useState<${pojo.name}Dto[]>([]);
                       <#list pojo.fields as field>
                         <#if field.name != pojo.id.name && !field.large && !field.list>
                           <#assign i++>
+                          <#if i &gt; 9> <!-- </#if>
+                          <#if field.simple && !field.notIncluded  && !field.password>
                           <Column field="${field.name}" header="${field.name?cap_first}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                        </#if>
+                        <#elseif field.generic>
+                        <Column field="${field.name}?.${field.typeAsPojo.labelOrReferenceOrId.name}" header="${field.name?cap_first}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                        <#else>
                         </#if>
                       </#list>
                       <Column header="Actions" body={actionBodyTemplate} headerStyle={{minWidth: '10rem'}}></Column>
@@ -235,9 +241,9 @@ const [items, setItems] = useState<${pojo.name}Dto[]>([]);
         </div>
 
              <Create visible={showCreateDialog} onClose={() => setShowCreateDialog(false)} add={add} showToast={toast} list={items} />
-            /* <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update}/>
+           { /* <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update}/>
              <View visible={showViewDialog} onClose={() =>  { setShowViewDialog(false); setSelectedItem(null); }} selectedItem={selectedItem} />
-          */
+          */}
  <Dialog visible={deleteItemDialog} style={{width: '450px'}} header="Confirm" modal
           footer={deleteItemDialogFooter} onHide={hideDeleteItemDialog}>
          <div className="flex align-items-center justify-content-center">

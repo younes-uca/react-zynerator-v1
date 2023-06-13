@@ -48,7 +48,6 @@ const Create = ({visible, onClose, add, showToast, list}) => {
       const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
       const [selectedPurchaseItem, setSelectedPurchaseItem] = useState(null);
       type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
-
       const [purchaseItem, setPurchaseItem] = useState<PurchaseItemDto>(new PurchaseItemDto());
 
 
@@ -77,6 +76,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
                 [field]: e.value,
              }));
       };
+
 
 
     const addPurchaseItems = () => {
@@ -120,11 +120,12 @@ const Create = ({visible, onClose, add, showToast, list}) => {
         setSelectedProduct(null);
     };
 
+
            const deletePurchaseItem = (item) => {
                   const updatedItems = purchaseItems.filter((val) => val.id !== item.id);
                   setPurchaseItems(updatedItems);
                   setPurchaseItem(new PurchaseItemDto());
-                        showToast?.show({severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000});
+               MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000 });
            };
 
            const editPurchaseItem = (rowData) => {
@@ -192,6 +193,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
        const saveItem = async () => {
                 setSubmitted(true);
                  item.purchaseItems = purchaseItems;
+
                 let _items = [...items];
                 let _item = {...item};
 
@@ -336,7 +338,6 @@ return(
             <TabPanel header="Liste">
                     <div className="card">
                         <DataTable value={purchaseItems} tableStyle={{minWidth: '50rem'}} dataKey="id">
-
                                     <Column field="product.reference" header="Product"></Column>
                                     <Column field="price" header="Price"></Column>
                                     <Column field="quantity" header="Quantity"></Column>

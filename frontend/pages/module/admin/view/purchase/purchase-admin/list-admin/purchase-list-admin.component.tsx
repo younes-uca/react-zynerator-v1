@@ -14,7 +14,7 @@ import { Paginator } from 'primereact/paginator';
 import {BaseCriteria} from '/pages/zynerator/criteria/BaseCriteria.model';
 import {MessageService} from '/pages/controller/service/Message.service';
 
-import {PurchaseService} from '/pages/controller/service/admin/Purchase.service';
+import {PurchaseService} from '/pages/controller/service/Purchase.service';
 import  {PurchaseDto}  from '/pages/controller/model/Purchase.model';
 
   //import Edit from "/pages/module/admin/view/pojo.subModule.name/purchase-admin/edit-admin/purchase-edit-admin.component";

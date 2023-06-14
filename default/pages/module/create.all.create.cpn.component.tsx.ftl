@@ -517,7 +517,7 @@ return(
 
                 <#if !field.createAndListPageInOneTab>
             </TabPanel>
-            <TabPanel header={`Liste ${item.${field.name?uncap_first} && item.${field.name?uncap_first}.length > 0 ? '(' + item.${field.name?uncap_first}.length + ')' : ''}`}>
+            <TabPanel header="Liste">
                 </#if>
                 <#if field.createAndListPageInOneTab>
                 <div class="p-col">

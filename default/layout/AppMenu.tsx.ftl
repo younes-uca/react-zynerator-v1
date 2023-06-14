@@ -42,14 +42,13 @@ const AppMenu = () => {
                     label: 'Crud',
                     icon: 'pi pi-fw pi-pencil',
                     items: [
-                  <#list subModule.pojos as pojo>
+                  <#list pojos as pojo>
                       {
                      label: '${pojo.name?cap_first}',
-
-                     to: '/module/admin/view/subModule/${pojo.name?uncap_first}-admin/list-admin/${pojo.name?uncap_first}-list-admin.component'
-                        },
+                     to: '/module/admin/view/${pojo.name?uncap_first}-admin/list-admin/${pojo.name?uncap_first}-list-admin.component'
+                      },
                     </#list>
-<
+
                     ]
                 },
                 {

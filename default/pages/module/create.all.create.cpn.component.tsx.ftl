@@ -61,17 +61,16 @@ const Create = ({visible, onClose, add, showToast, list}) => {
         const fetchData = async () => {
          try {
         // if pojo = Commande this line must dispolay client (in command), product(in commanandItem)
-           const [<#list pojo.fieldsGenericIncludingInnerTypeInListField as fieldGeneric><#if fieldGeneric.typeAsPojo.ignoreFront == false &&  fieldGeneric.typeAsPojo.subModule.name == pojo.subModule.name>${fieldGeneric.name?uncap_first}sResponse,  </#if></#list>] = await Promise.all<<#list pojo.fieldsGenericIncludingInnerTypeInListField as fieldGeneric><#if fieldGeneric.typeAsPojo.ignoreFront == false &&  fieldGeneric.typeAsPojo.subModule.name == pojo.subModule.name>${fieldGeneric.name?cap_first}Response,</#if></#list>>([
+           <#assign i=0>
+            const [<#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>${fieldGeneric.name?uncap_first}sResponse <#if fieldGeneric?index != pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition?size -1>,</#if></#list>] = await Promise.all<<#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>${fieldGeneric.name?cap_first}Response<#if fieldGeneric?index != pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition?size -1>,</#if></#list>>([
             <#list pojo.fieldsGenericIncludingInnerTypeInListField as fieldGeneric>
                 <#if fieldGeneric.typeAsPojo.ignoreFront == false &&  fieldGeneric.typeAsPojo.subModule.name == pojo.subModule.name>
             ${fieldGeneric.name?cap_first}Service.getList(),
                 </#if>
             </#list>
            ]);
-            <#list pojo.fieldsGenericIncludingInnerTypeInListField as fieldGeneric>
-                <#if fieldGeneric.typeAsPojo.ignoreFront == false &&  fieldGeneric.typeAsPojo.subModule.name == pojo.subModule.name>
+            <#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>
             set${fieldGeneric.name?cap_first}s(${fieldGeneric.name?uncap_first}sResponse.data);
-                </#if>
             </#list>
 
          } catch (error) {

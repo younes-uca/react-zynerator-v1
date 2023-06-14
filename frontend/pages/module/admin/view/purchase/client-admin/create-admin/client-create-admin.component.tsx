@@ -39,7 +39,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
         const fetchData = async () => {
          try {
         // if pojo = Commande this line must dispolay client (in command), product(in commanandItem)
-           const [] = await Promise.all<>([
+            const [] = await Promise.all<>([
            ]);
 
          } catch (error) {

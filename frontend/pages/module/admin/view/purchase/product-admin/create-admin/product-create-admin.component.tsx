@@ -38,7 +38,6 @@ const Create = ({visible, onClose, add, showToast, list}) => {
     useEffect(() => {
         const fetchData = async () => {
          try {
-        // if pojo = Commande this line must dispolay client (in command), product(in commanandItem)
             const [] = await Promise.all<>([
            ]);
 
@@ -92,47 +91,36 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
 
     const onInputTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
-                const val = (e.target && e.target.value) || '';
-                let _item = {...item};
-                _item[`${name}`] = val;
-
-                setItem(_item);
+        const val = (e.target && e.target.value) || '';
+        let _item = {...item};
+        _item[`${name}`] = val;
+        setItem(_item);
     };
 
     const onInputDateChange = (e: CalendarChangeEvent, name: string) => {
-                const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
-                let _item = { ...item};
-                _item[`${name}`] = val;
-
-                setItem(_item);
+        const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
+        let _item = { ...item};
+        _item[`${name}`] = val;
+        setItem(_item);
     };
 
 
 
     const onInputNumerChange = (e: InputNumberChangeEvent, name: string) => {
-                const val = e.value === null ? null : +e.value;
-                setItem((prevItem) => ({
-                       ...prevItem,
-                        [name]: val,
-                }));
+        const val = e.value === null ? null : +e.value;
+        setItem((prevItem) => ({ ...prevItem, [name]: val, }));
     };
 
     const onMultiSelectChange = (e, field) => {
       if (e && e.value && Array.isArray(e.value)) {
          const selectedValues = e.value.map(option => option && option.value);
-         setItem(prevState => ({
-                ...prevState,
-                [field]: selectedValues,
-         }));
+         setItem(prevState => ({ ...prevState, [field]: selectedValues, }));
       }
     };
 
     const onBooleanInputChange = (e: any, name: string) => {
        const val = e.value;
-       setItem((prevItem) => ({
-                ...prevItem,
-                [name]: val,
-       }));
+       setItem((prevItem) => ({ ...prevItem, [name]: val, }));
     };
 
 
@@ -143,7 +131,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
         </>
     );
 
-return(
+    return(
 <Dialog visible={visible} style={{width: '70vw'}} header="Product" modal className="p-fluid" footer={itemDialogFooter} onHide={hideDialog}>
 <TabView activeIndex={activeIndex} onTabChange={onTabChange}>
 <TabPanel header="Product">

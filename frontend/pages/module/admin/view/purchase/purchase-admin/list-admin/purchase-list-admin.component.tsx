@@ -12,14 +12,14 @@ import {Toolbar} from 'primereact/toolbar';
 import React, {useEffect, useRef, useState} from 'react';
 import { Paginator } from 'primereact/paginator';
 import {BaseCriteria} from '/pages/zynerator/criteria/BaseCriteria.model';
-import {MessageService} from '/pages/controller/service/Message.service';
+import {MessageService} from '/pages/controller/service/MessageService';
 
 import {PurchaseService} from '/pages/controller/service/admin/Purchase.service';
 import  {PurchaseDto}  from '/pages/controller/model/Purchase.model';
 
-  //import Edit from "/pages/module/admin/view/pojo.subModule.name/purchase-admin/edit-admin/purchase-edit-admin.component";
-  import Create from "/pages/module/admin/view/pojo.subModule.name/purchase-admin/create-admin/purchase-create-admin.component";
-  //import View from "/pages/module/admin/view/pojo.subModule.name/purchase-admin/view-admin/purchase-view-admin.component";
+//import Edit from "/pages/module/admin/view//purchase/purchase-admin/edit-admin/purchase-edit-admin.component";
+import Create from "/pages/module/admin/view//purchase/purchase-admin/create-admin/purchase-create-admin.component";
+//import View from "/pages/module/admin/view//purchase/purchase-admin/view-admin/purchase-view-admin.component";
 
 const List = () => {
 const emptyItem = new PurchaseDto();
@@ -204,20 +204,25 @@ const [items, setItems] = useState<PurchaseDto[]>([]);
                    <DataTable
                         ref={dt} value={items} selection={selectedItems}
                         onSelectionChange={(e) => setSelectedItems(e.value as PurchaseDto[])}
-                        dataKey="id"
-                        className="datatable-responsive"
+                        dataKey="id" className="datatable-responsive"
                         globalFilter={globalFilter} header={header} responsiveLayout="scroll"
                     >
                      <Column selectionMode="multiple" headerStyle={{ width: '4rem' }}></Column>
                           
                           <Column field="reference" header="Reference" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                         
                           
                           <Column field="purchaseDate" header="PurchaseDate" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                         
                           
                           <Column field="image" header="Image" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                         
                           
                           <Column field="total" header="Total" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                         
                           
+                          <Column field="client?.fullName" header="Client" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                         
                       <Column header="Actions" body={actionBodyTemplate} headerStyle={{minWidth: '10rem'}}></Column>
 
                     </DataTable>

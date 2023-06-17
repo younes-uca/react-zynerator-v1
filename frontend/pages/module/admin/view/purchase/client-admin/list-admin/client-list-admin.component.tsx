@@ -12,14 +12,14 @@ import {Toolbar} from 'primereact/toolbar';
 import React, {useEffect, useRef, useState} from 'react';
 import { Paginator } from 'primereact/paginator';
 import {BaseCriteria} from '/pages/zynerator/criteria/BaseCriteria.model';
-import {MessageService} from '/pages/controller/service/Message.service';
+import {MessageService} from '/pages/controller/service/MessageService';
 
 import {ClientService} from '/pages/controller/service/admin/Client.service';
 import  {ClientDto}  from '/pages/controller/model/Client.model';
 
-  //import Edit from "/pages/module/admin/view/pojo.subModule.name/client-admin/edit-admin/client-edit-admin.component";
-  import Create from "/pages/module/admin/view/pojo.subModule.name/client-admin/create-admin/client-create-admin.component";
-  //import View from "/pages/module/admin/view/pojo.subModule.name/client-admin/view-admin/client-view-admin.component";
+//import Edit from "/pages/module/admin/view//purchase/client-admin/edit-admin/client-edit-admin.component";
+import Create from "/pages/module/admin/view//purchase/client-admin/create-admin/client-create-admin.component";
+//import View from "/pages/module/admin/view//purchase/client-admin/view-admin/client-view-admin.component";
 
 const List = () => {
 const emptyItem = new ClientDto();
@@ -204,15 +204,16 @@ const [items, setItems] = useState<ClientDto[]>([]);
                    <DataTable
                         ref={dt} value={items} selection={selectedItems}
                         onSelectionChange={(e) => setSelectedItems(e.value as ClientDto[])}
-                        dataKey="id"
-                        className="datatable-responsive"
+                        dataKey="id" className="datatable-responsive"
                         globalFilter={globalFilter} header={header} responsiveLayout="scroll"
                     >
                      <Column selectionMode="multiple" headerStyle={{ width: '4rem' }}></Column>
                           
                           <Column field="fullName" header="FullName" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                         
                           
                           <Column field="email" header="Email" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                         
                       <Column header="Actions" body={actionBodyTemplate} headerStyle={{minWidth: '10rem'}}></Column>
 
                     </DataTable>

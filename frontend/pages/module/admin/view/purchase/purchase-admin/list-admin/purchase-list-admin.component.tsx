@@ -18,8 +18,8 @@ import {PurchaseService} from '/pages/controller/service/Purchase.service';
 import  {PurchaseDto}  from '/pages/controller/model/Purchase.model';
 
 //import Edit from "/pages/module/admin/view//purchase/purchase-admin/edit-admin/purchase-edit-admin.component";
-import Create from "/pages/module/admin/view//purchase/purchase-admin/create-admin/purchase-create-admin.component";
-//import View from "/pages/module/admin/view//purchase/purchase-admin/view-admin/purchase-view-admin.component";
+import Create from "/pages/module/admin/view/purchase/purchase-admin/create-admin/purchase-create-admin.component";
+//import View from "/pages/module/admin/view/purchase/purchase-admin/view-admin/purchase-view-admin.component";
 
 const List = () => {
 const emptyItem = new PurchaseDto();

@@ -33,18 +33,18 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
     const emptyItem = new PurchaseDto();
 
-    const [items, setItems] = useState<PurchaseDto[]>([list]);
+    const [items, setItems] = useState<PurchaseDto[]>(list);
     const [item, setItem] = useState<PurchaseDto>(emptyItem);
-    const [submitted, setSubmitted] = useState(false); const [activeIndex, setActiveIndex] = useState<number>(0);
+    const [submitted, setSubmitted] = useState(false);
+    const [activeIndex, setActiveIndex] = useState<number>(0);
     const [activeTab, setActiveTab] = useState(0);
-
     const [products, setProducts] = useState<ProductDto[]>([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     type ProductResponse = AxiosResponse<ProductDto[]>;
     const [clients, setClients] = useState<ClientDto[]>([]);
     const [selectedClient, setSelectedClient] = useState(null);
     type ClientResponse = AxiosResponse<ClientDto[]>;
-    const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
+    //const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>();
     const [selectedPurchaseItem, setSelectedPurchaseItem] = useState(null);
     type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
 
@@ -81,30 +81,35 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
     const addPurchaseItems = () => {
          setSubmitted(true);
-         if( item.purchaseItems == null )
-         item.purchaseItems = new Array<PurchaseItemDto>();
-         let _items = Array.isArray(item.purchaseItems) ? item.purchaseItems : [];
+         if( item.purchaseItems == null ){
+         item.purchaseItems = [];}
          let _item = purchaseItem;
          if (!_item.id) {
             _item.product = selectedProduct;
-                _items.push(_item);
+                 item.purchaseItems.push(_item);
 
                 MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Created', life: 3000 });
 
-                setPurchaseItems(_items);
+
          } else {
-            const updatedItems = purchaseItems.map((item) =>
-            item.id === purchaseItem.id ? { ...item, product: { ...selectedProduct } } : item,
-                );
+             const updatedItems = item.purchaseItems.map((item) =>
+                 item.id === purchaseItem.id ? { ...item, product: { ...selectedProduct } } : item
+             );
 
-            if (purchaseItems.find((item) => item.id === purchaseItem.id)) {
-                MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Updated', life: 3000 });
 
+                 MessageService.showToast(showToast, {
+                     severity: 'success',
+                     summary: 'Successful',
+                     detail: 'PurchaseItem Updated',
+                     life: 3000
+                 });
+
+             setItem((prevState: PurchaseDto) => ({
+                 ...prevState,
+                 purchaseItems: updatedItems
+             }));
+             setSelectedPurchaseItem(new PurchaseItemDto());
          }
-
-         setPurchaseItems(updatedItems);
-        setSelectedPurchaseItem(null);
-    }
 
     setPurchaseItem(new PurchaseItemDto());
     setSelectedProduct(null);
@@ -113,8 +118,13 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
 
     const deletePurchaseItem = (rowData) => {
-          const updatedItems = purchaseItems.filter((val) => val !== rowData);
-          setPurchaseItems(updatedItems);
+        const updatedItems = item.purchaseItems.filter((val) => val !== rowData);
+
+        setItem((prevState) => ({
+            ...prevState,
+            purchaseItems: updatedItems,
+        }));
+
           setPurchaseItem(new PurchaseItemDto());
         MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000 });
     };
@@ -173,7 +183,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
     const saveItem = async () => {
             setSubmitted(true);
-             item.purchaseItems = purchaseItems;
+             /*item.purchaseItems = purchaseItems;*/
             let _items = [...items];
             let _item = {...item};
 
@@ -187,7 +197,12 @@ const Create = ({visible, onClose, add, showToast, list}) => {
             setItems(_items);
             onClose();
             setItem(emptyItem);
-            setPurchaseItems(null);
+            setPurchaseItem(new PurchaseItemDto());
+            setItem({
+            ...item,
+            purchaseItems: null,
+        });
+
 
     };
 
@@ -309,7 +324,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
             </TabPanel>
             <TabPanel header="Liste">
                     <div className="card">
-                        <DataTable value={purchaseItems} tableStyle={{minWidth: '50rem'}} dataKey="id">
+                        <DataTable value={item.purchaseItems} tableStyle={{minWidth: '50rem'}} dataKey="id">
 
                                     <Column field="product.reference" header="Product"></Column>
                                     <Column field="price" header="Price"></Column>

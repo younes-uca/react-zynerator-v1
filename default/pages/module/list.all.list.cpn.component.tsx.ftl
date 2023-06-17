@@ -12,14 +12,14 @@ import {Toolbar} from 'primereact/toolbar';
 import React, {useEffect, useRef, useState} from 'react';
 import { Paginator } from 'primereact/paginator';
 import {BaseCriteria} from '/pages/zynerator/criteria/BaseCriteria.model';
-import {MessageService} from '/pages/controller/service/MessageService';
+import {MessageService} from '/pages/controller/service/Message.service';
 
-import {${pojo.name}Service} from '/pages/controller/service/${pojo.name}.service';
-import  {${pojo.name?cap_first}Dto}  from '/pages/controller/model/${pojo.name?cap_first}.model';
+import {${pojo.name}Service} from '/pages/controller/service/admin/${pojo.name?cap_first}.service';
+import {${pojo.name?cap_first}Dto}  from '/pages/controller/model/${pojo.name?cap_first}.model';
 
-  //import Edit from "/pages/module/admin/view/pojo.subModule.name/${pojo.name?uncap_first}-admin/edit-admin/${pojo.name?uncap_first}-edit-admin.component";
-  import Create from "/pages/module/admin/view/pojo.subModule.name/${pojo.name?uncap_first}-admin/create-admin/${pojo.name?uncap_first}-create-admin.component";
-  //import View from "/pages/module/admin/view/pojo.subModule.name/${pojo.name?uncap_first}-admin/view-admin/${pojo.name?uncap_first}-view-admin.component";
+//import Edit from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?uncap_first}-admin/edit-admin/${pojo.name?uncap_first}-edit-admin.component';
+import Create from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?uncap_first}-admin/create-admin/${pojo.name?uncap_first}-create-admin.component';
+//import View from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?uncap_first}-admin/view-admin/${pojo.name?uncap_first}-view-admin.component';
 
 <#list pojo.fieldsSimple as simpleField>
   <#if simpleField.dateTime>
@@ -209,8 +209,7 @@ const [items, setItems] = useState<${pojo.name}Dto[]>([]);
                    <DataTable
                         ref={dt} value={items} selection={selectedItems}
                         onSelectionChange={(e) => setSelectedItems(e.value as ${pojo.name}Dto[])}
-                        dataKey="id"
-                        className="datatable-responsive"
+                        dataKey="id" className="datatable-responsive"
                         globalFilter={globalFilter} header={header} responsiveLayout="scroll"
                     >
                      <Column selectionMode="multiple" headerStyle={{ width: '4rem' }}></Column>
@@ -221,10 +220,10 @@ const [items, setItems] = useState<${pojo.name}Dto[]>([]);
                           <#if i &gt; 9> <!-- </#if>
                           <#if field.simple && !field.notIncluded  && !field.password>
                           <Column field="${field.name}" header="${field.name?cap_first}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                          <#elseif field.generic>
+                          <Column field="${field.name}?.${field.typeAsPojo.labelOrReferenceOrId.name}" header="${field.name?cap_first}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
                         </#if>
-                        <#elseif field.generic>
-                        <Column field="${field.name}?.${field.typeAsPojo.labelOrReferenceOrId.name}" header="${field.name?cap_first}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
-                        <#else>
+                         <#if i &gt; 9> --> </#if>
                         </#if>
                       </#list>
                       <Column header="Actions" body={actionBodyTemplate} headerStyle={{minWidth: '10rem'}}></Column>

@@ -60,7 +60,6 @@ const Create = ({visible, onClose, add, showToast, list}) => {
     useEffect(() => {
         const fetchData = async () => {
          try {
-        // if pojo = Commande this line must dispolay client (in command), product(in commanandItem)
            <#assign i=0>
             const [<#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>${fieldGeneric.name?uncap_first}sResponse <#if fieldGeneric?index != pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition?size -1>,</#if></#list>] = await Promise.all<<#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>${fieldGeneric.name?cap_first}Response<#if fieldGeneric?index != pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition?size -1>,</#if></#list>>([
             <#list pojo.fieldsGenericIncludingInnerTypeInListField as fieldGeneric>
@@ -103,7 +102,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
                  <#list field.typeAsPojo.fields as innerField>
                     <#if  !innerField.notVisibleInCreatePage>
                         <#if innerField.generic && innerField.typeAsPojo.name != pojo.name>
-                            _item.${innerField.name?uncap_first} = selected${innerField.name?cap_first};
+            _item.${innerField.name?uncap_first} = selected${innerField.name?cap_first};
                         </#if>
                      </#if>
                  </#list>
@@ -113,30 +112,30 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
                 set${field.name?cap_first}(_items);
          } else {
-                const updatedItems = ${field.name?uncap_first}.map((item) =>
+            const updatedItems = ${field.name?uncap_first}.map((item) =>
                    <#list field.typeAsPojo.fields as innerField>
                       <#if  !innerField.notVisibleInCreatePage>
                           <#if innerField.generic && innerField.typeAsPojo.name != pojo.name>
-                  item.id === ${field.typeAsPojo.name?uncap_first}.id ? { ...item, ${innerField.name?uncap_first}: { ...selected${innerField.name?cap_first} } } : item,
+            item.id === ${field.typeAsPojo.name?uncap_first}.id ? { ...item, ${innerField.name?uncap_first}: { ...selected${innerField.name?cap_first} } } : item,
                           </#if>
                       </#if>
                   </#list>
                 );
 
-                if (${field.name?uncap_first}.find((item) => item.id === ${pojo.name?uncap_first}Item.id)) {
+            if (${field.name?uncap_first}.find((item) => item.id === ${pojo.name?uncap_first}Item.id)) {
                 MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Updated', life: 3000 });
 
          }
 
-                set${field.name?cap_first}(updatedItems);
-                setSelected${pojo.name?cap_first}Item(null);
-                }
+    set${field.name?cap_first}(updatedItems);
+        setSelected${pojo.name?cap_first}Item(null);
+    }
 
-                set${pojo.name?cap_first}Item(new ${field.typeAsPojo.name}Dto());
+    set${pojo.name?cap_first}Item(new ${field.typeAsPojo.name}Dto());
         <#list field.typeAsPojo.fields as innerField>
             <#if  !innerField.notVisibleInCreatePage>
                 <#if innerField.generic && innerField.typeAsPojo.name != pojo.name>
-               setSelected${innerField.name?cap_first}(null);
+    setSelected${innerField.name?cap_first}(null);
                 </#if>
             </#if>
         </#list>
@@ -148,7 +147,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
           const updatedItems = ${field.name?uncap_first}.filter((val) => val.id !== item.id);
           set${field.name?cap_first}(updatedItems);
           set${pojo.name?cap_first}Item(new ${field.typeAsPojo.name}Dto());
-                showToast?.show({severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first}Item Deleted', life: 3000});
+          showToast?.show({severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first}Item Deleted', life: 3000});
     };
 
     const edit${field.typeAsPojo.name} = (rowData) => {
@@ -167,44 +166,34 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
     const onInputNumerChange${field.name?cap_first} = (e, name) => {
          const val = e.value || 0;
-         set${field.typeAsPojo.name}((prev${field.name?cap_first}) => ({
-             ...prev${field.name?cap_first},
-             [name]: val,
-    }));
+         set${field.typeAsPojo.name}((prev${field.name?cap_first}) => ({...prev${field.name?cap_first}, [name]: val, }));
     };
 
     const onMultiSelectChange${field.name?cap_first} = (e, field) => {
         if (e && e.value && Array.isArray(e.value)) {
             const selectedValues = e.value.map(option => option && option.value);
-            set${field.typeAsPojo.name}(prevState => ({
-                  ...prevState,
-                  [field]: selectedValues,
-            }));
+            set${field.typeAsPojo.name}(prevState => ({ ...prevState, [field]: selectedValues, }));
         }
     };
 
     const onBooleanInputChange${field.name?cap_first} = (e: any, name: string) => {
        const val = e.value;
-       set${field.typeAsPojo.name}((prevItem) => ({
-           ...prevItem,
-           [name]: val,
-       }));
+       set${field.typeAsPojo.name}((prevItem) => ({ ...prevItem, [name]: val, }));
     };
 
 
     const onInputDateChange${field.name?cap_first} = (e: CalendarChangeEvent, name: string) => {
-         const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
-          let _item = { ...${field.typeAsPojo.name?uncap_first}};
-         _item[`<#noparse>${name}</#noparse>`] = val;
-
-    set${field.typeAsPojo.name}(_item);
+        const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
+        let _item = { ...${field.typeAsPojo.name?uncap_first}};
+        _item[`<#noparse>${name}</#noparse>`] = val;
+        set${field.typeAsPojo.name}(_item);
     };
 
     const onInputTextChange${field.name?cap_first} = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
-     const val = (e.target && e.target.value) || '';
-     let _item = {...${field.typeAsPojo.name?uncap_first}};
-     _item[`<#noparse>${name}</#noparse>`] = val;
-      set${field.typeAsPojo.name}(_item);
+         const val = (e.target && e.target.value) || '';
+         let _item = {...${field.typeAsPojo.name?uncap_first}};
+         _item[`<#noparse>${name}</#noparse>`] = val;
+         set${field.typeAsPojo.name}(_item);
     };
 
       </#if>
@@ -246,47 +235,36 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
 
     const onInputTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
-                const val = (e.target && e.target.value) || '';
-                let _item = {...item};
-                _item[`<#noparse>${name}`</#noparse>] = val;
-
-                setItem(_item);
+        const val = (e.target && e.target.value) || '';
+        let _item = {...item};
+        _item[`<#noparse>${name}`</#noparse>] = val;
+        setItem(_item);
     };
 
     const onInputDateChange = (e: CalendarChangeEvent, name: string) => {
-                const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
-                let _item = { ...item};
-                _item[`<#noparse>${name}</#noparse>`] = val;
-
-                setItem(_item);
+        const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
+        let _item = { ...item};
+        _item[`<#noparse>${name}</#noparse>`] = val;
+        setItem(_item);
     };
 
 
 
     const onInputNumerChange = (e: InputNumberChangeEvent, name: string) => {
-                const val = e.value === null ? null : +e.value;
-                setItem((prevItem) => ({
-                       ...prevItem,
-                        [name]: val,
-                }));
+        const val = e.value === null ? null : +e.value;
+        setItem((prevItem) => ({ ...prevItem, [name]: val, }));
     };
 
     const onMultiSelectChange = (e, field) => {
       if (e && e.value && Array.isArray(e.value)) {
          const selectedValues = e.value.map(option => option && option.value);
-         setItem(prevState => ({
-                ...prevState,
-                [field]: selectedValues,
-         }));
+         setItem(prevState => ({ ...prevState, [field]: selectedValues, }));
       }
     };
 
     const onBooleanInputChange = (e: any, name: string) => {
        const val = e.value;
-       setItem((prevItem) => ({
-                ...prevItem,
-                [name]: val,
-       }));
+       setItem((prevItem) => ({ ...prevItem, [name]: val, }));
     };
 
 
@@ -297,14 +275,14 @@ const Create = ({visible, onClose, add, showToast, list}) => {
         </>
     );
 
-return(
-<#if pojo.createUpdateConfounded>
-<p-toast></p-toast>
-<div class="card">
-<message severity="{{info}}" text="{{msgsContents}}"></message>
-</div>
+    return(
+    <#if pojo.createUpdateConfounded>
+        <p-toast></p-toast>
+        <div class="card">
+        <message severity="{{info}}" text="{{msgsContents}}"></message>
+        </div>
 
-<div class="p-fluid">
+        <div class="p-fluid">
 
 <#else>
 <Dialog visible={visible} style={{width: '70vw'}} header="${pojo.name}" modal className="p-fluid" footer={itemDialogFooter} onHide={hideDialog}>

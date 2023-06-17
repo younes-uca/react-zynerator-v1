@@ -45,7 +45,7 @@ const AppMenu = () => {
                   <#list pojos as pojo>
                       {
                      label: '${pojo.name?cap_first}',
-                     to: '/module/admin/view/${pojo.name?uncap_first}-admin/list-admin/${pojo.name?uncap_first}-list-admin.component'
+                     to: '/module/admin/view/${pojo.subModule.name}/${pojo.name?uncap_first}-admin/list-admin/${pojo.name?uncap_first}-list-admin.component'
                       },
                     </#list>
 

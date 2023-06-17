@@ -221,7 +221,7 @@ const [items, setItems] = useState<PurchaseDto[]>([]);
                           <Column field="total" header="Total" sortable headerStyle={{ minWidth: '15rem' }}></Column>
                          
                           
-                          <Column field="client?.fullName" header="Client" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                          <Column field="client.fullName" header="Client" sortable headerStyle={{ minWidth: '15rem' }}></Column>
                          
                       <Column header="Actions" body={actionBodyTemplate} headerStyle={{minWidth: '10rem'}}></Column>
 

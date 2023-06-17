@@ -221,7 +221,7 @@ const [items, setItems] = useState<${pojo.name}Dto[]>([]);
                           <#if field.simple && !field.notIncluded  && !field.password>
                           <Column field="${field.name}" header="${field.name?cap_first}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
                           <#elseif field.generic>
-                          <Column field="${field.name}?.${field.typeAsPojo.labelOrReferenceOrId.name}" header="${field.name?cap_first}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                          <Column field="${field.name}.${field.typeAsPojo.labelOrReferenceOrId.name}" header="${field.name?cap_first}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
                         </#if>
                          <#if i &gt; 9> --> </#if>
                         </#if>

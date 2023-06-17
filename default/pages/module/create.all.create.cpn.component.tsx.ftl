@@ -232,9 +232,14 @@ const Create = ({visible, onClose, add, showToast, list}) => {
             onClose();
             setItem(emptyItem);
             <#list pojo.fields as field>
-             <#if field.list && !field.association>
-            set${field.name?cap_first}(null);
-               </#if>
+             <#if field.list>
+             setItem({
+                         ...item,
+                         ${field.name?cap_first}: null,
+                     });
+
+            set${field.typeAsPojo.name}(new ${field.typeAsPojo.name}Dto());
+            </#if>
              </#list>
 
     };

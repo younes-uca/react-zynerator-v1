@@ -22,7 +22,7 @@ export const ${pojo.name}Service = {
    },
 
    delete(id: number): Promise<AxiosResponse<${pojo.name}Dto>> {
-      return axios.delete(API_URL + '${pojo.name?uncap_first}/id/<#noparse>${id}</#noparse>');
+      return axios.delete(API_URL + '${pojo.name?uncap_first}/id/'+ id);
    },
 
    deleteList(items: ${pojo.name}Dto[]): Promise<AxiosResponse<string>> {

@@ -22,7 +22,7 @@ export const PurchaseService = {
    },
 
    delete(id: number): Promise<AxiosResponse<PurchaseDto>> {
-      return axios.delete(API_URL + 'purchase/id/${id}');
+      return axios.delete(API_URL + 'purchase/id/'+ id);
    },
 
    deleteList(items: PurchaseDto[]): Promise<AxiosResponse<string>> {

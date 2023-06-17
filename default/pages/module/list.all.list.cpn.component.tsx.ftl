@@ -12,9 +12,9 @@ import {Toolbar} from 'primereact/toolbar';
 import React, {useEffect, useRef, useState} from 'react';
 import { Paginator } from 'primereact/paginator';
 import {BaseCriteria} from '/pages/zynerator/criteria/BaseCriteria.model';
-import {MessageService} from '/pages/controller/service/Message.service';
+import {MessageService} from '/pages/controller/service/MessageService';
 
-import {${pojo.name}Service} from '/pages/controller/service/admin/${pojo.name?cap_first}.service';
+import {${pojo.name}Service} from '/pages/controller/service/${pojo.name?cap_first}.service';
 import {${pojo.name?cap_first}Dto}  from '/pages/controller/model/${pojo.name?cap_first}.model';
 
 //import Edit from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?uncap_first}-admin/edit-admin/${pojo.name?uncap_first}-edit-admin.component';

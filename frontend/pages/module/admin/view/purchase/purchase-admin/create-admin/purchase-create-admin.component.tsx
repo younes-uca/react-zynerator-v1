@@ -102,7 +102,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
          }
 
-    setPurchaseItems(updatedItems);
+         setPurchaseItems(updatedItems);
         setSelectedPurchaseItem(null);
     }
 
@@ -112,11 +112,11 @@ const Create = ({visible, onClose, add, showToast, list}) => {
     };
 
 
-    const deletePurchaseItem = (item) => {
-          const updatedItems = purchaseItems.filter((val) => val.id !== item.id);
+    const deletePurchaseItem = (rowData) => {
+          const updatedItems = purchaseItems.filter((val) => val !== rowData);
           setPurchaseItems(updatedItems);
           setPurchaseItem(new PurchaseItemDto());
-          showToast?.show({severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000});
+        MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000 });
     };
 
     const editPurchaseItem = (rowData) => {
@@ -187,6 +187,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
             setItems(_items);
             onClose();
             setItem(emptyItem);
+            setPurchaseItems(null);
 
     };
 

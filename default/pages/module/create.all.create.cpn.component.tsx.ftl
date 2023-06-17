@@ -143,12 +143,13 @@ const Create = ({visible, onClose, add, showToast, list}) => {
     };
 
 
-    const delete${field.typeAsPojo.name} = (item) => {
-          const updatedItems = ${field.name?uncap_first}.filter((val) => val.id !== item.id);
-          set${field.name?cap_first}(updatedItems);
-          set${pojo.name?cap_first}Item(new ${field.typeAsPojo.name}Dto());
-          showToast?.show({severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first}Item Deleted', life: 3000});
-    };
+     const delete${field.typeAsPojo.name} = (rowData) => {
+              const updatedItems = ${field.name?uncap_first}.filter((val) => val !== rowData);
+              set${field.name?cap_first}(updatedItems);
+              set${pojo.name?cap_first}Item(new ${field.typeAsPojo.name}Dto());
+              showToast?.show({severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first}Item Deleted', life: 3000});
+        };
+
 
     const edit${field.typeAsPojo.name} = (rowData) => {
          setSelected${pojo.name?cap_first}Item(rowData);
@@ -230,6 +231,11 @@ const Create = ({visible, onClose, add, showToast, list}) => {
             setItems(_items);
             onClose();
             setItem(emptyItem);
+            <#list pojo.fields as field>
+             <#if field.list && !field.association>
+            set${field.name?cap_first}(null);
+               </#if>
+             </#list>
 
     };
 

@@ -46,7 +46,6 @@ import Create from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?
     const toast = useRef<Toast>();
     const dt = useRef<DataTable<${pojo.name}Dto[]>>();
 
-
     useEffect(() => {
         fetchItems(criteria);
     }, [criteria]);

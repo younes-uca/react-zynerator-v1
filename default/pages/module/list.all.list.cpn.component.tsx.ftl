@@ -45,6 +45,11 @@ import Create from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?
     const [first, setFirst] = useState(0);
     const toast = useRef<Toast>();
     const dt = useRef<DataTable<${pojo.name}Dto[]>>();
+    const [findByCriteriaShow, setFindByCriteriaShow] = useState(false);
+
+    const showSearch = () => {
+        setFindByCriteriaShow(!findByCriteriaShow);
+    };
 
     useEffect(() => {
         fetchItems(criteria);
@@ -143,6 +148,7 @@ import Create from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?
                 <div className="my-2">
                     <Button label="New" icon="pi pi-plus" severity="success" className=" mr-2" onClick={ showCreateModal} />
                     <Button label="Delete" icon="pi pi-trash" severity="danger" className=" mr-2" onClick={confirmDeleteSelected} disabled={!selectedItems || !selectedItems.length} />
+                    <Button label="Search" icon={`pi pi-${findByCriteriaShow ? 'angle-down' : 'angle-right'}`} className=" mr-2" severity="warning" onClick={showSearch} />
                 </div>
             </React.Fragment>
         );

@@ -187,7 +187,6 @@ import Create from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?
     const deleteItemsDialogFooter = ( <>
         <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemsDialog}/>
         <Button label="Yes" icon="pi pi-check" text onClick={deleteSelectedItems}/>
-        <Button label="Search" icon={`pi pi-${findByCriteriaShow ? 'angle-down' : 'angle-right'}`} className=" mr-2" severity="warning" onClick={showSearch} />< />
     );
 
 return (

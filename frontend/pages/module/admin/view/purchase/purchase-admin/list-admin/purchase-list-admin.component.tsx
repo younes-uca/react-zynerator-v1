@@ -19,6 +19,7 @@ import  {PurchaseDto}  from '/pages/controller/model/Purchase.model';
 
 //import Edit from "/pages/module/admin/view//purchase/purchase-admin/edit-admin/purchase-edit-admin.component";
 import Create from "/pages/module/admin/view/purchase/purchase-admin/create-admin/purchase-create-admin.component";
+import {PurchaseCriteria} from "../../../../../../controller/criteria/PurchaseCriteria.model";
 //import View from "/pages/module/admin/view/purchase/purchase-admin/view-admin/purchase-view-admin.component";
 
 const List = () => {
@@ -36,7 +37,7 @@ const [items, setItems] = useState<PurchaseDto[]>([]);
     const [selectedItem, setSelectedItem] = useState<PurchaseDto | null>(null);
     const [rows, setRows] = useState<number>(10);
     const [totalRecords, setTotalRecords] = useState(0);
-    const [criteria, setCriteria] = useState(new BaseCriteria());
+    const [criteria, setCriteria] = useState(new PurchaseCriteria());
     const [first, setFirst] = useState(0);
     const toast = useRef<Toast>();
     const dt = useRef<DataTable<PurchaseDto[]>>();
@@ -219,11 +220,11 @@ const [items, setItems] = useState<PurchaseDto[]>([]);
                          
                           
                           <Column field="total" header="Total" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+
+
+                         <Column field="client.fullName" header="Client" sortable headerStyle={{ minWidth: '15rem' }}></Column>
                          
-                          
-                          <Column field="client.fullName" header="Client" sortable headerStyle={{ minWidth: '15rem' }}></Column>
-                         
-                      <Column header="Actions" body={actionBodyTemplate} headerStyle={{minWidth: '10rem'}}></Column>
+                         <Column header="Actions" body={actionBodyTemplate} headerStyle={{minWidth: '10rem'}}></Column>
 
                     </DataTable>
             <div className="p-d-flex p-ai-center p-jc-between">

@@ -1,4 +1,4 @@
-import {BaseCriteria} from 'src/app/zynerator/criteria/BaseCriteria.model';
+import {BaseCriteria} from '/pages/zynerator/criteria/BaseCriteria.model';
 
 
 

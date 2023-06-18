@@ -41,7 +41,7 @@ const [items, setItems] = useState<${pojo.name}Dto[]>([]);
     const [selectedItem, setSelectedItem] = useState<${pojo.name}Dto | null>(null);
     const [rows, setRows] = useState<number>(10);
     const [totalRecords, setTotalRecords] = useState(0);
-    const [criteria, setCriteria] = useState(new BaseCriteria());
+    const [criteria, setCriteria] = useState(new ${pojo.name}Criteria());
     const [first, setFirst] = useState(0);
     const toast = useRef<Toast>();
     const dt = useRef<DataTable<${pojo.name}Dto[]>>();
@@ -223,6 +223,14 @@ const [items, setItems] = useState<${pojo.name}Dto[]>([]);
                           <#elseif field.generic>
                           <Column field="${field.name}.${field.typeAsPojo.labelOrReferenceOrId.name}" header="${field.name?cap_first}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
                         </#if>
+                         <#if field.dateTime>
+                          <Column field="${field.name} | date :'dd/MM/yyyy HH:mm'" header="${field.name?cap_first}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+
+                          <#elseif field.bool>
+                          <td><i *ngIf="element.${field.name}" class="pi pi-check checked-toogle"></i>
+                           <i *ngIf="!element.${field.name}" class="pi pi-times unchecked-toogle"></i>
+                           </td>
+                           </#if>
                          <#if i &gt; 9> --> </#if>
                         </#if>
                       </#list>

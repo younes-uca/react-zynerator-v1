@@ -19,6 +19,7 @@ import  {ClientDto}  from '/pages/controller/model/Client.model';
 
 //import Edit from "/pages/module/admin/view//purchase/client-admin/edit-admin/client-edit-admin.component";
 import Create from "/pages/module/admin/view//purchase/client-admin/create-admin/client-create-admin.component";
+import {ClientCriteria} from "../../../../../../controller/criteria/ClientCriteria.model";
 //import View from "/pages/module/admin/view//purchase/client-admin/view-admin/client-view-admin.component";
 
 const List = () => {
@@ -36,7 +37,7 @@ const [items, setItems] = useState<ClientDto[]>([]);
     const [selectedItem, setSelectedItem] = useState<ClientDto | null>(null);
     const [rows, setRows] = useState<number>(10);
     const [totalRecords, setTotalRecords] = useState(0);
-    const [criteria, setCriteria] = useState(new BaseCriteria());
+    const [criteria, setCriteria] = useState(new ClientCriteria());
     const [first, setFirst] = useState(0);
     const toast = useRef<Toast>();
     const dt = useRef<DataTable<ClientDto[]>>();

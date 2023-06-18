@@ -4,6 +4,7 @@ import {BaseCriteria} from "/pages/zynerator/criteria/BaseCriteria.model";
 import {PaginatedList} from "/pages/zynerator/dto/PaginatedList.model";
 import {BaseDto} from "/pages/zynerator/dto/BaseDto.model";
 import {ProductDto} from '/pages/controller/model/Product.model';
+import {ClientCriteria} from "../criteria/ClientCriteria.model";
 
 
 
@@ -29,7 +30,7 @@ export const ProductService = {
       return axios.post(API_URL + 'product/multiple', items);
    },
 
-   findPaginatedByCriteria(criteria: BaseCriteria):Promise<AxiosResponse<PaginatedList<BaseDto>>> {
+   findPaginatedByCriteria(criteria: ClientCriteria):Promise<AxiosResponse<PaginatedList<BaseDto>>> {
      return axios.post<PaginatedList<BaseDto>>(API_URL + `product/find-paginated-by-criteria`, criteria);
    }
 };

@@ -9,7 +9,7 @@ export class PurchaseDto extends BaseDto{
     public reference: string;
    public purchaseDate: Date;
     public image: string;
-    public total: number;
+    public total: boolean;
     public description: string;
     public purchaseDateMax: string ;
     public purchaseDateMin: string ;

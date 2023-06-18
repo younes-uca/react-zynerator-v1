@@ -4,6 +4,7 @@ import {BaseCriteria} from "/pages/zynerator/criteria/BaseCriteria.model";
 import {PaginatedList} from "/pages/zynerator/dto/PaginatedList.model";
 import {BaseDto} from "/pages/zynerator/dto/BaseDto.model";
 import {PurchaseItemDto} from '/pages/controller/model/PurchaseItem.model';
+import {PurchaseCriteria} from "../criteria/PurchaseCriteria.model";
 
 
 
@@ -29,7 +30,7 @@ export const PurchaseItemService = {
       return axios.post(API_URL + 'purchaseItem/multiple', items);
    },
 
-   findPaginatedByCriteria(criteria: BaseCriteria):Promise<AxiosResponse<PaginatedList<BaseDto>>> {
+   findPaginatedByCriteria(criteria: PurchaseCriteria):Promise<AxiosResponse<PaginatedList<BaseDto>>> {
      return axios.post<PaginatedList<BaseDto>>(API_URL + `purchaseItem/find-paginated-by-criteria`, criteria);
    }
 };

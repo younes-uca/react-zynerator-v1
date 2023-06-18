@@ -19,6 +19,7 @@ import  {ProductDto}  from '/pages/controller/model/Product.model';
 
 //import Edit from "/pages/module/admin/view//purchase/product-admin/edit-admin/product-edit-admin.component";
 import Create from "/pages/module/admin/view//purchase/product-admin/create-admin/product-create-admin.component";
+import {ProductCriteria} from "../../../../../../controller/criteria/ProductCriteria.model";
 //import View from "/pages/module/admin/view//purchase/product-admin/view-admin/product-view-admin.component";
 
 const List = () => {
@@ -36,7 +37,7 @@ const [items, setItems] = useState<ProductDto[]>([]);
     const [selectedItem, setSelectedItem] = useState<ProductDto | null>(null);
     const [rows, setRows] = useState<number>(10);
     const [totalRecords, setTotalRecords] = useState(0);
-    const [criteria, setCriteria] = useState(new BaseCriteria());
+    const [criteria, setCriteria] = useState(new ProductCriteria());
     const [first, setFirst] = useState(0);
     const toast = useRef<Toast>();
     const dt = useRef<DataTable<ProductDto[]>>();

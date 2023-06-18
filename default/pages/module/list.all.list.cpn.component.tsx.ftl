@@ -158,32 +158,32 @@ import Create from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?
         );
     };
 
-const actionBodyTemplate = (rowData: ${pojo.name?cap_first}Dto) => {
-    return ( <>
-        <Button icon="pi pi-pencil" rounded severity="success" className="mr-1" onClick={() => showEditModal(rowData)} />
-        <Button icon="pi pi-trash" rounded severity="warning" onClick={() => confirmDeleteItem(rowData)} />
-        <Button icon="pi pi-eye" rounded severity="info" className="mr-1" onClick={() => showViewModal(rowData)} /> < />
-    );
-};
+    const actionBodyTemplate = (rowData: ${pojo.name?cap_first}Dto) => {
+        return ( <>
+            <Button icon="pi pi-pencil" rounded severity="success" className="mr-1" onClick={() => showEditModal(rowData)} />
+            <Button icon="pi pi-trash" rounded severity="warning" onClick={() => confirmDeleteItem(rowData)} />
+            <Button icon="pi pi-eye" rounded severity="info" className="mr-1" onClick={() => showViewModal(rowData)} /> < />
+        );
+    };
 
-const header = (
-    <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-        <h5 className="m-0">Manage ${pojo.name}s</h5>
-        <span className="block mt-2 md:mt-0 p-input-icon-left"><i className="pi pi-search" />
-        <InputText type="search" onInput={(e) => setGlobalFilter(e.currentTarget.value)} placeholder="Search..." /> </span>
-    </div>
-);
+    const header = (
+        <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+            <h5 className="m-0">Manage ${pojo.name}s</h5>
+            <span className="block mt-2 md:mt-0 p-input-icon-left"><i className="pi pi-search" />
+            <InputText type="search" onInput={(e) => setGlobalFilter(e.currentTarget.value)} placeholder="Search..." /> </span>
+        </div>
+    );
 
     const deleteItemDialogFooter = ( <>
         <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemDialog} />
         <Button label="Yes" icon="pi pi-check" text onClick={deleteItem} />< />
     );
 
-const deleteItemsDialogFooter = ( <>
-    <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemsDialog}/>
-    <Button label="Yes" icon="pi pi-check" text onClick={deleteSelectedItems}/>
-    <Button label="Search" icon={`pi pi-${findByCriteriaShow ? 'angle-down' : 'angle-right'}`} className=" mr-2" severity="warning" onClick={showSearch} />< />
-);
+    const deleteItemsDialogFooter = ( <>
+        <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemsDialog}/>
+        <Button label="Yes" icon="pi pi-check" text onClick={deleteSelectedItems}/>
+        <Button label="Search" icon={`pi pi-${findByCriteriaShow ? 'angle-down' : 'angle-right'}`} className=" mr-2" severity="warning" onClick={showSearch} />< />
+    );
 
 return (
     <div className="grid crud-demo">

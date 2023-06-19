@@ -41,6 +41,11 @@ const [items, setItems] = useState<PurchaseDto[]>([]);
     const [first, setFirst] = useState(0);
     const toast = useRef<Toast>();
     const dt = useRef<DataTable<PurchaseDto[]>>();
+    const [findByCriteriaShow, setFindByCriteriaShow] = useState(false);
+
+    const showSearch = () => {
+        setFindByCriteriaShow(!findByCriteriaShow);
+    };
 
 
      useEffect(() => {
@@ -146,8 +151,8 @@ const [items, setItems] = useState<PurchaseDto[]>([]);
                <React.Fragment>
                    <div className="my-2">
                        <Button label="New" icon="pi pi-plus" severity="success" className=" mr-2" onClick={ showCreateModal}/>
-                       <Button label="Delete" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected}
-                               disabled={!selectedItems || !selectedItems.length}/>
+                       <Button label="Delete" icon="pi pi-trash" severity="danger" className=" mr-2"  onClick={confirmDeleteSelected} disabled={!selectedItems || !selectedItems.length}/>
+                       <Button label="Search" icon={`pi pi-${findByCriteriaShow ? 'angle-down' : 'angle-right'}`} className=" mr-2" severity="warning" onClick={showSearch} />
                    </div>
                </React.Fragment>
            );

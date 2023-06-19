@@ -1,5 +1,6 @@
 package  com.sir.react.ws.converter;
 
+import com.sir.react.zynerator.util.BooleanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +32,8 @@ public class ClientConverter extends AbstractConverter<Client, ClientDto, Client
                 item.setFullName(dto.getFullName());
             if(StringUtil.isNotEmpty(dto.getEmail()))
                 item.setEmail(dto.getEmail());
+            if(dto.getPresent() != null)
+                item.setPresent(dto.getPresent());
 
 
         return item;
@@ -49,6 +52,8 @@ public class ClientConverter extends AbstractConverter<Client, ClientDto, Client
                 dto.setFullName(item.getFullName());
             if(StringUtil.isNotEmpty(item.getEmail()))
                 dto.setEmail(item.getEmail());
+            if (item.getPresent() != null)
+                dto.setPresent(item.getPresent());
 
 
         return dto;

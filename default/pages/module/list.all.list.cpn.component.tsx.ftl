@@ -171,8 +171,8 @@ const [items, setItems] = useState<${pojo.name}Dto[]>([]);
             <>
                 <Button icon="pi pi-pencil" rounded severity="success" className="mr-1"
                         onClick={() => showEditModal(rowData)}/>
-                <Button icon="pi pi-trash" rounded severity="warning" onClick={() => confirmDeleteItem(rowData)}/>
-                <Button icon="pi pi-eye" rounded severity="info" className="mr-1" onClick={() => showViewModal(rowData)}/> </>
+                <Button icon="pi pi-trash" rounded severity="warning" className="mr-1" onClick={() => confirmDeleteItem(rowData)}/>
+                <Button icon="pi pi-eye" rounded severity="info"  onClick={() => showViewModal(rowData)}/> </>
         );
     };
 
@@ -227,9 +227,11 @@ const [items, setItems] = useState<${pojo.name}Dto[]>([]);
                           <Column field="${field.name} | date :'dd/MM/yyyy HH:mm'" header="${field.name?cap_first}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
 
                           <#elseif field.bool>
-                          <td><i *ngIf="element.${field.name}" class="pi pi-check checked-toogle"></i>
-                           <i *ngIf="!element.${field.name}" class="pi pi-times unchecked-toogle"></i>
-                           </td>
+                          <Column field="${field.name}" header="${field.name?cap_first}" dataType="boolean" headerStyle={{ minWidth: '15rem' }}
+                                                         (rowData: ${pojo.name?cap_first}Dto) => (
+                                                             <i className={classNames('pi', { 'text-green-500 pi-check-circle': rowData.${field.name?cap_first}, 'text-pink-500 pi-times-circle': !rowData.${field.name?cap_first} })}></i>
+                                                         )}
+                                                 />
                            </#if>
                          <#if i &gt; 9> --> </#if>
                         </#if>

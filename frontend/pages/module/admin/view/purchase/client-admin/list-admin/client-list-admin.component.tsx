@@ -20,6 +20,7 @@ import  {ClientDto}  from '/pages/controller/model/Client.model';
 //import Edit from "/pages/module/admin/view//purchase/client-admin/edit-admin/client-edit-admin.component";
 import Create from "/pages/module/admin/view//purchase/client-admin/create-admin/client-create-admin.component";
 import {ClientCriteria} from "../../../../../../controller/criteria/ClientCriteria.model";
+import {classNames} from "primereact/utils";
 //import View from "/pages/module/admin/view//purchase/client-admin/view-admin/client-view-admin.component";
 
 const List = () => {
@@ -167,8 +168,8 @@ const [items, setItems] = useState<ClientDto[]>([]);
             <>
                 <Button icon="pi pi-pencil" rounded severity="success" className="mr-1"
                         onClick={() => showEditModal(rowData)}/>
-                <Button icon="pi pi-trash" rounded severity="warning" onClick={() => confirmDeleteItem(rowData)}/>
-                <Button icon="pi pi-eye" rounded severity="info" className="mr-1" onClick={() => showViewModal(rowData)}/> </>
+                <Button icon="pi pi-trash" rounded severity="warning" className="mr-1" onClick={() => confirmDeleteItem(rowData)}/>
+                <Button icon="pi pi-eye" rounded severity="info"  onClick={() => showViewModal(rowData)}/> </>
         );
     };
 
@@ -211,11 +212,14 @@ const [items, setItems] = useState<ClientDto[]>([]);
                      <Column selectionMode="multiple" headerStyle={{ width: '4rem' }}></Column>
                           
                           <Column field="fullName" header="FullName" sortable headerStyle={{ minWidth: '15rem' }}></Column>
-                         
-                          
                           <Column field="email" header="Email" sortable headerStyle={{ minWidth: '15rem' }}></Column>
-                         
-                      <Column header="Actions" body={actionBodyTemplate} headerStyle={{minWidth: '10rem'}}></Column>
+                       <Column field="present" header="Presence" dataType="boolean" headerStyle={{ minWidth: '15rem' }}
+                               body={(rowData: ClientDto) => (
+                                   <i className={classNames('pi', { 'text-green-500 pi-check-circle': rowData.present, 'text-pink-500 pi-times-circle': !rowData.present })}></i>
+                               )}
+                       />
+
+                       <Column header="Actions" body={actionBodyTemplate} headerStyle={{minWidth: '10rem'}}></Column>
 
                     </DataTable>
             <div className="p-d-flex p-ai-center p-jc-between">

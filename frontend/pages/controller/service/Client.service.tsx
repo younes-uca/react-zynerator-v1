@@ -23,7 +23,7 @@ export const ClientService = {
    },
 
    delete(id: number): Promise<AxiosResponse<ClientDto>> {
-      return axios.delete(API_URL + 'client/id/${id}');
+      return axios.delete(API_URL + 'client/id/'+ id);
    },
 
    deleteList(items: ClientDto[]): Promise<AxiosResponse<string>> {

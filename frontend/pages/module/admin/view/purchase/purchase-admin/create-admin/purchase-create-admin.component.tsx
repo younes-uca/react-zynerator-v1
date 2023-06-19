@@ -44,7 +44,6 @@ const Create = ({visible, onClose, add, showToast, list}) => {
     const [clients, setClients] = useState<ClientDto[]>([]);
     const [selectedClient, setSelectedClient] = useState(null);
     type ClientResponse = AxiosResponse<ClientDto[]>;
-    //const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>();
     const [selectedPurchaseItem, setSelectedPurchaseItem] = useState(null);
     type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
 
@@ -80,41 +79,63 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
 
     const addPurchaseItems = () => {
-         setSubmitted(true);
-         if( item.purchaseItems == null ){
-         item.purchaseItems = [];}
-         let _item = purchaseItem;
-         if (!_item.id) {
-            _item.product = selectedProduct;
-                 item.purchaseItems.push(_item);
+        setSubmitted(true);
 
-                MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Created', life: 3000 });
+        if (item.purchaseItems == null) {
+            item.purchaseItems = [];
+        }
 
+        const existingItem = item.purchaseItems.find((item) => item.id === purchaseItem.id);
+        const updatedItems = item.purchaseItems.map((item) =>
+            item.id === purchaseItem.id
+                ? {
+                    ...item,
+                    product: { ...selectedProduct },
+                    price: purchaseItem.price,
+                    quantity: purchaseItem.quantity,
+                }
+                : item
+        );
 
-         } else {
-             const updatedItems = item.purchaseItems.map((item) =>
-                 item.id === purchaseItem.id ? { ...item, product: { ...selectedProduct } } : item
-             );
+        if (existingItem) {
+            setItem((prevState) => ({
+                ...prevState,
+                purchaseItems: updatedItems,
+            }));
 
+            setSelectedPurchaseItem(new PurchaseItemDto());
 
-                 MessageService.showToast(showToast, {
-                     severity: 'success',
-                     summary: 'Successful',
-                     detail: 'PurchaseItem Updated',
-                     life: 3000
-                 });
+            MessageService.showToast(showToast, {
+                severity: 'success',
+                summary: 'Successful',
+                detail: 'PurchaseItem Updated',
+                life: 3000,
+            });
+        } else {
+            const newItem = {
+                ...purchaseItem,
+                product: { ...selectedProduct },
+            };
 
-             setItem((prevState: PurchaseDto) => ({
-                 ...prevState,
-                 purchaseItems: updatedItems
-             }));
-             setSelectedPurchaseItem(new PurchaseItemDto());
-         }
+            item.purchaseItems.push(newItem);
 
-    setPurchaseItem(new PurchaseItemDto());
-    setSelectedProduct(null);
+            setItem((prevState) => ({
+                ...prevState,
+                purchaseItems: item.purchaseItems,
+            }));
 
+            MessageService.showToast(showToast, {
+                severity: 'success',
+                summary: 'Successful',
+                detail: 'PurchaseItem Created',
+                life: 3000,
+            });
+        }
+
+        setPurchaseItem(new PurchaseItemDto());
+        setSelectedProduct(null);
     };
+
 
 
     const deletePurchaseItem = (rowData) => {

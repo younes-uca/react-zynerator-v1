@@ -142,6 +142,36 @@ import Create from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?
         MessageService.showToast(toast, { severity: 'success', summary: 'Successful', detail: '${pojo.name}s Deleted', life: 3000 });
     };
 
+<<<<<<< HEAD
+   const leftToolbarTemplate = () => {
+           return (
+               <React.Fragment>
+                   <div className="my-2">
+                       <Button label="New" icon="pi pi-plus" severity="success" className=" mr-2" onClick={ showCreateModal}/>
+                       <Button label="Delete" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected}
+                               disabled={!selectedItems || !selectedItems.length}/>
+                   </div>
+               </React.Fragment>
+           );
+       };
+
+       const rightToolbarTemplate = () => {
+           return (
+               <React.Fragment>
+                   <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} chooseLabel="Import"
+                               className="mr-2 inline-block"/>
+                   <Button label="Export" icon="pi pi-upload" severity="help" onClick={exportCSV}/>
+               </React.Fragment>
+           );
+       };
+       const actionBodyTemplate = (rowData: ${pojo.name?cap_first}Dto) => {
+            return (
+            <>
+                <Button icon="pi pi-pencil" rounded severity="success" className="mr-1"
+                        onClick={() => showEditModal(rowData)}/>
+                <Button icon="pi pi-trash" rounded severity="warning" className="mr-1" onClick={() => confirmDeleteItem(rowData)}/>
+                <Button icon="pi pi-eye" rounded severity="info"  onClick={() => showViewModal(rowData)}/> </>
+=======
     const leftToolbarTemplate = () => {
         return (
             <React.Fragment>
@@ -168,6 +198,7 @@ import Create from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?
             <Button icon="pi pi-pencil" rounded severity="success" className="mr-1" onClick={() => showEditModal(rowData)} />
             <Button icon="pi pi-trash" rounded severity="warning" onClick={() => confirmDeleteItem(rowData)} />
             <Button icon="pi pi-eye" rounded severity="info" className="mr-1" onClick={() => showViewModal(rowData)} /> < />
+>>>>>>> fb02c6130c24aca88577022e15ed5226a3dcb730
         );
     };
 
@@ -179,10 +210,72 @@ import Create from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?
         </div>
     );
 
+<<<<<<< HEAD
+    const deleteItemDialogFooter = (
+            <>
+                <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemDialog}/>
+                <Button label="Yes" icon="pi pi-check" text onClick={deleteItem}/>
+            </>
+        );
+        const deleteItemsDialogFooter = (
+            <>
+                <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemsDialog}/>
+                <Button label="Yes" icon="pi pi-check" text onClick={deleteSelectedItems}/>
+            </>
+        );
+ return (
+        <div className="grid crud-demo">
+            <div className="col-12">
+                <div className="card">
+                    <Toast ref={toast}/>
+                    <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+
+                   <DataTable
+                        ref={dt} value={items} selection={selectedItems}
+                        onSelectionChange={(e) => setSelectedItems(e.value as ${pojo.name}Dto[])}
+                        dataKey="id" className="datatable-responsive"
+                        globalFilter={globalFilter} header={header} responsiveLayout="scroll"
+                    >
+                     <Column selectionMode="multiple" headerStyle={{ width: '4rem' }}></Column>
+                    <#assign i=0>
+                      <#list pojo.fields as field>
+                        <#if field.name != pojo.id.name && !field.large && !field.list>
+                          <#assign i++>
+                          <#if i &gt; 9> <!-- </#if>
+                          <#if field.simple && !field.notIncluded  && !field.password>
+                          <Column field="${field.name}" header="${field.name?cap_first}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                          <#elseif field.generic>
+                          <Column field="${field.name}.${field.typeAsPojo.labelOrReferenceOrId.name}" header="${field.name?cap_first}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                        </#if>
+                         <#if field.dateTime>
+                          <Column field="${field.name} | date :'dd/MM/yyyy HH:mm'" header="${field.name?cap_first}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+
+                          <#elseif field.bool>
+                          <Column field="${field.name}" header="${field.name?cap_first}" dataType="boolean" headerStyle={{ minWidth: '15rem' }}
+                                                         (rowData: ${pojo.name?cap_first}Dto) => (
+                                                             <i className={classNames('pi', { 'text-green-500 pi-check-circle': rowData.${field.name?cap_first}, 'text-pink-500 pi-times-circle': !rowData.${field.name?cap_first} })}></i>
+                                                         )}
+                                                 />
+                           </#if>
+                         <#if i &gt; 9> --> </#if>
+                        </#if>
+                      </#list>
+                      <Column header="Actions" body={actionBodyTemplate} headerStyle={{minWidth: '10rem'}}></Column>
+
+                    </DataTable>
+            <div className="p-d-flex p-ai-center p-jc-between">
+            <Paginator
+             onPageChange={onPage}
+             first={first}
+              rows={rows}
+              totalRecords={totalRecords}
+              />
+=======
     const deleteItemDialogFooter = ( <>
         <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemDialog} />
         <Button label="Yes" icon="pi pi-check" text onClick={deleteItem} />< />
     );
+>>>>>>> fb02c6130c24aca88577022e15ed5226a3dcb730
 
     const deleteItemsDialogFooter = ( <>
         <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemsDialog}/>

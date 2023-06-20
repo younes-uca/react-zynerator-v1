@@ -538,9 +538,7 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
 
     );
 
-
     };
-
-    export default Edit;
+export default Edit;
 
 

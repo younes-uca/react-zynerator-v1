@@ -23,7 +23,7 @@ import {PurchaseCriteria} from "../../../../../../controller/criteria/PurchaseCr
 import {Card} from "primereact/card";
 import {Calendar} from "primereact/calendar";
 import {InputNumber} from "primereact/inputnumber";
-//import View from "/pages/module/admin/view/purchase/purchase-admin/view-admin/purchase-view-admin.component";
+import View from "/pages/module/admin/view/purchase/purchase-admin/view-admin/purchase-view-admin.component";
 
 
 const List = () => {
@@ -51,17 +51,6 @@ const [items, setItems] = useState<PurchaseDto[]>([]);
         setFindByCriteriaShow(!findByCriteriaShow);
     };
 
-
-    const search = async (event) => {
-        try {
-            const response = await PurchaseService.findPaginatedByCriteria(criteria);
-            const paginatedItems = response.data;
-            setTotalRecords(paginatedItems.dataSize);
-            setItems(paginatedItems.list);
-        } catch (error) {
-            console.log(error);
-        }
-    };
 
      useEffect(() => {
             fetchItems(criteria);
@@ -223,58 +212,7 @@ const [items, setItems] = useState<PurchaseDto[]>([]);
                 <div className="card">
                     <Toast ref={toast}/>
                     <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
-                    {findByCriteriaShow && (
-                        <Card>
-                            <div className="grid">
-            <span className="p-float-label mr-3 align-search-items mt-4">
-              <InputText id="1" value={criteria.reference}
-                         onChange={(e) => criteria.reference}/>
-              <label htmlFor="1">Reference</label>
-            </span>
 
-      {/*                          <span className="p-float-label mr-3 align-search-items mt-4">
-              <Calendar id="2-1" value={criteria.purchaseDateFrom}
-                        onChange={(e) => criteria}
-                        dateFormat="dd-MM-yy"/>
-              <label htmlFor="2-1">Date commande Min</label>
-            </span>
-
-                                <span className="p-float-label mr-3 align-search-items mt-4">
-              <Calendar id="2-2" value={criteria.purchaseDateTo}
-                        dateFormat="dd-MM-yy"/>
-              <label htmlFor="2-2">Date commande Max</label>
-            </span>
-
-                                <span className="p-float-label mr-3 align-search-items mt-4">
-              <InputNumber id="3-1" value={criteria.totalMin}
-                           onChange={(e) => criteria.totalMin = e.value}
-                           mode="decimal"/>
-              <label htmlFor="3-1">Total Min</label>
-            </span>
-
-                                <span className="p-float-label mr-3 align-search-items mt-4">
-              <InputNumber id="3-2" value={criteria.totalMax}
-                           onChange={(e) => criteria.totalMax = e.value}
-                           mode="decimal"/>
-              <label htmlFor="3-2">Total Max</label>
-            </span>*/}
-
-                                {/*                           <span className="p-float-label mr-3 align-search-items mt-4">
-              <Dropdown id="4" value={criteria.client} options={this.clients}
-                        onChange={(e) => criteria.client= e.value} optionLabel="nom"
-                        filter showClear placeholder="Client"/>
-            </span>*/}
-
-
-                            </div>
-
-                            <div className="align-search-button">
-                                <Button label="Validate" icon="pi pi-sort-amount-down"
-                                        className="p-button-info mr-2" onClick={search}/>
-                            </div>
-
-                        </Card>
-                    )}
                    <DataTable
                         ref={dt} value={items} selection={selectedItems}
                         onSelectionChange={(e) => setSelectedItems(e.value as PurchaseDto[])}
@@ -311,9 +249,9 @@ const [items, setItems] = useState<PurchaseDto[]>([]);
         </div>
 
              <Create visible={showCreateDialog} onClose={() => setShowCreateDialog(false)} add={add} showToast={toast} list={items} />
-           { /* <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update}/>
+           { /* <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update}/>   */}
              <View visible={showViewDialog} onClose={() =>  { setShowViewDialog(false); setSelectedItem(null); }} selectedItem={selectedItem} />
-          */}
+
  <Dialog visible={deleteItemDialog} style={{width: '450px'}} header="Confirm" modal
           footer={deleteItemDialogFooter} onHide={hideDeleteItemDialog}>
          <div className="flex align-items-center justify-content-center">

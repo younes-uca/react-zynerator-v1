@@ -24,6 +24,13 @@ import {Card} from "primereact/card";
 import {Calendar} from "primereact/calendar";
 import {InputNumber} from "primereact/inputnumber";
 import View from "/pages/module/admin/view/purchase/purchase-admin/view-admin/purchase-view-admin.component";
+import {Dropdown} from "primereact/dropdown";
+import {ProductService} from "../../../../../../controller/service/Product.service";
+import {ClientService} from "../../../../../../controller/service/Client.service";
+import {AxiosResponse} from "axios/index";
+import {ProductDto} from "../../../../../../controller/model/Product.model";
+import {ClientDto} from "../../../../../../controller/model/Client.model";
+
 
 
 const List = () => {
@@ -51,10 +58,43 @@ const [items, setItems] = useState<PurchaseDto[]>([]);
         setFindByCriteriaShow(!findByCriteriaShow);
     };
 
+    const search = async () => {
+        try {
+            const response = await PurchaseService.findPaginatedByCriteria(criteria);
+            const paginatedItems = response.data;
+            setTotalRecords(paginatedItems.dataSize);
+            setItems(paginatedItems.list);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
-     useEffect(() => {
+ /*    useEffect(() => {
             fetchItems(criteria);
-        }, [criteria]);
+        }, [criteria]);*/
+    type ProductResponse = AxiosResponse<ProductDto[]>;
+    const [clients, setClients] = useState<ClientDto[]>([]);
+    const [products, setProducts] = useState<ProductDto[]>([]);
+    type ClientResponse = AxiosResponse<ClientDto[]>;
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [productsResponse ,clientsResponse ] = await Promise.all<ProductResponse,ClientResponse>([
+                    ProductService.getList(),
+                    ClientService.getList(),
+                ]);
+                setProducts(productsResponse.data);
+                setClients(clientsResponse.data);
+
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchData();
+        fetchItems(criteria);
+    }, []);
 
          const fetchItems = async (criteria) => {
                 try {
@@ -212,7 +252,68 @@ const [items, setItems] = useState<PurchaseDto[]>([]);
                 <div className="card">
                     <Toast ref={toast}/>
                     <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+                    {findByCriteriaShow && (
+                        <Card>
+                            <div className="search-container">
+                                <div className="grid">
+                           <span className="p-float-label mr-3 align-search-items mt-4">
+          <InputText id="1" value={criteria.reference} onChange={(e) => setCriteria({ ...criteria, reference: e.target.value })}
+          />
+          <label htmlFor="1">Reference</label>
+        </span>
 
+                                <span className="p-float-label mr-3 align-search-items mt-4">
+  <Calendar id="2-1" value={criteria.purchaseDateFrom}
+      onChange={(e) => setCriteria({ ...criteria, purchaseDateFrom: e.value as Date })} dateFormat="dd-MM-yy" />
+  <label htmlFor="2-1">Date commande Min</label>
+</span>
+
+                                <span className="p-float-label mr-3 align-search-items mt-4">
+  <Calendar
+      id="2-2"
+      value={criteria.purchaseDateTo}
+      onChange={(e) => setCriteria({ ...criteria, purchaseDateTo: e.value as Date })}
+      dateFormat="dd-MM-yy"
+  />
+  <label htmlFor="2-2">Date commande Max</label>
+</span>
+
+                                <span className="p-float-label mr-3 align-search-items mt-4">
+          <InputNumber
+              id="3-1"
+              value={criteria.totalMin}
+              onChange={(e) => setCriteria({ ...criteria, totalMin: e.value })}
+              mode="decimal"
+          />
+          <label htmlFor="3-1">Total Min</label>
+        </span>
+
+                                <span className="p-float-label mr-3 align-search-items mt-4">
+          <InputNumber id="3-2" value={criteria.totalMax}
+              onChange={(e) => setCriteria({ ...criteria, totalMax: e.value })}
+              mode="decimal"
+          />
+          <label htmlFor="3-2">Total Max</label>
+        </span>
+
+                                <span className="p-float-label mr-3 align-search-items mt-4">
+          <Dropdown id="4" value={criteria.client} options={clients} onChange={(e) => setCriteria({ ...criteria, client: e.target.value })} optionLabel="fullName" filter showClear placeholder="Client" />
+
+        </span>
+                            </div>
+
+
+                                <Button
+                                    label="Validate"
+                                    icon="pi pi-sort-amount-down"
+                                    className="p-button-info mr-2"
+                                    onClick={search}
+                                    />
+
+                            </div>
+
+                        </Card>
+                    )}
                    <DataTable
                         ref={dt} value={items} selection={selectedItems}
                         onSelectionChange={(e) => setSelectedItems(e.value as PurchaseDto[])}

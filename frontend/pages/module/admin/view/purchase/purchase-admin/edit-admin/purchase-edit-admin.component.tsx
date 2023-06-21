@@ -104,13 +104,14 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
 
               } else {
                   const updatedItems = item.purchaseItems.map((item) =>
-                      item.id === purchaseItem.id ? { ...item, product: { ...selectedProduct } } : item,
+                      item.id === purchaseItem.id ? { ...item, product: { ...selectedProduct },price : purchaseItem.price,quantity: purchaseItem.quantity } : item,
                   );
 
                   if (item.purchaseItems.find((item) => item.id === purchaseItem.id)) {
                       MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Updated', life: 3000 });
 
                   }
+
 
                   setItem((prevState :any) => ({
                       ...prevState,
@@ -133,7 +134,7 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
                   purchaseItems: updatedItems,
                         }));
                setPurchaseItem(new PurchaseItemDto());
-               showToast?.show({severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000});
+             MessageService.showToast(showToast, {severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000});
               };
 
 

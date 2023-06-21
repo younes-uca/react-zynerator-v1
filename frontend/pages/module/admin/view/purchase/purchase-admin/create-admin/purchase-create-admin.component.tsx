@@ -111,7 +111,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
             purchaseItems: updatedItems
         }));
         setPurchaseItem(new PurchaseItemDto());
-        showToast?.show({severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000});
+        MessageService.showToast(showToast, {severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000});
     };
 
     const editPurchaseItem = (rowData) => {

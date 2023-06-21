@@ -160,7 +160,7 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
                     ${field.name?cap_first}: updatedItems
                                   }));
                   set${pojo.name?cap_first}Item(new ${field.typeAsPojo.name}Dto());
-                  showToast?.show({severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first}Item Deleted', life: 3000});
+                  MessageService.showToast(showToast, {severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first}Item Deleted', life: 3000});
               };
 
 
@@ -235,7 +235,7 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
       const saveItem = async () => {
             setSubmitted(true);
             let _item = {...item};
-            
+
              try {
                  if (_item.id) {
                  await ${pojo.name?cap_first}Service.update(_item).then((response) => {

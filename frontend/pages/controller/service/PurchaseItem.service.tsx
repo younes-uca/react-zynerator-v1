@@ -22,14 +22,14 @@ export const PurchaseItemService = {
    },
 
    delete(id: number): Promise<AxiosResponse<PurchaseItemDto>> {
-      return axios.delete(API_URL + 'purchaseItem/id/${id}');
+      return axios.delete(API_URL + 'purchaseItem/id/'+ id);
    },
 
    deleteList(items: PurchaseItemDto[]): Promise<AxiosResponse<string>> {
       return axios.post(API_URL + 'purchaseItem/multiple', items);
    },
 
-   findPaginatedByCriteria(criteria: BaseCriteria):Promise<AxiosResponse<PaginatedList<BaseDto>>> {
+   findPaginatedByCriteria(criteria:PurchaseItemCriteria):Promise<AxiosResponse<PaginatedList<BaseDto>>> {
      return axios.post<PaginatedList<BaseDto>>(API_URL + `purchaseItem/find-paginated-by-criteria`, criteria);
    }
 };

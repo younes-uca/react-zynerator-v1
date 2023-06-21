@@ -13,10 +13,23 @@ import React, {useEffect, useRef, useState} from 'react';
 import { Paginator } from 'primereact/paginator';
 import {BaseCriteria} from '/pages/zynerator/criteria/BaseCriteria.model';
 import {MessageService} from '/pages/controller/service/MessageService';
+import {Card} from "primereact/card";
+import {Calendar} from "primereact/calendar";
+import {InputNumber} from "primereact/inputnumber";
+import {Dropdown} from "primereact/dropdown";
 
 import {${pojo.name}Service} from '/pages/controller/service/${pojo.name?cap_first}.service';
 import {${pojo.name?cap_first}Dto}  from '/pages/controller/model/${pojo.name?cap_first}.model';
 import {${pojo.name?cap_first}Criteria} from "/pages/controller/criteria/${pojo.name?cap_first}Criteria.model";
+
+<#if pojo.dependencies??>
+    <#list pojo.dependencies as dependency>
+        <#if dependency?? && dependency.name??>
+import {${dependency.name?cap_first}Dto} from '/pages/controller/model/${dependency.name?cap_first}.model';
+import {${dependency.name?cap_first}Service} from '/pages/controller/service/${dependency.name?cap_first}.service';
+        </#if>
+    </#list>
+</#if>
 
 import Edit from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?uncap_first}-admin/edit-admin/${pojo.name?uncap_first}-edit-admin.component';
 import Create from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?uncap_first}-admin/create-admin/${pojo.name?uncap_first}-create-admin.component';
@@ -48,11 +61,39 @@ import View from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?un
     const dt = useRef<DataTable<${pojo.name}Dto[]>>();
     const [findByCriteriaShow, setFindByCriteriaShow] = useState(false);
 
+<#if pojo.dependencies??>
+    <#list pojo.dependencies as dependency>
+        <#if dependency?? && dependency.name??>
+    const [${dependency.name?uncap_first}s, set${dependency.name?cap_first}s] = useState<${dependency.name?cap_first}Dto[]>([]);
+    type ${dependency.name?cap_first}Response = AxiosResponse<${dependency.name?cap_first}Dto[]>;
+        </#if>
+    </#list>
+</#if>
+
     const showSearch = () => {
         setFindByCriteriaShow(!findByCriteriaShow);
     };
 
     useEffect(() => {
+        const fetchData = async () => {
+        try {
+            <#assign i=0>
+            const [<#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>${fieldGeneric.name?uncap_first}sResponse <#if fieldGeneric?index != pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition?size -1>,</#if></#list>] = await Promise.all<<#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>${fieldGeneric.name?cap_first}Response<#if fieldGeneric?index != pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition?size -1>,</#if></#list>>([
+<#list pojo.fieldsGenericIncludingInnerTypeInListField as fieldGeneric>
+    <#if fieldGeneric.typeAsPojo.ignoreFront == false &&  fieldGeneric.typeAsPojo.subModule.name == pojo.subModule.name>
+                ${fieldGeneric.name?cap_first}Service.getList(),
+    </#if>
+</#list>
+            ]);
+<#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>
+            set${fieldGeneric.name?cap_first}s(${fieldGeneric.name?uncap_first}sResponse.data);
+</#list>
+
+        } catch (error) {
+            console.error(error);
+        }
+        };
+        fetchData();
         fetchItems(criteria);
     }, [criteria]);
 
@@ -173,33 +214,79 @@ import View from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?un
            );
        };
 
-           const header = (
+    const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 className="m-0">Manage ${pojo.name}s</h5>
-            <span className="block mt-2 md:mt-0 p-input-icon-left"><i className="pi pi-search" />
-            <InputText type="search" onInput={(e) => setGlobalFilter(e.currentTarget.value)} placeholder="Search..." /> </span>
+        <h5 className="m-0">Manage ${pojo.name}s</h5>
+        <span className="block mt-2 md:mt-0 p-input-icon-left"><i className="pi pi-search" />
+        <InputText type="search" onInput={(e) => setGlobalFilter(e.currentTarget.value)} placeholder="Search..." /> </span>
         </div>
     );
 
-    const deleteItemDialogFooter = (
-                <>
-                    <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemDialog}/>
-                    <Button label="Yes" icon="pi pi-check" text onClick={deleteItem}/>
-                </>
-            );
-            const deleteItemsDialogFooter = (
-                <>
-                    <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemsDialog}/>
-                    <Button label="Yes" icon="pi pi-check" text onClick={deleteSelectedItems}/>
-                </>
-            );
+    const deleteItemDialogFooter = ( <>
+                    <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemDialog} />
+                    <Button label="Yes" icon="pi pi-check" text onClick={deleteItem} /> < />
+    );
 
-    return (
+    const deleteItemsDialogFooter = ( <>
+        <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemsDialog} />
+        <Button label="Yes" icon="pi pi-check" text onClick={deleteSelectedItems} /> < />
+    );
+
+return (
     <div className="grid crud-demo">
         <div className="col-12">
             <div className="card">
                 <Toast ref={toast} />
                 <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+                {findByCriteriaShow && (
+                <Card>
+                    <div className="search-container">
+                        <div className="grid">
+                            <#list pojo.fields as field>
+                                <#if field.simple  && !field.notIncluded  && !field.password>
+                                    <#if field.dateTime>
+                                        <span className="p-float-label mr-3 align-search-items mt-4">
+                                        <Calendar id="${field?index}-1" value={criteria.${field.name}From} onChange={(e) => setCriteria({ ...criteria, ${field.name}From: e.value as Date })} dateFormat="dd-MM-yy" />
+                                        <label htmlFor="${field?index}-1">${field.name?cap_first} Min</label>
+                                        </span>
+
+                                        <span className="p-float-label mr-3 align-search-items mt-4">
+                                        <Calendar id="${field?index}-2" value={criteria.${field.name}To} onChange={(e) => setCriteria({ ...criteria, ${field.name}To: e.value as Date })} dateFormat="dd-MM-yy" />
+                                        <label htmlFor="${field?index}-2">${field.name?cap_first} Max</label>
+                                        </span>
+
+                                    <#elseif field.pureString>
+                                        <span className="p-float-label mr-3 align-search-items mt-4">
+                                        <InputText id="${field?index}" value={criteria.${field.name}} onChange={(e) => setCriteria({ ...criteria, ${field.name}: e.target.value })} />
+                                        <label htmlFor="${field?index}">${field.name?cap_first}</label>
+                                        </span>
+
+                                    <#elseif field.nombre == true>
+                                        <#if field.name != pojo.id.name>
+                                        <span className="p-float-label mr-3 align-search-items mt-4">
+                                        <InputNumber id="${field?index}-1" value={criteria.t${field.name}Min} onChange={(e) => setCriteria({ ...criteria, ${field.name}Min: e.value })} mode="decimal" />
+                                        <label htmlFor="${field?index}-1">${field.name?cap_first} Min</label>
+                                        </span>
+
+                                        <span className="p-float-label mr-3 align-search-items mt-4">
+                                        <InputNumber id="${field?index}-2" value={criteria.${field.name}Max} onChange={(e) => setCriteria({ ...criteria, ${field.name}Max: e.value })} mode="decimal" />
+                                        <label htmlFor="${field?index}-2">${field.name?cap_first} Max</label>
+                                        </span>
+                                        </#if>
+                                    </#if>
+                                </#if>
+                                <#if field.generic == true>
+                                        <span className="p-float-label mr-3 align-search-items mt-4">
+                                        <Dropdown id="${field?index}" value={criteria.${field.name}} options={${field.name}s} onChange={(e) => setCriteria({ ...criteria, ${field.name}: e.target.value })} optionLabel="${field.typeAsPojo.labelOrReferenceOrId.name}" filter showClear placeholder="${field.name?cap_first}" />
+                                        </span>
+                                </#if>
+                            </#list>
+                        </div>
+                        <Button label="Validate" icon="pi pi-sort-amount-down" className="p-button-info mr-2" onClick={fetchItems} />
+                        </div>
+
+                </Card>
+                )}
                 <DataTable ref={dt} value={items} selection={selectedItems} onSelectionChange={(e) => setSelectedItems(e.value as ${pojo.name}Dto[])} dataKey="id" className="datatable-responsive" globalFilter={globalFilter} header={header} responsiveLayout="scroll" >
                     <Column selectionMode="multiple" headerStyle={{ width: '4rem' }}> </Column>
                     <#assign i=0>

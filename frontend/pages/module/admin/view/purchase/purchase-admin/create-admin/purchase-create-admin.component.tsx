@@ -22,12 +22,12 @@ import {PurchaseService} from '/pages/controller/service/Purchase.service';
 
 import  {PurchaseDto}  from '/pages/controller/model/Purchase.model';
 
-import {ProductDto} from '/pages/controller/model/Product.model';
-import {ProductService} from '/pages/controller/service/Product.service';
 import {PurchaseItemDto} from '/pages/controller/model/PurchaseItem.model';
 import {PurchaseItemService} from '/pages/controller/service/PurchaseItem.service';
 import {ClientDto} from '/pages/controller/model/Client.model';
 import {ClientService} from '/pages/controller/service/Client.service';
+import {ProductDto} from '/pages/controller/model/Product.model';
+import {ProductService} from '/pages/controller/service/Product.service';
 
 const Create = ({visible, onClose, add, showToast, list}) => {
 
@@ -38,15 +38,15 @@ const Create = ({visible, onClose, add, showToast, list}) => {
     const [submitted, setSubmitted] = useState(false); const [activeIndex, setActiveIndex] = useState<number>(0);
     const [activeTab, setActiveTab] = useState(0);
 
-    const [products, setProducts] = useState<ProductDto[]>([]);
-    const [selectedProduct, setSelectedProduct] = useState(null);
-    type ProductResponse = AxiosResponse<ProductDto[]>;
     const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
     const [selectedPurchaseItem, setSelectedPurchaseItem] = useState(null);
     type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
     const [clients, setClients] = useState<ClientDto[]>([]);
     const [selectedClient, setSelectedClient] = useState(null);
     type ClientResponse = AxiosResponse<ClientDto[]>;
+    const [products, setProducts] = useState<ProductDto[]>([]);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    type ProductResponse = AxiosResponse<ProductDto[]>;
 
     const [purchaseItem, setPurchaseItem] = useState<PurchaseItemDto>(new PurchaseItemDto());
 

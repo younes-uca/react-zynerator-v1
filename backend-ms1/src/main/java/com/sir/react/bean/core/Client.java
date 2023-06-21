@@ -27,6 +27,7 @@ public class Client   extends AuditBusinessObject     {
     private String fullName;
     @Column(length = 500)
     private String email;
+    private Boolean present;
 
 
 
@@ -62,6 +63,14 @@ public class Client   extends AuditBusinessObject     {
     }
     public void setEmail(String email){
         this.email = email;
+    }
+
+    public Boolean getPresent() {
+        return present;
+    }
+
+    public void setPresent(Boolean present) {
+        present = present;
     }
 
     @Transient

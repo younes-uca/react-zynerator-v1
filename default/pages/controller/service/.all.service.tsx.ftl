@@ -22,14 +22,14 @@ export const ${pojo.name}Service = {
    },
 
    delete(id: number): Promise<AxiosResponse<${pojo.name}Dto>> {
-      return axios.delete(API_URL + '${pojo.name?uncap_first}/id/<#noparse>${id}</#noparse>');
+      return axios.delete(API_URL + '${pojo.name?uncap_first}/id/'+ id);
    },
 
    deleteList(items: ${pojo.name}Dto[]): Promise<AxiosResponse<string>> {
       return axios.post(API_URL + '${pojo.name?uncap_first}/multiple', items);
    },
 
-   findPaginatedByCriteria(criteria: BaseCriteria):Promise<AxiosResponse<PaginatedList<BaseDto>>> {
+   findPaginatedByCriteria(criteria:${pojo.name}Criteria):Promise<AxiosResponse<PaginatedList<BaseDto>>> {
      return axios.post<PaginatedList<BaseDto>>(API_URL + `${pojo.name?uncap_first}/find-paginated-by-criteria`, criteria);
    }
 };

@@ -11,6 +11,7 @@ public class ClientDto  extends AuditBaseDto {
 
     private String fullName  ;
     private String email  ;
+    private Boolean present;
 
 
 
@@ -37,9 +38,11 @@ public class ClientDto  extends AuditBaseDto {
         this.email = email;
     }
 
+    public Boolean getPresent() {
+        return this.present;
+    }
 
-
-
-
-
+    public void setPresent(Boolean present) {
+        present = present;
+    }
 }

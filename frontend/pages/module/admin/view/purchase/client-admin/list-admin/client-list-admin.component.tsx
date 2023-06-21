@@ -12,14 +12,14 @@ import {Toolbar} from 'primereact/toolbar';
 import React, {useEffect, useRef, useState} from 'react';
 import { Paginator } from 'primereact/paginator';
 import {BaseCriteria} from '/pages/zynerator/criteria/BaseCriteria.model';
-import {MessageService} from '/pages/controller/service/MessageService';
+import {MessageService} from '/pages/controller/service/Message.service';
 
 import {ClientService} from '/pages/controller/service/admin/Client.service';
-import  {ClientDto}  from '/pages/controller/model/Client.model';
+import {ClientDto}  from '/pages/controller/model/Client.model';
 
-//import Edit from "/pages/module/admin/view//purchase/client-admin/edit-admin/client-edit-admin.component";
-import Create from "/pages/module/admin/view//purchase/client-admin/create-admin/client-create-admin.component";
-//import View from "/pages/module/admin/view//purchase/client-admin/view-admin/client-view-admin.component";
+//import Edit from '/pages/module/admin/view/purchase/client-admin/edit-admin/client-edit-admin.component';
+import Create from '/pages/module/admin/view/purchase/client-admin/create-admin/client-create-admin.component';
+//import View from '/pages/module/admin/view/purchase/client-admin/view-admin/client-view-admin.component';
 
 const List = () => {
 const emptyItem = new ClientDto();

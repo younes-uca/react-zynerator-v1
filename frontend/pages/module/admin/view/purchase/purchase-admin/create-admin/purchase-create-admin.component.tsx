@@ -106,7 +106,10 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
     const deletePurchaseItem = (rowData) => {
         const updatedItems = purchaseItems.filter((val) => val !== rowData);
-        setPurchaseItems(updatedItems);
+        setItem((prevState :any) => ({
+            ...prevState,
+            purchaseItems: updatedItems
+        }));
         setPurchaseItem(new PurchaseItemDto());
         showToast?.show({severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000});
     };
@@ -281,7 +284,7 @@ return(
                     </TabPanel>
                     <TabPanel header="Liste">
                     <div className="card">
-                    <DataTable value={purchaseItems} tableStyle={{minWidth: '50rem'}} dataKey="id">
+                    <DataTable value={item.purchaseItems} tableStyle={{minWidth: '50rem'}} dataKey="id">
                         <Column field="product.reference" header="Product"></Column>
                         <Column field="price" header="Price"></Column>
                         <Column field="quantity" header="Quantity"></Column>

@@ -88,8 +88,8 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
 
           const addPurchaseItems = () => {
                    setSubmitted(true);
-                   if( item.purchaseItems == null ){
-                   item.purchaseItems = [];}
+                   if( item.purchaseItems == null )
+                   item.purchaseItems = [];
               let _item = {...purchaseItem};
               if (!_item.id) {
 

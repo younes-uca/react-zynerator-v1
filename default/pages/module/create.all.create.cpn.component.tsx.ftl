@@ -95,7 +95,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
                  </#list>
                 item.${field.name?cap_first}.push(_item);
                 MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Created', life: 3000 });
-                set${field.name?cap_first}(_items);
+
                 setItem((prevState :any) => ({
                  ...prevState,
                     ${field.name?cap_first}: item.${field.name?cap_first}

@@ -217,6 +217,38 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
 
                         }
                     };
+    const onInputTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
+        const val = (e.target && e.target.value) || '';
+        let _item = {...item};
+        _item[`${name}`] = val;
+        setItem(_item);
+    };
+
+    const onInputDateChange = (e: CalendarChangeEvent, name: string) => {
+        const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
+        let _item = { ...item};
+        _item[`${name}`] = val;
+        setItem(_item);
+    };
+
+    const onInputNumerChange = (e: InputNumberChangeEvent, name: string) => {
+        const val = e.value === null ? null : +e.value;
+        setItem((prevItem) => ({ ...prevItem, [name]: val, }));
+    };
+
+    const onMultiSelectChange = (e, field) => {
+        if (e && e.value && Array.isArray(e.value)) {
+            const selectedValues = e.value.map(option => option && option.value);
+            setItem(prevState => ({ ...prevState, [field]: selectedValues, }));
+        }
+    };
+
+    const onBooleanInputChange = (e: any, name: string) => {
+        const val = e.value;
+        setItem((prevItem) => ({ ...prevItem, [name]: val, }));
+    };
+
+  
 
 
              const itemDialogFooter = (

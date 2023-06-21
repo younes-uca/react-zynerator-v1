@@ -12,6 +12,7 @@ import {AxiosResponse} from 'axios';
 import React, {useEffect, useState} from 'react';
 import {Calendar, CalendarChangeEvent} from 'primereact/calendar';
 import { format } from 'date-fns';
+import {InputNumberChangeEvent} from 'primereact/inputnumber';
 import { InputSwitch } from "primereact/inputswitch";
 import {MultiSelect} from "primereact/multiselect";import {MessageService} from "/pages/controller/service/MessageService";
 
@@ -100,67 +101,69 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
       <#list pojo.fields as field>
             <#if field.list && !field.association>
           const add${field.name?cap_first} = () => {
-                  setSubmitted(true);
-                  if( item.${field.name?uncap_first} == null )
-                  item.${field.name?uncap_first} = new Array<${field.typeAsPojo.name?cap_first}Dto>();
+                   setSubmitted(true);
+                   if( item.${field.name?uncap_first} == null )
+                   item.${field.name?uncap_first} = new Array<${field.typeAsPojo.name?cap_first}Dto>();
 
-                  let _item = ${pojo.name?uncap_first}Item;
-                  if (!_item.id) {
-                          <#list field.typeAsPojo.fields as innerField>
-                             <#if  !innerField.notVisibleInCreatePage>
-                                 <#if innerField.generic && innerField.typeAsPojo.name != pojo.name>
-                     _item.${innerField.name?uncap_first} = selected${innerField.name?cap_first};
-                                 </#if>
-                              </#if>
-                          </#list>
-                         item.${field.name?cap_first}.push(_item);
-                         MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Created', life: 3000 });
-                         set${field.name?cap_first}(_items);
-                         setItem((prevState :any) => ({
-                          ...prevState,
-                             ${field.name?cap_first}: item.${field.name?cap_first}
-                              }));
-                  } else {
-                     const updatedItems = item.${field.name?uncap_first}.map((item) =>
-                            <#list field.typeAsPojo.fields as innerField>
-                               <#if  !innerField.notVisibleInCreatePage>
-                                   <#if innerField.generic && innerField.typeAsPojo.name != pojo.name>
-                     item.id === ${field.typeAsPojo.name?uncap_first}.id ? { ...item, ${innerField.name?uncap_first}: { ...selected${innerField.name?cap_first} } } : item,
-                                   </#if>
+                   let _item = ${pojo.name?uncap_first}Item;
+                   if (!_item.id) {
+                           <#list field.typeAsPojo.fields as innerField>
+                              <#if  !innerField.notVisibleInCreatePage>
+                                  <#if innerField.generic && innerField.typeAsPojo.name != pojo.name>
+                      _item.${innerField.name?uncap_first} = selected${innerField.name?cap_first};
+                                  </#if>
                                </#if>
                            </#list>
-                         );
+                          item.${field.name?cap_first}.push(_item);
+                          MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Created', life: 3000 });
 
-                     if (item.${field.name?uncap_first}.find((item) => item.id === ${pojo.name?uncap_first}Item.id)) {
-                         MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Updated', life: 3000 });
-                     }
-                     setItem((prevState :any) => ({
-                       ...prevState,
-                         ${field.name?cap_first}: updatedItems
-                         }));
-                         setSelected${field.typeAsPojo.name?cap_first}(null);
-                                   }
+                          setItem((prevState :any) => ({
+                           ...prevState,
+                              ${field.name?cap_first}: item.${field.name?cap_first}
+                               }));
+                   } else {
+                      const updatedItems = item.${field.name?uncap_first}.map((item) =>
+                             <#list field.typeAsPojo.fields as innerField>
+                                <#if  !innerField.notVisibleInCreatePage>
+                                    <#if innerField.generic && innerField.typeAsPojo.name != pojo.name>
+                      item.id === ${field.typeAsPojo.name?uncap_first}.id ? { ...item, ${innerField.name?uncap_first}: { ...selected${innerField.name?cap_first} } } : item,
+                                    </#if>
+                                </#if>
+                            </#list>
+                          );
 
-                  set${field.typeAsPojo.name?cap_first}(new ${field.typeAsPojo.name}Dto());
-                     <#list field.typeAsPojo.fields as innerField>
-                     <#if  !innerField.notVisibleInCreatePage>
-                         <#if innerField.generic && innerField.typeAsPojo.name != pojo.name>
-                  setSelected${innerField.name?cap_first}(null);
-                         </#if>
-                     </#if>
-                 </#list>
+                      if (item.${field.name?uncap_first}.find((item) => item.id === ${pojo.name?uncap_first}Item.id)) {
+                          MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Updated', life: 3000 });
+                      }
+                      setItem((prevState :any) => ({
+                        ...prevState,
+                          ${field.name?cap_first}: updatedItems
+                          }));
+                          setSelected${field.typeAsPojo.name?cap_first}(null);
+                                    }
 
-             };
+                   set${field.typeAsPojo.name?cap_first}(new ${field.typeAsPojo.name}Dto());
+                      <#list field.typeAsPojo.fields as innerField>
+                      <#if  !innerField.notVisibleInCreatePage>
+                          <#if innerField.generic && innerField.typeAsPojo.name != pojo.name>
+                   setSelected${innerField.name?cap_first}(null);
+                          </#if>
+                      </#if>
+                  </#list>
 
-             const delete${field.typeAsPojo.name} = (rowData) => {
-                 const updatedItems = ${field.name?uncap_first}.filter((val) => val !== rowData);
-                 setItem((prevState :any) => ({
-                   ...prevState,
-                   ${field.name?cap_first}: updatedItems
-                                 }));
-                 set${pojo.name?cap_first}Item(new ${field.typeAsPojo.name}Dto());
-                 showToast?.show({severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first}Item Deleted', life: 3000});
-             };
+              };
+
+              const delete${field.typeAsPojo.name} = (rowData) => {
+                  const updatedItems = ${field.name?uncap_first}.filter((val) => val !== rowData);
+                  setItem((prevState :any) => ({
+                    ...prevState,
+                    ${field.name?cap_first}: updatedItems
+                                  }));
+                  set${pojo.name?cap_first}Item(new ${field.typeAsPojo.name}Dto());
+                  showToast?.show({severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first}Item Deleted', life: 3000});
+              };
+
+
 
         const edit${field.typeAsPojo.name} = (rowData) => {
            setActiveTab(0);
@@ -176,110 +179,121 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
            };
 
         const onInputNumerChange${field.name?cap_first} = (e, name) => {
-                const val = e.value || 0;
-                set${field.typeAsPojo.name}((prev${field.name?cap_first}) => ({...prev${field.name?cap_first}, [name]: val, }));
-           };
+               const val = e.value || 0;
+               set${field.typeAsPojo.name}((prev${field.name?cap_first}) => ({
+                   ...prev${field.name?cap_first},
+                   [name]: val,
+          }));
+          };
 
-           const onMultiSelectChange${field.name?cap_first} = (e, field) => {
-               if (e && e.value && Array.isArray(e.value)) {
-                   const selectedValues = e.value.map(option => option && option.value);
-                   set${field.typeAsPojo.name}(prevState => ({ ...prevState, [field]: selectedValues, }));
-               }
-           };
+         const onMultiSelectChange${field.name?cap_first} = (e, field) => {
+              if (e && e.value && Array.isArray(e.value)) {
+                  const selectedValues = e.value.map(option => option && option.value);
+                  set${field.typeAsPojo.name}(prevState => ({
+                        ...prevState,
+                        [field]: selectedValues,
+                  }));
+              }
+          };
 
-           const onBooleanInputChange${field.name?cap_first} = (e: any, name: string) => {
-              const val = e.value;
-              set${field.typeAsPojo.name}((prevItem) => ({ ...prevItem, [name]: val, }));
-           };
+          const onBooleanInputChange${field.name?cap_first} = (e: any, name: string) => {
+             const val = e.value;
+             set${field.typeAsPojo.name}((prevItem) => ({
+                 ...prevItem,
+                 [name]: val,
+             }));
+          };
 
-           const onInputDateChange${field.name?cap_first} = (e: CalendarChangeEvent, name: string) => {
+
+          const onInputDateChange${field.name?cap_first} = (e: CalendarChangeEvent, name: string) => {
                const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
-               let _item = { ...${field.typeAsPojo.name?uncap_first}};
+                let _item = { ...${field.typeAsPojo.name?uncap_first}};
                _item[`<#noparse>${name}</#noparse>`] = val;
-               set${field.typeAsPojo.name}(_item);
-           };
 
-           const onInputTextChange${field.name?cap_first} = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
-                const val = (e.target && e.target.value) || '';
-                let _item = {...${field.typeAsPojo.name?uncap_first}};
-                _item[`<#noparse>${name}</#noparse>`] = val;
-                set${field.typeAsPojo.name}(_item);
-           };
+          set${field.typeAsPojo.name}(_item);
+          };
 
-             </#if>
-       </#list>
+          const onInputTextChange${field.name?cap_first} = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
+           const val = (e.target && e.target.value) || '';
+           let _item = {...${field.typeAsPojo.name?uncap_first}};
+           _item[`<#noparse>${name}</#noparse>`] = val;
+            set${field.typeAsPojo.name}(_item);
+          };
 
-           const onTabChange = (e: { index: number }) => { setActiveIndex(e.index); };
+            </#if>
+      </#list>
 
-           const hideDialog = () => {
-               setSubmitted(false);
-               onClose();
-           };
+          const onTabChange = (e: { index: number }) => {
+                  setActiveIndex(e.index);
+          };
 
+         const hideDialog = () => {
+                     setSubmitted(false);
+                     onClose();
+             };
 
-           const saveItem = async () => {
-               setSubmitted(true);
-               <#list pojo.fields as field>
-                   <#if field.list && !field.association>
-                item.${field.name?uncap_first} = ${field.name?uncap_first};
-                   </#if>
+      const saveItem = async () => {
+            setSubmitted(true);
+            let _item = {...item};
+             <#list pojo.fields as field>
+              <#if field.list && !field.association>
+            _item.${field.name?uncap_first} = ${field.name?uncap_first};
+                 </#if>
                </#list>
-               let _items = [...items];
-               let _item = {...item};
+             try {
+                 if (_item.id) {
+                 await ${pojo.name?cap_first}Service.update(_item).then((response) => {
+                     console.log(response.data);
+                     update(response.data);
+                     onClose();
+                     })
 
-               if (!_item.id) {
-                    await ${pojo.name?cap_first}Service.save(_item);
-                     _items.push(_item);
-                    add(_item);
-                    MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first} Created', life: 3000 });
-               }
+                 MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first} Updated', life: 3000 });
 
-               setItems(_items);
-               onClose();
-               setItem(emptyItem);
-               <#list pojo.fields as field>
-                <#if field.list>
-               setItem({...item, ${field.name?cap_first}: null, });
-               set${field.typeAsPojo.name}(new ${field.typeAsPojo.name}Dto());
-               </#if>
-               </#list>
-           };
+                 }
+                  } catch (error) {
+                  console.log(error);
+                  MessageService.showToast(showToast, { severity: 'Error', summary: 'Error', detail: 'Failed to save ${pojo.name?unccap_first}', life: 3000 });
 
-           const onInputTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
-               const val = (e.target && e.target.value) || '';
-               let _item = {...item};
-               _item[`<#noparse>${name}`</#noparse>] = val;
-               setItem(_item);
-           };
+                        }
+                    };
+    const onInputTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
+     const val = (e.target && e.target.value) || '';
+      let _item = {...item};
+      _item[`<#noparse>${name}`</#noparse>] = val;
+       setItem(_item);
+        };
 
-           const onInputDateChange = (e: CalendarChangeEvent, name: string) => {
-               const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
-               let _item = { ...item};
-               _item[`<#noparse>${name}</#noparse>`] = val;
-               setItem(_item);
-           };
+      const onInputDateChange = (e: CalendarChangeEvent, name: string) => {
+       const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
+       let _item = { ...item};
+         _item[`<#noparse>${name}</#noparse>`] = val;
+          setItem(_item);
+          };
 
-           const onInputNumerChange = (e: InputNumberChangeEvent, name: string) => {
-               const val = e.value === null ? null : +e.value;
-               setItem((prevItem) => ({ ...prevItem, [name]: val, }));
-           };
+      const onInputNumerChange = (e: InputNumberChangeEvent, name: string) => {
+       const val = e.value === null ? null : +e.value;
+        setItem((prevItem) => ({ ...prevItem, [name]: val, }));
+        };
 
-           const onMultiSelectChange = (e, field) => {
-             if (e && e.value && Array.isArray(e.value)) {
-                const selectedValues = e.value.map(option => option && option.value);
-                setItem(prevState => ({ ...prevState, [field]: selectedValues, }));
-             }
-           };
+       const onMultiSelectChange = (e, field) => {
+      if (e && e.value && Array.isArray(e.value)) {
+       const selectedValues = e.value.map(option => option && option.value);
+       setItem(prevState => ({ ...prevState, [field]: selectedValues, }));
+       }
+       };
 
-           const onBooleanInputChange = (e: any, name: string) => {
-              const val = e.value;
-              setItem((prevItem) => ({ ...prevItem, [name]: val, }));
-           };
+      const onBooleanInputChange = (e: any, name: string) => {
+      const val = e.value;
+       setItem((prevItem) => ({ ...prevItem, [name]: val, }));
+         };
 
-             const itemDialogFooter = (
+
+
+      const itemDialogFooter = (
                      <>
-                             <Button label="Cancel" icon="pi pi-times" text onClick={hideDialog}/>
-                             <Button label="Save" icon="pi pi-check" text onClick={saveItem}/>
+         <Button label="Cancel" icon="pi pi-times" text onClick={hideDialog}/>
+          <Button label="Save" icon="pi pi-check" text onClick={saveItem}/>
                      </>
                  );
 

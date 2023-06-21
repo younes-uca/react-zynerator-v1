@@ -1,11 +1,21 @@
+import {Button} from 'primereact/button';
+import {Column} from 'primereact/column';
+import {Dropdown} from 'primereact/dropdown';
+import {TabView, TabPanel} from 'primereact/tabview';
+import {DataTable} from 'primereact/datatable';
+import {Dialog} from 'primereact/dialog';
+import {InputNumber, InputNumberChangeEvent} from 'primereact/inputnumber';
+import {InputText} from 'primereact/inputtext';
+import {classNames} from 'primereact/utils';
 import { InputTextarea } from 'primereact/inputtextarea';
 import {AxiosResponse} from 'axios';
 import React, {useEffect, useState} from 'react';
 import {Calendar, CalendarChangeEvent} from 'primereact/calendar';
 import { format } from 'date-fns';
-import {InputNumberChangeEvent} from 'primereact/inputnumber';
 import { InputSwitch } from "primereact/inputswitch";
 import {MultiSelect} from "primereact/multiselect";
+
+
 
 import {MessageService} from "/pages/controller/service/MessageService";
 
@@ -61,7 +71,11 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
 
         useEffect(() => {
               setItem(selectedItem ? { ...selectedItem } : { ...emptyItem });
-                   setPurchaseItems(selectedItem?.field.name ?? []);
+
+            setItem((prevState) => ({
+                ...prevState,
+                purchaseItems: selectedItem?.purchaseItems ?? [],
+            }));
 
           }, [selectedItem]);
 
@@ -76,47 +90,43 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
                    setSubmitted(true);
                    if( item.purchaseItems == null ){
                    item.purchaseItems = [];}
-                   const existingItem = item.purchaseItems.find((item) => item.id === purchaseItem.id);
-                   const updatedItems = item.purchaseItems.map((item) =>
-                            item.id === purchaseItem.id ? { ...item, product: { ...selectedProduct } } : item,
-                           );
-                      if (existingItem) {
+              let _item = {...purchaseItem};
+              if (!_item.id) {
 
-                        setItem((prevState) => ({
+                  _item.product = selectedProduct;
+                  item.purchaseItems.push(_item);
+
+                        setItem((prevState :any) => ({
                           ...prevState,
-                           purchaseItems: updatedItems
+                           purchaseItems: item.purchaseItems
                                 }));
-                        setSelectedPurchaseItem(PurchaseItemDto());
+                  MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Created', life: 3000 });
 
-                        MessageService.showToast(showToast, {
-                           severity: 'success',
-                           summary: 'Successful',
-                           detail: 'PurchaseItem Updated',
-                           life: 3000,
-                             });
-                       }else {
-                            const newItem = {
-                                ...purchaseItem,
-                            product :{ ...selectedProduct },
-                             };
-                           item.purchaseItems.push(newItem);
-                           setItem((prevState) => ({
-                                ...prevState,
-                               purchaseItems:  purchaseItems,
-                                      }));
+              } else {
+                  const updatedItems = purchaseItems.map((item) =>
+                      item.id === purchaseItem.id ? { ...item, product: { ...selectedProduct } } : item,
+                  );
 
-                           MessageService.showToast(showToast, {
-                            severity: 'success',
-                             summary: 'Successful',
-                             detail: 'PurchaseItem Created',
-                             life: 3000,
-                             });
-                      }
-                   setPurchaseItem(new PurchaseItemDto());
-                   setSelectedProduct(null);
+                  if (purchaseItems.find((item) => item.id === purchaseItem.id)) {
+                      MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Updated', life: 3000 });
 
-              };
-       const deletePurchaseItem = (rowData) => {
+                  }
+
+                  setItem((prevState :any) => ({
+                      ...prevState,
+                      purchaseItems: updatedItems
+                  }));
+                  setSelectedPurchaseItem(null);
+              }
+
+              setPurchaseItem(new PurchaseItemDto());
+              setSelectedProduct(null);
+
+          };
+
+
+
+    const deletePurchaseItem = (rowData) => {
                const updatedItems = item.purchaseItems.filter((val) => val !== rowData);
                setItem((prevState) => ({
                   ...prevState,
@@ -249,7 +259,7 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
 
                     <div className="field col-6">
                         <label htmlFor="total">Total</label>
-                        <InputNumber id="total" value={item ? item.total : ''} onChange={(e) => onInputNumerChange(e, 'total')}/>
+                        <InputNumber id="total" value={item ? item.total : 0} onChange={(e) => onInputNumerChange(e, 'total')}/>
                     </div>
 
                 <div className="field col-6">

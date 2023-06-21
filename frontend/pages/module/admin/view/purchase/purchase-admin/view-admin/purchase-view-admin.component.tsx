@@ -1,11 +1,16 @@
 import {Button} from 'primereact/button';
 import {Column} from 'primereact/column';
-import { TabView, TabPanel } from 'primereact/tabview';
+import {Dropdown} from 'primereact/dropdown';
+import {TabView, TabPanel} from 'primereact/tabview';
 import {DataTable} from 'primereact/datatable';
 import {Dialog} from 'primereact/dialog';
-import {InputNumber} from 'primereact/inputnumber';
+import {InputNumber, InputNumberChangeEvent} from 'primereact/inputnumber';
 import {InputText} from 'primereact/inputtext';
+import {classNames} from 'primereact/utils';
+import { InputTextarea } from 'primereact/inputtextarea';
+import {AxiosResponse} from 'axios';
 import React, {useEffect, useState} from 'react';
+import {Calendar, CalendarChangeEvent} from 'primereact/calendar';
 
 import  {PurchaseDto}  from '/pages/controller/model/Purchase.model';
 
@@ -41,7 +46,7 @@ return(
 
             <div className="field col-6">
                 <label htmlFor="reference">Reference</label>
-                <InputText id="reference" value={item.reference} disabled required autoFocus className={classNames({'p-invalid': submitted && !item.reference})} />
+                <InputText id="reference" value={item.reference} disabled  />
                 {submitted && !item.reference && <small className="p-invalid">Reference is required.</small>}
             </div>
 
@@ -52,7 +57,7 @@ return(
 
             <div className="field col-6">
                 <label htmlFor="image">Image</label>
-                <InputText id="image" value={item.image} disabled required autoFocus className={classNames({'p-invalid': submitted && !item.image})} />
+                <InputText id="image" value={item.image} disabled  />
                 {submitted && !item.image && <small className="p-invalid">Image is required.</small>}
             </div>
 
@@ -70,13 +75,13 @@ return(
 
                 <div className="field col-6">
                     <label htmlFor="client">Client</label>
-                    <Dropdown  id="clientDropdown"  value={item.client} options={clients} disabled  placeholder="Sélectionnez un client" filter filterPlaceholder="Rechercher un client" optionLabel="fullName" />
+                    <Dropdown  id="clientDropdown"  value={selectedItem?.client?.id} disabled  />
                 </div>
         </div>
 </TabPanel>
     <TabPanel header="purchaseItems">
                 <div className="card">
-                    <DataTable value={purchaseItems} tableStyle={{minWidth: '50rem'}} dataKey="id">
+                    <DataTable value={selectedItem?.purchaseItems} tableStyle={{minWidth: '50rem'}} dataKey="id">
                                 <Column field="product.reference" header="Product"></Column>
                                 <Column field="price" header="Price"></Column>
                                 <Column field="quantity" header="Quantity"></Column>

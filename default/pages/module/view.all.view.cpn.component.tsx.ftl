@@ -1,12 +1,19 @@
 import {Button} from 'primereact/button';
 import {Column} from 'primereact/column';
-import { TabView, TabPanel } from 'primereact/tabview';
+import {Dropdown} from 'primereact/dropdown';
+import {TabView, TabPanel} from 'primereact/tabview';
 import {DataTable} from 'primereact/datatable';
 import {Dialog} from 'primereact/dialog';
-import {InputNumber} from 'primereact/inputnumber';
+import {InputNumber, InputNumberChangeEvent} from 'primereact/inputnumber';
 import {InputText} from 'primereact/inputtext';
+import {classNames} from 'primereact/utils';
+import { InputTextarea } from 'primereact/inputtextarea';
+import {AxiosResponse} from 'axios';
 import React, {useEffect, useState} from 'react';
-
+import {Calendar, CalendarChangeEvent} from 'primereact/calendar';
+import { format } from 'date-fns';
+import { InputSwitch } from "primereact/inputswitch";
+import {MultiSelect} from "primereact/multiselect";
 import  {${pojo.name?cap_first}Dto}  from '/pages/controller/model/${pojo.name?cap_first}.model';
 
 const View = ({visible,onClose,selectedItem}) => {
@@ -43,27 +50,26 @@ return(
         <#if  field.type.simpleName == "Date" || field.dateTime>
         <div className="field col-6">
             <label htmlFor="${field.name}">${field.name?cap_first}</label>
-            <Calendar id="${field.name}" value={item.${field.name}} disabled dateFormat="dd/mm/yy" showTime />
+            <Calendar id="${field.name}" value={selectedItem?.${field.name}} disabled dateFormat="dd/mm/yy" showTime />
         </div>
         <#elseif  field.large>
             <div className="field col-6">
                 <label htmlFor="${field.name}">${field.name?cap_first}</label>
                 <span className="p-float-label">
-               <InputTextarea id="${field.name?uncap_first}" value={item.${field.name}} disabled rows={5} cols={30} />
+               <InputTextarea id="${field.name?uncap_first}" value={selectedItem?.${field.name}} disabled rows={5} cols={30} />
                 </span>
             </div>
         <#elseif field.pureString>
             <div className="field col-6">
                 <label htmlFor="${field.name?uncap_first}">${field.name?cap_first}</label>
-                <InputText id="${field.name?uncap_first}" value={item.${field.name?uncap_first}} disabled required autoFocus className={classNames({'p-invalid': submitted && !item.${field.name?uncap_first}})} />
-                {submitted && !item.${field.name?uncap_first} && <small className="p-invalid">${field.name?cap_first} is required.</small>}
-            </div>
+                <InputText id="${field.name?uncap_first}" value={selectedItem?.${field.name?uncap_first}} disabled   />
+                 </div>
         <#elseif field.type.simpleName == "Boolean">
         <div className="field col-6">
             <div  class="label-inputswitch">
                 <label htmlFor="${field.name?uncap_first}">${field.name?cap_first}</label>
                 <span className="p-float-label">
-            <InputSwitch  id="${field.name}" checked={item.${field.name}} disabled />
+            <InputSwitch  id="${field.name}" checked={selectedItem?.${field.name}} disabled />
              </span>
             </div>
             </div>
@@ -77,7 +83,7 @@ return(
             <#elseif field.generic && !field.notVisibleInCreatePage>
                 <div className="field col-6">
                     <label htmlFor="${field.name?uncap_first}">${field.name?cap_first}</label>
-                    <Dropdown  id="${field.name?uncap_first}Dropdown"  value={item.${field.name}} options={${field.name}s} disabled  placeholder="Sélectionnez un ${field.name?uncap_first}" filter filterPlaceholder="Rechercher un ${field.name?uncap_first}" optionLabel="<#if field.typeAsPojo??>${field.typeAsPojo.labelOrReferenceOrId.name}<#else>${field..name}</#if>" />
+                    <Dropdown  id="${field.name?uncap_first}Dropdown"  value={<#if field.typeAsPojo??>selectedItem?.${field.name?uncap_first}?.${field.typeAsPojo.labelOrReferenceOrId.name}<#else>${field..name}</#if>}  disabled  />
                 </div>
             </#if>
             </#list>
@@ -87,7 +93,7 @@ return(
     <#if field.list && (field.associationComplex || field.fakeAssociation)>
     <TabPanel header="${field.name}">
                 <div className="card">
-                    <DataTable value={${field.name?uncap_first}} tableStyle={{minWidth: '50rem'}} dataKey="id">
+                    <DataTable value={selectedItem?.${field.name?uncap_first}} tableStyle={{minWidth: '50rem'}} dataKey="id">
                     <#list field.typeAsPojo.fields as myField>
                         <#if myField.simple && !myField.notVisibleInCreatePage>
                             <#if !myField.id>

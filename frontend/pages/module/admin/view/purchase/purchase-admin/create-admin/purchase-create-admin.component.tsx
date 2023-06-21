@@ -67,27 +67,40 @@ const Create = ({visible, onClose, add, showToast, list}) => {
     };
 
     const addPurchaseItems = () => {
-         setSubmitted(true);
-         if( item.purchaseItems == null )
-         item.purchaseItems = new Array<PurchaseItemDto>();
-         let _items = Array.isArray(item.purchaseItems) ? item.purchaseItems : [];
-         let _item = purchaseItem;
-         if (!_item.id) {
+        setSubmitted(true);
+        if( item.purchaseItems == null ){
+            item.purchaseItems = [];}
+        let _item = {...purchaseItem};
+        if (!_item.id) {
+
             _item.product = selectedProduct;
-                _items.push(_item);
-                MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Created', life: 3000 });
-                setPurchaseItems(_items);
-         } else {
+            item.purchaseItems.push(_item);
+
+            setItem((prevState :any) => ({
+                ...prevState,
+                purchaseItems: item.purchaseItems
+            }));
+            MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Created', life: 3000 });
+
+        } else {
             const updatedItems = purchaseItems.map((item) =>
-            item.id === purchaseItem.id ? { ...item, product: { ...selectedProduct } } : item,
-                );
+                item.id === purchaseItem.id ? { ...item, product: { ...selectedProduct } } : item,
+            );
 
             if (purchaseItems.find((item) => item.id === purchaseItem.id)) {
                 MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Updated', life: 3000 });
+
             }
 
-         setPurchaseItem(new PurchaseItemDto());
-         setSelectedProduct(null);
+            setItem((prevState :any) => ({
+                ...prevState,
+                purchaseItems: updatedItems
+            }));
+            setSelectedPurchaseItem(null);
+        }
+
+        setPurchaseItem(new PurchaseItemDto());
+        setSelectedProduct(null);
 
     };
 

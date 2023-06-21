@@ -4,6 +4,7 @@ import {BaseCriteria} from "/pages/zynerator/criteria/BaseCriteria.model";
 import {PaginatedList} from "/pages/zynerator/dto/PaginatedList.model";
 import {BaseDto} from "/pages/zynerator/dto/BaseDto.model";
 import {${pojo.name}Dto} from '/pages/controller/model/${pojo.name}.model';
+import {${pojo.name?cap_first}Criteria} from "/pages/controller/criteria/${pojo.name?cap_first}Criteria.model";
 
 
 

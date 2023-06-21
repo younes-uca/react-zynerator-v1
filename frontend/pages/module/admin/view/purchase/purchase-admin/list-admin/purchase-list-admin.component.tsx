@@ -16,10 +16,12 @@ import {MessageService} from '/pages/controller/service/MessageService';
 
 import {PurchaseService} from '/pages/controller/service/Purchase.service';
 import {PurchaseDto}  from '/pages/controller/model/Purchase.model';
+import {PurchaseCriteria} from "/pages/controller/criteria/PurchaseCriteria.model";
 
-//import Edit from '/pages/module/admin/view/purchase/purchase-admin/edit-admin/purchase-edit-admin.component';
+import Edit from '/pages/module/admin/view/purchase/purchase-admin/edit-admin/purchase-edit-admin.component';
 import Create from '/pages/module/admin/view/purchase/purchase-admin/create-admin/purchase-create-admin.component';
-//import View from '/pages/module/admin/view/purchase/purchase-admin/view-admin/purchase-view-admin.component';
+
+import View from '/pages/module/admin/view/purchase/purchase-admin/view-admin/purchase-view-admin.component';
 
     const List = () => {
     const emptyItem = new PurchaseDto();
@@ -137,36 +139,37 @@ import Create from '/pages/module/admin/view/purchase/purchase-admin/create-admi
         MessageService.showToast(toast, { severity: 'success', summary: 'Successful', detail: 'Purchases Deleted', life: 3000 });
     };
 
-    const leftToolbarTemplate = () => {
-        return (
-            <React.Fragment>
-                <div className="my-2">
-                    <Button label="New" icon="pi pi-plus" severity="success" className=" mr-2" onClick={ showCreateModal} />
-                    <Button label="Delete" icon="pi pi-trash" severity="danger" className=" mr-2" onClick={confirmDeleteSelected} disabled={!selectedItems || !selectedItems.length} />
-                    <Button label="Search" icon={`pi pi-${findByCriteriaShow ? 'angle-down' : 'angle-right'}`} className=" mr-2" severity="warning" onClick={showSearch} />
-                </div>
-            </React.Fragment>
-        );
-    };
+        const leftToolbarTemplate = () => {
+            return (
+                <React.Fragment>
+                    <div className="my-2">
+                        <Button label="New" icon="pi pi-plus" severity="success" className=" mr-2" onClick={ showCreateModal} />
+                        <Button label="Delete" icon="pi pi-trash" severity="danger" className=" mr-2" onClick={confirmDeleteSelected} disabled={!selectedItems || !selectedItems.length} />
+                        <Button label="Search" icon={`pi pi-${findByCriteriaShow ? 'angle-down' : 'angle-right'}`} className=" mr-2" severity="warning" onClick={showSearch} />
+                    </div>
+                </React.Fragment>
+            );
+        };
 
-    const rightToolbarTemplate = () => {
-        return (
-            <React.Fragment>
-                <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} chooseLabel="Import" className="mr-2 inline-block" />
-                <Button label="Export" icon="pi pi-upload" severity="help" onClick={exportCSV} />
-            </React.Fragment>
-        );
-    };
+        const rightToolbarTemplate = () => {
+            return (
+                <React.Fragment>
+                    <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} chooseLabel="Import" className="mr-2 inline-block" />
+                    <Button label="Export" icon="pi pi-upload" severity="help" onClick={exportCSV} />
+                </React.Fragment>
 
-    const actionBodyTemplate = (rowData: PurchaseDto) => {
-        return ( <>
-            <Button icon="pi pi-pencil" rounded severity="success" className="mr-1" onClick={() => showEditModal(rowData)} />
-            <Button icon="pi pi-trash" rounded severity="warning" onClick={() => confirmDeleteItem(rowData)} />
-            <Button icon="pi pi-eye" rounded severity="info" className="mr-1" onClick={() => showViewModal(rowData)} /> < />
-        );
-    };
+            );
+        };
 
-    const header = (
+        const actionBodyTemplate = (rowData: PurchaseDto) => {
+            return ( <>
+                    <Button icon="pi pi-pencil" rounded severity="success" className="mr-1" onClick={() => showEditModal(rowData)} />
+                    <Button icon="pi pi-trash" rounded severity="warning" onClick={() => confirmDeleteItem(rowData)} />
+                    <Button icon="pi pi-eye" rounded severity="info" className="mr-1" onClick={() => showViewModal(rowData)} /> < />
+            );
+        };
+
+        const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <h5 className="m-0">Manage Purchases</h5>
             <span className="block mt-2 md:mt-0 p-input-icon-left"><i className="pi pi-search" />
@@ -174,17 +177,20 @@ import Create from '/pages/module/admin/view/purchase/purchase-admin/create-admi
         </div>
     );
 
-    const deleteItemDialogFooter = ( <>
-        <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemDialog} />
-        <Button label="Yes" icon="pi pi-check" text onClick={deleteItem} />< />
-    );
+        const deleteItemDialogFooter = (
+            <>
+                <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemDialog}/>
+                <Button label="Yes" icon="pi pi-check" text onClick={deleteItem}/>
+            </>
+        );
+        const deleteItemsDialogFooter = (
+            <>
+                <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemsDialog}/>
+                <Button label="Yes" icon="pi pi-check" text onClick={deleteSelectedItems}/>
+            </>
+        );
 
-    const deleteItemsDialogFooter = ( <>
-        <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemsDialog}/>
-        <Button label="Yes" icon="pi pi-check" text onClick={deleteSelectedItems}/>
-    );
-
-return (
+        return (
     <div className="grid crud-demo">
         <div className="col-12">
             <div className="card">
@@ -217,8 +223,8 @@ return (
                 </div>
 
                 <Create visible={showCreateDialog} onClose={() => setShowCreateDialog(false)} add={add} showToast={toast} list={items} />
-                { /* <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update} />
-                <View visible={showViewDialog} onClose={() =>  { setShowViewDialog(false); setSelectedItem(null); }} selectedItem={selectedItem} /> */}
+               <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update} />
+                <View visible={showViewDialog} onClose={() =>  { setShowViewDialog(false); setSelectedItem(null); }} selectedItem={selectedItem} />
                 <Dialog visible={deleteItemDialog} style={{width: '450px'}} header="Confirm" modal footer={deleteItemDialogFooter} onHide={hideDeleteItemDialog}>
                     <div className="flex align-items-center justify-content-center">
                     <i className="pi pi-exclamation-triangle mr-3" style={{fontSize: '2rem'}}/>

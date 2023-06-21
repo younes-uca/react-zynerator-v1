@@ -1,13 +1,19 @@
+import {Button} from 'primereact/button';
+import {Column} from 'primereact/column';
+import {Dropdown} from 'primereact/dropdown';
+import {TabView, TabPanel} from 'primereact/tabview';
+import {DataTable} from 'primereact/datatable';
+import {Dialog} from 'primereact/dialog';
+import {InputNumber, InputNumberChangeEvent} from 'primereact/inputnumber';
+import {InputText} from 'primereact/inputtext';
+import {classNames} from 'primereact/utils';
 import { InputTextarea } from 'primereact/inputtextarea';
 import {AxiosResponse} from 'axios';
 import React, {useEffect, useState} from 'react';
 import {Calendar, CalendarChangeEvent} from 'primereact/calendar';
 import { format } from 'date-fns';
-import {InputNumberChangeEvent} from 'primereact/inputnumber';
 import { InputSwitch } from "primereact/inputswitch";
-import {MultiSelect} from "primereact/multiselect";
-
-import {MessageService} from "/pages/controller/service/MessageService";
+import {MultiSelect} from "primereact/multiselect";import {MessageService} from "/pages/controller/service/MessageService";
 
 import {${pojo.name}Service} from '/pages/controller/service/${pojo.name}.service';
 
@@ -74,7 +80,11 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
               setItem(selectedItem ? { ...selectedItem } : { ...emptyItem });
                <#list pojo.fields as field>
                           <#if field.list>
-                   set${field.name?cap_first}(selectedItem?.field.name ?? []);
+
+                   setItem((prevState) => ({
+                     ...prevState,
+                       ${field.name?uncap_first}:  selectedItem?.${field.name?uncap_first} ?? [],
+                          }));
                             </#if>
                     </#list>
 
@@ -90,77 +100,67 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
       <#list pojo.fields as field>
             <#if field.list && !field.association>
           const add${field.name?cap_first} = () => {
-                   setSubmitted(true);
-                   if( item.${field.name?uncap_first} == null ){
-                   item.${field.name?uncap_first} = [];}
-                   const existingItem = item.${field.name?uncap_first}.find((item) => item.id === ${field.typeAsPojo.name?uncap_first}.id);
-                   const updatedItems = item.${field.name?uncap_first}.map((item) =>
+                  setSubmitted(true);
+                  if( item.${field.name?uncap_first} == null )
+                  item.${field.name?uncap_first} = new Array<${field.typeAsPojo.name?cap_first}Dto>();
+
+                  let _item = ${pojo.name?uncap_first}Item;
+                  if (!_item.id) {
                           <#list field.typeAsPojo.fields as innerField>
-                            <#if  !innerField.notVisibleInCreatePage>
-                             <#if innerField.generic && innerField.typeAsPojo.name != pojo.name>
-                            item.id === ${field.typeAsPojo.name?uncap_first}.id ? { ...item, ${innerField.name?uncap_first}: { ...selected${innerField.name?cap_first} } } : item,
+                             <#if  !innerField.notVisibleInCreatePage>
+                                 <#if innerField.generic && innerField.typeAsPojo.name != pojo.name>
+                     _item.${innerField.name?uncap_first} = selected${innerField.name?cap_first};
+                                 </#if>
                               </#if>
-                              </#if>
-                             </#list>
-                           );
-                      if (existingItem) {
-
-                        setItem((prevState) => ({
+                          </#list>
+                         item.${field.name?cap_first}.push(_item);
+                         MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Created', life: 3000 });
+                         set${field.name?cap_first}(_items);
+                         setItem((prevState :any) => ({
                           ...prevState,
-                           ${field.name?uncap_first}: updatedItems
-                                }));
-                        setSelected${pojo.name?cap_first}Item(${field.typeAsPojo.name}Dto());
+                             ${field.name?cap_first}: item.${field.name?cap_first}
+                              }));
+                  } else {
+                     const updatedItems = item.${field.name?uncap_first}.map((item) =>
+                            <#list field.typeAsPojo.fields as innerField>
+                               <#if  !innerField.notVisibleInCreatePage>
+                                   <#if innerField.generic && innerField.typeAsPojo.name != pojo.name>
+                     item.id === ${field.typeAsPojo.name?uncap_first}.id ? { ...item, ${innerField.name?uncap_first}: { ...selected${innerField.name?cap_first} } } : item,
+                                   </#if>
+                               </#if>
+                           </#list>
+                         );
 
-                        MessageService.showToast(showToast, {
-                           severity: 'success',
-                           summary: 'Successful',
-                           detail: '${field.typeAsPojo.name?cap_first} Updated',
-                           life: 3000,
-                             });
-                       }else {
-                            const newItem = {
-                                ...${field.typeAsPojo.name?uncap_first},
-                         <#list field.typeAsPojo.fields as innerField>
-                                             <#if  !innerField.notVisibleInCreatePage>
-                                                 <#if innerField.generic && innerField.typeAsPojo.name != pojo.name>
-                            ${innerField.name?uncap_first} :{ ...selected${innerField.name?cap_first} },
-                                                 </#if>
-                                              </#if>
-                                          </#list>
-                             };
-                           item.${field.name?uncap_first}.push(newItem);
-                           setItem((prevState) => ({
-                                ...prevState,
-                               ${field.name?uncap_first}:  ${field.name?uncap_first},
-                                      }));
+                     if (item.${field.name?uncap_first}.find((item) => item.id === ${pojo.name?uncap_first}Item.id)) {
+                         MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Updated', life: 3000 });
+                     }
+                     setItem((prevState :any) => ({
+                       ...prevState,
+                         ${field.name?cap_first}: updatedItems
+                         }));
+                         setSelected${field.typeAsPojo.name?cap_first}(null);
+                                   }
 
-                           MessageService.showToast(showToast, {
-                            severity: 'success',
-                             summary: 'Successful',
-                             detail: '${field.typeAsPojo.name?cap_first} Created',
-                             life: 3000,
-                             });
-                      }
-                   set${field.typeAsPojo.name?cap_first}(new ${field.typeAsPojo.name}Dto());
-                      <#list field.typeAsPojo.fields as innerField>
-                      <#if  !innerField.notVisibleInCreatePage>
-                          <#if innerField.generic && innerField.typeAsPojo.name != pojo.name>
-                   setSelected${innerField.name?cap_first}(null);
-                          </#if>
-                      </#if>
-                  </#list>
+                  set${field.typeAsPojo.name?cap_first}(new ${field.typeAsPojo.name}Dto());
+                     <#list field.typeAsPojo.fields as innerField>
+                     <#if  !innerField.notVisibleInCreatePage>
+                         <#if innerField.generic && innerField.typeAsPojo.name != pojo.name>
+                  setSelected${innerField.name?cap_first}(null);
+                         </#if>
+                     </#if>
+                 </#list>
 
-              };
-       const delete${field.typeAsPojo.name} = (rowData) => {
-               const updatedItems = item.${field.name?uncap_first}.filter((val) => val !== rowData);
-               setItem((prevState) => ({
-                  ...prevState,
-                  ${field.name?uncap_first}: updatedItems,
-                        }));
-               set${pojo.name?cap_first}Item(new ${field.typeAsPojo.name}Dto());
-               showToast?.show({severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first}Item Deleted', life: 3000});
-              };
+             };
 
+             const delete${field.typeAsPojo.name} = (rowData) => {
+                 const updatedItems = ${field.name?uncap_first}.filter((val) => val !== rowData);
+                 setItem((prevState :any) => ({
+                   ...prevState,
+                   ${field.name?cap_first}: updatedItems
+                                 }));
+                 set${pojo.name?cap_first}Item(new ${field.typeAsPojo.name}Dto());
+                 showToast?.show({severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first}Item Deleted', life: 3000});
+             };
 
         const edit${field.typeAsPojo.name} = (rowData) => {
            setActiveTab(0);

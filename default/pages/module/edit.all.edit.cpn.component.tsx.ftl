@@ -123,10 +123,15 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
                                }));
                    } else {
                       const updatedItems = item.${field.name?uncap_first}.map((item) =>
+                      //To be validate by Mr Zouani
+                      <#assign i=0>
                              <#list field.typeAsPojo.fields as innerField>
                                 <#if  !innerField.notVisibleInCreatePage>
-                                    <#if innerField.generic && innerField.typeAsPojo.name != pojo.name>
-                      item.id === ${field.typeAsPojo.name?uncap_first}.id ? { ...item, ${innerField.name?uncap_first}: { ...selected${innerField.name?cap_first} } } : item,
+                      item.id === ${field.typeAsPojo.name?uncap_first}.id ? { ...item, <#if innerField.generic &&
+                      innerField.typeAsPojo.name != pojo.name>${innerField.name?uncap_first}: { ...selected${innerField.name?cap_first}
+                       }<#assign i=0> <#list innerField.generic as innerField><#if innerField?index != innerField.generic?size -1>,</#if>
+                       </#list>,${innerField.name?uncap_first}: ${field.typeAsPojo.name?uncap_first}.${innerField.name?uncap_first} }
+                       <#if innerField?index != field.typeAsPojo.fields?size -1>,</#if>: item,
                                     </#if>
                                 </#if>
                             </#list>

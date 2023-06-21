@@ -200,11 +200,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
     const saveItem = async () => {
         setSubmitted(true);
-        <#list pojo.fields as field>
-            <#if field.list && !field.association>
-         item.${field.name?uncap_first} = ${field.name?uncap_first};
-            </#if>
-        </#list>
+
         let _items = [...items];
         let _item = {...item};
 

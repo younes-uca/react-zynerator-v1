@@ -103,11 +103,11 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
                   MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Created', life: 3000 });
 
               } else {
-                  const updatedItems = purchaseItems.map((item) =>
+                  const updatedItems = item.purchaseItems.map((item) =>
                       item.id === purchaseItem.id ? { ...item, product: { ...selectedProduct } } : item,
                   );
 
-                  if (purchaseItems.find((item) => item.id === purchaseItem.id)) {
+                  if (item.purchaseItems.find((item) => item.id === purchaseItem.id)) {
                       MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Updated', life: 3000 });
 
                   }
@@ -199,7 +199,7 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
       const saveItem = async () => {
             setSubmitted(true);
             let _item = {...item};
-            _item.purchaseItems = purchaseItems;
+
              try {
                  if (_item.id) {
                  await PurchaseService.update(_item).then((response) => {
@@ -248,7 +248,7 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
         setItem((prevItem) => ({ ...prevItem, [name]: val, }));
     };
 
-  
+
 
 
              const itemDialogFooter = (

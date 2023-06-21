@@ -235,11 +235,7 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
       const saveItem = async () => {
             setSubmitted(true);
             let _item = {...item};
-             <#list pojo.fields as field>
-              <#if field.list && !field.association>
-            _item.${field.name?uncap_first} = ${field.name?uncap_first};
-                 </#if>
-               </#list>
+            
              try {
                  if (_item.id) {
                  await ${pojo.name?cap_first}Service.update(_item).then((response) => {

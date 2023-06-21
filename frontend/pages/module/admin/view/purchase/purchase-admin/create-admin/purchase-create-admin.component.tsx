@@ -83,11 +83,11 @@ const Create = ({visible, onClose, add, showToast, list}) => {
             MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Created', life: 3000 });
 
         } else {
-            const updatedItems = purchaseItems.map((item) =>
-                item.id === purchaseItem.id ? { ...item, product: { ...selectedProduct } } : item,
+            const updatedItems = item.purchaseItems.map((item) =>
+                item === purchaseItem ? { ...item, product: { ...selectedProduct }} : item,
             );
 
-            if (purchaseItems.find((item) => item.id === purchaseItem.id)) {
+            if (item.purchaseItems.find((item) => item === purchaseItem)) {
                 MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Updated', life: 3000 });
 
             }

@@ -22,10 +22,19 @@ import Edit from '/pages/module/admin/view/purchase/purchase-admin/edit-admin/pu
 import Create from '/pages/module/admin/view/purchase/purchase-admin/create-admin/purchase-create-admin.component';
 
 import View from '/pages/module/admin/view/purchase/purchase-admin/view-admin/purchase-view-admin.component';
+import {Calendar} from "primereact/calendar";
+import {InputNumber} from "primereact/inputnumber";
+import {Dropdown} from "primereact/dropdown";
+import {AxiosResponse} from "axios";
+import {ProductDto} from "../../../../../../controller/model/Product.model";
+import {ClientDto} from "../../../../../../controller/model/Client.model";
+import {ClientService} from "../../../../../../controller/service/Client.service";
+import {ProductService} from "../../../../../../controller/service/Product.service";
+import {Card} from "primereact/card";
 
-    const List = () => {
+const List = () => {
+
     const emptyItem = new PurchaseDto();
-
     const [items, setItems] = useState<PurchaseDto[]>([]);
     const [deleteItemDialog, setDeleteItemDialog] = useState(false);
     const [deleteItemsDialog, setDeleteItemsDialog] = useState(false);
@@ -43,12 +52,31 @@ import View from '/pages/module/admin/view/purchase/purchase-admin/view-admin/pu
     const toast = useRef<Toast>();
     const dt = useRef<DataTable<PurchaseDto[]>>();
     const [findByCriteriaShow, setFindByCriteriaShow] = useState(false);
+    type ProductResponse = AxiosResponse<ProductDto[]>;
+    const [clients, setClients] = useState<ClientDto[]>([]);
+    const [products, setProducts] = useState<ProductDto[]>([]);
+    type ClientResponse = AxiosResponse<ClientDto[]>;
 
     const showSearch = () => {
         setFindByCriteriaShow(!findByCriteriaShow);
     };
 
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [productsResponse ,clientsResponse ] = await Promise.all<ProductResponse,ClientResponse>([
+                    ProductService.getList(),
+                    ClientService.getList(),
+                ]);
+                setProducts(productsResponse.data);
+                setClients(clientsResponse.data);
+
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchData();
         fetchItems(criteria);
     }, [criteria]);
 
@@ -196,6 +224,52 @@ import View from '/pages/module/admin/view/purchase/purchase-admin/view-admin/pu
             <div className="card">
                 <Toast ref={toast} />
                 <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+                {findByCriteriaShow && (
+                    <Card>
+                        <div className="search-container">
+                            <div className="grid">
+                                <span className="p-float-label mr-3 align-search-items mt-4">
+                                <InputText id="1" value={criteria.reference} onChange={(e) => setCriteria({ ...criteria, reference: e.target.value })} />
+                                <label htmlFor="1">Reference</label>
+                                </span>
+
+                                <span className="p-float-label mr-3 align-search-items mt-4">
+                                <Calendar id="2-1" value={criteria.purchaseDateFrom}
+                                onChange={(e) => setCriteria({ ...criteria, purchaseDateFrom: e.value as Date })} dateFormat="dd-MM-yy" />
+                                <label htmlFor="2-1">Date commande Min</label>
+                                </span>
+
+                                <span className="p-float-label mr-3 align-search-items mt-4">
+                                <Calendar
+                                id="2-2"
+                                value={criteria.purchaseDateTo}
+                                onChange={(e) => setCriteria({ ...criteria, purchaseDateTo: e.value as Date })}
+                                dateFormat="dd-MM-yy"
+                                />
+                                <label htmlFor="2-2">Date commande Max</label>
+                                </span>
+
+                                <span className="p-float-label mr-3 align-search-items mt-4">
+                                <InputNumber id="3-1" value={criteria.totalMin} onChange={(e) => setCriteria({ ...criteria, totalMin: e.value })} mode="decimal" />
+                                <label htmlFor="3-1">Total Min</label>
+                                </span>
+
+                                <span className="p-float-label mr-3 align-search-items mt-4">
+                                <InputNumber id="3-2" value={criteria.totalMax} onChange={(e) => setCriteria({ ...criteria, totalMax: e.value })} mode="decimal" />
+                                <label htmlFor="3-2">Total Max</label>
+                                </span>
+
+                                <span className="p-float-label mr-3 align-search-items mt-4">
+                                <Dropdown id="4" value={criteria.client} options={clients} onChange={(e) => setCriteria({ ...criteria, client: e.target.value })} optionLabel="fullName" filter showClear placeholder="Client" />
+
+                                </span>
+                            </div>
+                        </div>
+                        <div className="align-search-button">
+                            <Button label="Validate" icon="pi pi-sort-amount-down" className="p-button-info mr-2" onClick={fetchItems} />
+                        </div>
+                    </Card>
+                )}
                 <DataTable ref={dt} value={items} selection={selectedItems} onSelectionChange={(e) => setSelectedItems(e.value as PurchaseDto[])} dataKey="id" className="datatable-responsive" globalFilter={globalFilter} header={header} responsiveLayout="scroll" >
                     <Column selectionMode="multiple" headerStyle={{ width: '4rem' }}> </Column>
                     

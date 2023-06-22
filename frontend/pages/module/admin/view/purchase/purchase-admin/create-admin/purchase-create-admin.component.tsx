@@ -34,7 +34,6 @@ const Create = ({visible, onClose, add, showToast, list}) => {
     const [submitted, setSubmitted] = useState(false); const [activeIndex, setActiveIndex] = useState<number>(0);
     const [activeTab, setActiveTab] = useState(0);
     const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
-    const [selectedPurchaseItem, setSelectedPurchaseItem] = useState(null);
     type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
     const [products, setProducts] = useState<ProductDto[]>([]);
 
@@ -76,7 +75,6 @@ const Create = ({visible, onClose, add, showToast, list}) => {
         let _item = {...purchaseItem};
         if (!_item.id) {
             item.purchaseItems.push(_item);
-
             setItem((prevState :any) => ({
                 ...prevState,
                 purchaseItems: item.purchaseItems

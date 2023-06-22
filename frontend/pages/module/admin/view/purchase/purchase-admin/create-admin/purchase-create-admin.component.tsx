@@ -24,6 +24,8 @@ import {ProductDto} from '/pages/controller/model/Product.model';
 import {ProductService} from '/pages/controller/service/Product.service';
 import {ClientDto} from '/pages/controller/model/Client.model';
 import {ClientService} from '/pages/controller/service/Client.service';
+import _default from "chart.js/dist/core/core.layouts";
+import update = _default.update;
 const Create = ({visible, onClose, add, showToast, list}) => {
 
     const emptyItem = new PurchaseDto();
@@ -35,10 +37,10 @@ const Create = ({visible, onClose, add, showToast, list}) => {
     const [selectedPurchaseItem, setSelectedPurchaseItem] = useState(null);
     type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
     const [products, setProducts] = useState<ProductDto[]>([]);
-    const [selectedProduct, setSelectedProduct] = useState(null);
+
     type ProductResponse = AxiosResponse<ProductDto[]>;
     const [clients, setClients] = useState<ClientDto[]>([]);
-    const [selectedClient, setSelectedClient] = useState(null);
+
     type ClientResponse = AxiosResponse<ClientDto[]>;
     const [purchaseItem, setPurchaseItem] = useState<PurchaseItemDto>(new PurchaseItemDto());
 
@@ -68,12 +70,11 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
     const addPurchaseItems = () => {
         setSubmitted(true);
-        if( item.purchaseItems == null ){
-            item.purchaseItems = [];}
+        if( item.purchaseItems == null )
+            item.purchaseItems = [];
+
         let _item = {...purchaseItem};
         if (!_item.id) {
-
-            _item.product = selectedProduct;
             item.purchaseItems.push(_item);
 
             setItem((prevState :any) => ({
@@ -83,28 +84,22 @@ const Create = ({visible, onClose, add, showToast, list}) => {
             MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Created', life: 3000 });
 
         } else {
-            const updatedItems = item.purchaseItems.map((item) =>
-                item === purchaseItem ? { ...item, product: { ...selectedProduct }} : item,
-            );
 
-            if (item.purchaseItems.find((item) => item === purchaseItem)) {
+            const updatedItems = item.purchaseItems.map((item) => item.id === purchaseItem.id ? {...purchaseItem} : item,);
+            if (item.purchaseItems.find((item) => item.id === purchaseItem.id)) {
                 MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Updated', life: 3000 });
-
             }
+            setItem((prevState :any) => ({...prevState, purchaseItems: updatedItems}));
 
-            setItem((prevState :any) => ({
-                ...prevState,
-                purchaseItems: updatedItems
-            }));
-            setSelectedPurchaseItem(null);
         }
 
         setPurchaseItem(new PurchaseItemDto());
-        setSelectedProduct(null);
+
 
     };
 
-    const deletePurchaseItem = (rowData) => {
+
+            const deletePurchaseItem = (rowData) => {
         const updatedItems = purchaseItems.filter((val) => val !== rowData);
         setItem((prevState :any) => ({
             ...prevState,
@@ -115,10 +110,8 @@ const Create = ({visible, onClose, add, showToast, list}) => {
     };
 
     const editPurchaseItem = (rowData) => {
-         setSelectedPurchaseItem(rowData);
          setActiveTab(0);
          setPurchaseItem(rowData);
-        setSelectedProduct(rowData.product);
 
     };
 
@@ -132,6 +125,12 @@ const Create = ({visible, onClose, add, showToast, list}) => {
             const selectedValues = e.value.map(option => option && option.value);
             setPurchaseItem(prevState => ({ ...prevState, [field]: selectedValues, }));
         }
+    };
+    const onDropdownChangePurchaseItems = (e, field) => {
+        setPurchaseItem((prevState) => ({
+            ...prevState,
+            [field]: e.value,
+        }));
     };
 
     const onBooleanInputChangePurchaseItems = (e: any, name: string) => {
@@ -266,8 +265,9 @@ return(
                     <TabPanel header="Creation">
                         <div className="grid">
                             <div className="field col-6">
-                            <label htmlFor="product">Product</label>
-                            <Dropdown id="productDropdown" value={selectedProduct} options={products} onChange={(e) => setSelectedProduct(e.value)} placeholder="Sélectionnez un purchaseItems" filter  filterPlaceholder="Rechercher un product"  optionLabel="reference" />
+                                <label htmlFor="product">Product</label>
+                                <Dropdown id="productDropdown" value={purchaseItem.product} options={products}
+                                          onChange={(e) => onDropdownChangePurchaseItems(e, 'product')} placeholder="Sélectionnez un purchaseItems" filter  filterPlaceholder="Rechercher un product"  optionLabel="reference" />
                             </div>
                             <div className="field col-6">
                             <label htmlFor="price">Price</label>

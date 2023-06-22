@@ -203,10 +203,7 @@ import View from '/pages/module/admin/view/purchase/purchase-admin/view-admin/pu
                     
                     
                     <Column field="purchaseDate" header="PurchaseDate" sortable headerStyle={{ minWidth: '15rem' }}></Column>
-                    <Column field="purchaseDate | date :'dd/MM/yyyy HH:mm'" header="PurchaseDate" sortable headerStyle={{ minWidth: '15rem' }}></Column>
 
-                    
-                    
                     <Column field="image" header="Image" sortable headerStyle={{ minWidth: '15rem' }}></Column>
                     
                     

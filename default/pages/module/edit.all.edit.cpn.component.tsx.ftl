@@ -113,7 +113,7 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
                       const updatedItems = item.${field.name?uncap_first}.map((item) =>
                       <#list field.typeAsPojo.fields as innerField>
                                 <#if  !innerField.notVisibleInCreatePage>
-                     item.id === ${field.typeAsPojo.name?uncap_first}.id ? { ...item, ${field.typeAsPojo.name?uncap_first} }: item,
+                     item.id === ${field.typeAsPojo.name?uncap_first}.id ? { ...item, {...${field.typeAsPojo.name?uncap_first}} }: item,
                                     </#if>
                             </#list>
                           );

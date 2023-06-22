@@ -118,15 +118,12 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
                             </#list>
                           );
 
-                      if (item.${field.name?uncap_first}.find((item) => item.id === ${pojo.name?uncap_first}Item.id)) {
-                          MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Updated', life: 3000 });
-                      }
-                      setItem((prevState :any) => ({ ...prevState, ${field.name?cap_first}: updatedItems}));
+                 MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Updated', life: 3000 });
+
+                 setItem((prevState :any) => ({ ...prevState, ${field.name?cap_first}: updatedItems}));
                           }
-                      set${field.typeAsPojo.name?cap_first}(new ${field.typeAsPojo.name}Dto());
-
-
-              };
+                set${field.typeAsPojo.name?cap_first}(new ${field.typeAsPojo.name}Dto());
+                };
 
               const delete${field.typeAsPojo.name} = (rowData) => {
                   const updatedItems = ${field.name?uncap_first}.filter((val) => val !== rowData);

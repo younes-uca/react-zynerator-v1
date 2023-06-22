@@ -84,9 +84,8 @@ const Create = ({visible, onClose, add, showToast, list}) => {
         } else {
 
             const updatedItems = item.purchaseItems.map((item) => item.id === purchaseItem.id ? {...purchaseItem} : item,);
-            if (item.purchaseItems.find((item) => item.id === purchaseItem.id)) {
-                MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Updated', life: 3000 });
-            }
+              MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Updated', life: 3000 });
+
             setItem((prevState :any) => ({...prevState, purchaseItems: updatedItems}));
 
         }

@@ -82,30 +82,25 @@ const Create = ({visible, onClose, add, showToast, list}) => {
      setSubmitted(true);
       if( item.${field.name?uncap_first} == null )
        item.${field.name?uncap_first} = new Array<${field.typeAsPojo.name?cap_first}Dto>();
-                       let _item = ${pojo.name?uncap_first}Item;
-                       if (!_item.id) {
-                       item.${field.name?cap_first}.push(_item);
-                       MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Created', life: 3000 });
+       let _item = ${pojo.name?uncap_first}Item;
+        if (!_item.id) {
+        item.${field.name?cap_first}.push(_item);
+        MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Created', life: 3000 });
+        setItem((prevState :any) => ({...prevState, ${field.name?cap_first}: item.${field.name?cap_first} }));
+        } else {
+        const updatedItems = item.${field.name?uncap_first}.map((item) =>
+         <#list field.typeAsPojo.fields as innerField>
+          <#if  !innerField.notVisibleInCreatePage>
+           item.id === ${field.typeAsPojo.name?uncap_first}.id ? { ...item, ${field.typeAsPojo.name?uncap_first} }: item,
+            </#if>
+             </#list>
+             );
 
-                       setItem((prevState :any) => ({...prevState, ${field.name?cap_first}: item.${field.name?cap_first} }));
-                       } else {
-                          const updatedItems = item.${field.name?uncap_first}.map((item) =>
-                          <#list field.typeAsPojo.fields as innerField>
-                                    <#if  !innerField.notVisibleInCreatePage>
-                         item.id === ${field.typeAsPojo.name?uncap_first}.id ? { ...item, ${field.typeAsPojo.name?uncap_first} }: item,
-                                        </#if>
-                                </#list>
-                              );
-
-                          if (item.${field.name?uncap_first}.find((item) => item.id === ${pojo.name?uncap_first}Item.id)) {
-                              MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Updated', life: 3000 });
-                          }
-                          setItem((prevState :any) => ({ ...prevState, ${field.name?cap_first}: updatedItems}));
-                              }
-                          set${field.typeAsPojo.name?cap_first}(new ${field.typeAsPojo.name}Dto());
-
-
-                  };
+           MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Updated', life: 3000 });
+           setItem((prevState :any) => ({ ...prevState, ${field.name?cap_first}: updatedItems}));
+           }
+           set${field.typeAsPojo.name?cap_first}(new ${field.typeAsPojo.name}Dto());
+              };
 
     const delete${field.typeAsPojo.name} = (rowData) => {
         const updatedItems = ${field.name?uncap_first}.filter((val) => val !== rowData);

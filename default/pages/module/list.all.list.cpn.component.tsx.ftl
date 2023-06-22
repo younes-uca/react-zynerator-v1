@@ -17,6 +17,7 @@ import {Card} from "primereact/card";
 import {Calendar} from "primereact/calendar";
 import {InputNumber} from "primereact/inputnumber";
 import {Dropdown} from "primereact/dropdown";
+import {AxiosResponse} from "axios";
 
 import {${pojo.name}Service} from '/pages/controller/service/${pojo.name?cap_first}.service';
 import {${pojo.name?cap_first}Dto}  from '/pages/controller/model/${pojo.name?cap_first}.model';

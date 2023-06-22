@@ -200,7 +200,7 @@ const [items, setItems] = useState<PurchaseDto[]>([]);
                 <div className="card">
                     <Toast ref={toast}/>
                     <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
-
+                
                    <DataTable
                         ref={dt} value={items} selection={selectedItems}
                         onSelectionChange={(e) => setSelectedItems(e.value as PurchaseDto[])}

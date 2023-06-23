@@ -17,7 +17,6 @@ import { InputSwitch } from "primereact/inputswitch";
 import {MultiSelect} from "primereact/multiselect";import {MessageService} from "/pages/controller/service/MessageService";
 
 import {${pojo.name}Service} from '/pages/controller/service/${pojo.name}.service';
-
 import  {${pojo.name?cap_first}Dto}  from '/pages/controller/model/${pojo.name?cap_first}.model';
 
 <#if pojo.dependencies??>
@@ -31,241 +30,203 @@ import {${dependency.name?cap_first}Service} from '/pages/controller/service/${d
 const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
 
     const emptyItem = new ${pojo.name}Dto();
+    const [submitted, setSubmitted] = useState(false);
+    const [activeIndex, setActiveIndex] = useState<number>(0);
+    const [activeTab, setActiveTab] = useState(0);
+    const [item, setItem] = useState<${pojo.name?cap_first}Dto>(selectedItem || emptyItem);
+<#if pojo.dependencies??>
+    <#list pojo.dependencies as dependency>
+        <#if dependency?? && dependency.name??>
+    const [${dependency.name?uncap_first}s, set${dependency.name?cap_first}s] = useState<${dependency.name?cap_first}Dto[]>([]);
+    type ${dependency.name?cap_first}Response = AxiosResponse<${dependency.name?cap_first}Dto[]>;
+        </#if>
+    </#list>
+</#if>
+<#list pojo.fields as field>
+    <#if field.list>
+    const [${field.typeAsPojo.name?uncap_first}, set${field.typeAsPojo.name?cap_first}] = useState<${field.typeAsPojo.name}Dto>(new ${field.typeAsPojo.name}Dto());
+    </#if>
+</#list>
 
-      const [submitted, setSubmitted] = useState(false);
-      const [activeIndex, setActiveIndex] = useState<number>(0);
-      const [activeTab, setActiveTab] = useState(0);
-      const [item, setItem] = useState<${pojo.name?cap_first}Dto>(selectedItem || emptyItem);
-
-      <#if pojo.dependencies??>
-                  <#list pojo.dependencies as dependency>
-                      <#if dependency?? && dependency.name??>
-      const [${dependency.name?uncap_first}s, set${dependency.name?cap_first}s] = useState<${dependency.name?cap_first}Dto[]>([]);
-      type ${dependency.name?cap_first}Response = AxiosResponse<${dependency.name?cap_first}Dto[]>;
-                      </#if>
-                  </#list>
-            </#if>
-
-            <#list pojo.fields as field>
-                  <#if field.list>
-      const [${field.typeAsPojo.name?uncap_first}, set${field.typeAsPojo.name?cap_first}] = useState<${field.typeAsPojo.name}Dto>(new ${field.typeAsPojo.name}Dto());
-                  </#if>
-            </#list>
-
-       useEffect(() => {
+    useEffect(() => {
         const fetchData = async () => {
-         try {
-          // if pojo = Commande this line must dispolay client (in command), product(in commanandItem)
-         <#assign i=0>
-          const [<#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>${fieldGeneric.name?uncap_first}sResponse <#if fieldGeneric?index != pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition?size -1>,</#if></#list>] = await Promise.all<<#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>${fieldGeneric.name?cap_first}Response<#if fieldGeneric?index != pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition?size -1>,</#if></#list>>([
-          <#list pojo.fieldsGenericIncludingInnerTypeInListField as fieldGeneric>
-           <#if fieldGeneric.typeAsPojo.ignoreFront == false &&  fieldGeneric.typeAsPojo.subModule.name == pojo.subModule.name>
-            ${fieldGeneric.name?cap_first}Service.getList(),
-            </#if>
-             </#list>
-            ]);
-         <#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>
-          set${fieldGeneric.name?cap_first}s(${fieldGeneric.name?uncap_first}sResponse.data);
-           </#list>
-
+            try {
+                // if pojo = Commande this line must dispolay client (in command), product(in commanandItem)
+<#assign i=0>
+                const [<#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>${fieldGeneric.name?uncap_first}sResponse <#if fieldGeneric?index != pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition?size -1>,</#if></#list>] = await Promise.all<<#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>${fieldGeneric.name?cap_first}Response<#if fieldGeneric?index != pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition?size -1>,</#if></#list>>([
+<#list pojo.fieldsGenericIncludingInnerTypeInListField as fieldGeneric>
+    <#if fieldGeneric.typeAsPojo.ignoreFront == false &&  fieldGeneric.typeAsPojo.subModule.name == pojo.subModule.name>
+                    ${fieldGeneric.name?cap_first}Service.getList(),
+    </#if>
+</#list>
+                ]);
+<#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>
+                set${fieldGeneric.name?cap_first}s(${fieldGeneric.name?uncap_first}sResponse.data);
+</#list>
             } catch (error) {
-           console.error(error);
-         }
-          };
+                console.error(error);
+            }
+        };
+    fetchData();
+    }, []);
 
-          fetchData();
-           }, []);
+    useEffect(() => {
+        setItem(selectedItem ? { ...selectedItem } : { ...emptyItem });
+<#list pojo.fields as field>
+    <#if field.list>
+        setItem((prevState) => ({ ...prevState,${field.name?uncap_first}:  selectedItem?.${field.name?uncap_first} ?? [], }));
+    </#if>
+</#list>
+    }, [selectedItem]);
 
-        useEffect(() => {
-              setItem(selectedItem ? { ...selectedItem } : { ...emptyItem });
-               <#list pojo.fields as field>
-                          <#if field.list>
+    const onDropdownChange = (e, field) => {
+        setItem((prevState) => ({ ...prevState, [field]: e.value, }));
+    };
 
-                   setItem((prevState) => ({
-                     ...prevState,
-                       ${field.name?uncap_first}:  selectedItem?.${field.name?uncap_first} ?? [],
-                          }));
-                            </#if>
-                    </#list>
-
-          }, [selectedItem]);
-
-        const onDropdownChange = (e, field) => {
-               setItem((prevState) => ({
-                       ...prevState,
-               [field]: e.value,
-                }));
-           };
-
-      <#list pojo.fields as field>
-            <#if field.list && !field.association>
-          const add${field.name?cap_first} = () => {
-                   setSubmitted(true);
-                   if( item.${field.name?uncap_first} == null )
-                   item.${field.name?uncap_first} = new Array<${field.typeAsPojo.name?cap_first}Dto>();
-                   let _item = ${pojo.name?uncap_first}Item;
-                   if (!_item.id) {
-                   item.${field.name?cap_first}.push(_item);
-                   MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Created', life: 3000 });
-
-                   setItem((prevState :any) => ({...prevState, ${field.name?cap_first}: item.${field.name?cap_first} }));
-                   } else {
-                      const updatedItems = item.${field.name?uncap_first}.map((item) =>
-                      <#list field.typeAsPojo.fields as innerField>
-                                <#if  !innerField.notVisibleInCreatePage>
-                     item.id === ${field.typeAsPojo.name?uncap_first}.id ? { ...item, {...${field.typeAsPojo.name?uncap_first}} }: item,
-                                    </#if>
-                       </#list>
-                          );
-
-                 MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Updated', life: 3000 });
-
-                 setItem((prevState :any) => ({ ...prevState, ${field.name?cap_first}: updatedItems}));
-                          }
-                set${field.typeAsPojo.name?cap_first}(new ${field.typeAsPojo.name}Dto());
-                };
-
-              const delete${field.typeAsPojo.name} = (rowData) => {
-                  const updatedItems = ${field.name?uncap_first}.filter((val) => val !== rowData);
-                  setItem((prevState :any) => ({...prevState, ${field.name?cap_first}: updatedItems }));
-                  set${pojo.name?cap_first}Item(new ${field.typeAsPojo.name}Dto());
-                  MessageService.showToast(showToast, {severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first}Item Deleted', life: 3000});
-              };
-
-
-
-        const edit${field.typeAsPojo.name} = (rowData) => {
-           setActiveTab(0);
-           set${pojo.name?cap_first}Item(rowData);
-
-           };
-
-        const onInputNumerChange${field.name?cap_first} = (e, name) => {
-               const val = e.value || 0;
-               set${field.typeAsPojo.name}((prev${field.name?cap_first}) => ({
-                   ...prev${field.name?cap_first},
-                   [name]: val,
-          }));
-          };
-
-         const onMultiSelectChange${field.name?cap_first} = (e, field) => {
-              if (e && e.value && Array.isArray(e.value)) {
-                  const selectedValues = e.value.map(option => option && option.value);
-                  set${field.typeAsPojo.name}(prevState => ({
-                        ...prevState,
-                        [field]: selectedValues,
-                  }));
-              }
-          };
-
-          const onBooleanInputChange${field.name?cap_first} = (e: any, name: string) => {
-             const val = e.value;
-             set${field.typeAsPojo.name}((prevItem) => ({
-                 ...prevItem,
-                 [name]: val,
-             }));
-          };
-
-
-          const onInputDateChange${field.name?cap_first} = (e: CalendarChangeEvent, name: string) => {
-               const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
-                let _item = { ...${field.typeAsPojo.name?uncap_first}};
-               _item[`<#noparse>${name}</#noparse>`] = val;
-
-          set${field.typeAsPojo.name}(_item);
-          };
-          const onDropdownChange${field.name?cap_first} = (e, field) => {
-                  set${field.typeAsPojo.name}((prevState) => ({ ...prevState, [field]: e.value,}));};
-
-          const onInputTextChange${field.name?cap_first} = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
-           const val = (e.target && e.target.value) || '';
-           let _item = {...${field.typeAsPojo.name?uncap_first}};
-           _item[`<#noparse>${name}</#noparse>`] = val;
-            set${field.typeAsPojo.name}(_item);
-          };
-
+<#list pojo.fields as field>
+    <#if field.list && !field.association>
+    const add${field.name?cap_first} = () => {
+        setSubmitted(true);
+        if( item.${field.name?uncap_first} == null )
+        item.${field.name?uncap_first} = new Array<${field.typeAsPojo.name?cap_first}Dto>();
+        let _item = ${pojo.name?uncap_first}Item;
+        if (!_item.id) {
+            item.${field.name?cap_first}.push(_item);
+            MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Created', life: 3000 });
+            setItem((prevState :any) => ({...prevState, ${field.name?cap_first}: item.${field.name?cap_first} }));
+        } else {
+            const updatedItems = item.${field.name?uncap_first}.map((item) =>
+            <#list field.typeAsPojo.fields as innerField>
+            <#if  !innerField.notVisibleInCreatePage>
+                item.id === ${field.typeAsPojo.name?uncap_first}.id ? { ...item, {...${field.typeAsPojo.name?uncap_first}} }: item,
             </#if>
-      </#list>
+            </#list>
+            );
+            MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Updated', life: 3000 });
+            setItem((prevState :any) => ({ ...prevState, ${field.name?cap_first}: updatedItems}));
+        }
+        set${field.typeAsPojo.name?cap_first}(new ${field.typeAsPojo.name}Dto());
+    };
 
-          const onTabChange = (e: { index: number }) => {
-                  setActiveIndex(e.index);
-          };
+    const delete${field.typeAsPojo.name} = (rowData) => {
+        const updatedItems = ${field.name?uncap_first}.filter((val) => val !== rowData);
+        setItem((prevState :any) => ({...prevState, ${field.name?cap_first}: updatedItems }));
+        set${pojo.name?cap_first}Item(new ${field.typeAsPojo.name}Dto());
+        MessageService.showToast(showToast, {severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first}Item Deleted', life: 3000});
+    };
 
-         const hideDialog = () => {
-                     setSubmitted(false);
-                     onClose();
-             };
+    const edit${field.typeAsPojo.name} = (rowData) => {
+        setActiveTab(0);
+        set${pojo.name?cap_first}Item(rowData);
+    };
 
-      const saveItem = async () => {
-            setSubmitted(true);
-            let _item = {...item};
+    const onInputNumerChange${field.name?cap_first} = (e, name) => {
+        const val = e.value || 0;
+        set${field.typeAsPojo.name}((prev${field.name?cap_first}) => ({ ...prev${field.name?cap_first}, [name]: val, }));
+    };
 
-             try {
-                 if (_item.id) {
-                 await ${pojo.name?cap_first}Service.update(_item).then((response) => {
-                     console.log(response.data);
-                     update(response.data);
-                     onClose();
-                     })
+    const onMultiSelectChange${field.name?cap_first} = (e, field) => {
+        if (e && e.value && Array.isArray(e.value)) {
+            const selectedValues = e.value.map(option => option && option.value);
+            set${field.typeAsPojo.name}(prevState => ({ ...prevState, [field]: selectedValues, }));
+        }
+    };
 
-                 MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first} Updated', life: 3000 });
+    const onBooleanInputChange${field.name?cap_first} = (e: any, name: string) => {
+        const val = e.value;
+        set${field.typeAsPojo.name}((prevItem) => ({ ...prevItem, [name]: val, }));
+    };
 
-                 }
-                  } catch (error) {
-                  console.log(error);
-                  MessageService.showToast(showToast, { severity: 'Error', summary: 'Error', detail: 'Failed to save ${pojo.name?unccap_first}', life: 3000 });
+    const onInputDateChange${field.name?cap_first} = (e: CalendarChangeEvent, name: string) => {
+        const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
+        let _item = { ...${field.typeAsPojo.name?uncap_first}};
+        _item[`<#noparse>${name}</#noparse>`] = val;
+        set${field.typeAsPojo.name}(_item);
+    };
 
-                        }
-                    };
+    const onDropdownChange${field.name?cap_first} = (e, field) => {
+        set${field.typeAsPojo.name}((prevState) => ({ ...prevState, [field]: e.value,}));
+    };
+
+    const onInputTextChange${field.name?cap_first} = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
+        const val = (e.target && e.target.value) || '';
+        let _item = {...${field.typeAsPojo.name?uncap_first}};
+        _item[`<#noparse>${name}</#noparse>`] = val;
+        set${field.typeAsPojo.name}(_item);
+    };
+    </#if>
+</#list>
+
+    const onTabChange = (e: { index: number }) => {
+        setActiveIndex(e.index);
+    };
+
+    const hideDialog = () => {
+        setSubmitted(false);
+        onClose();
+    };
+
+    const saveItem = async () => {
+        setSubmitted(true);
+        let _item = {...item};
+        try {
+            if (_item.id) {
+                await ${pojo.name?cap_first}Service.update(_item).then((response) => {
+                    console.log(response.data);
+                    update(response.data);
+                    onClose();
+                });
+                MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first} Updated', life: 3000 });
+            }
+        } catch (error) {
+            console.log(error);
+            MessageService.showToast(showToast, { severity: 'Error', summary: 'Error', detail: 'Failed to save ${pojo.name?unccap_first}', life: 3000 });
+        }
+    };
+
     const onInputTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
-     const val = (e.target && e.target.value) || '';
-      let _item = {...item};
-      _item[`<#noparse>${name}`</#noparse>] = val;
-       setItem(_item);
-        };
+        const val = (e.target && e.target.value) || '';
+        let _item = {...item};
+        _item[`<#noparse>${name}`</#noparse>] = val;
+        setItem(_item);
+    };
 
-      const onInputDateChange = (e: CalendarChangeEvent, name: string) => {
-       const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
-       let _item = { ...item};
-         _item[`<#noparse>${name}</#noparse>`] = val;
-          setItem(_item);
-          };
+    const onInputDateChange = (e: CalendarChangeEvent, name: string) => {
+        const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
+        let _item = { ...item};
+        _item[`<#noparse>${name}</#noparse>`] = val;
+        setItem(_item);
+    };
 
-      const onInputNumerChange = (e: InputNumberChangeEvent, name: string) => {
-       const val = e.value === null ? null : +e.value;
+    const onInputNumerChange = (e: InputNumberChangeEvent, name: string) => {
+        const val = e.value === null ? null : +e.value;
         setItem((prevItem) => ({ ...prevItem, [name]: val, }));
-        };
+    };
 
-       const onMultiSelectChange = (e, field) => {
-      if (e && e.value && Array.isArray(e.value)) {
-       const selectedValues = e.value.map(option => option && option.value);
-       setItem(prevState => ({ ...prevState, [field]: selectedValues, }));
-       }
-       };
+    const onMultiSelectChange = (e, field) => {
+        if (e && e.value && Array.isArray(e.value)) {
+            const selectedValues = e.value.map(option => option && option.value);
+            setItem(prevState => ({ ...prevState, [field]: selectedValues, }));
+        }
+    };
 
-      const onBooleanInputChange = (e: any, name: string) => {
-      const val = e.value;
-       setItem((prevItem) => ({ ...prevItem, [name]: val, }));
-         };
+    const onBooleanInputChange = (e: any, name: string) => {
+        const val = e.value;
+        setItem((prevItem) => ({ ...prevItem, [name]: val, }));
+    };
 
+    const itemDialogFooter = ( <>
+        <Button label="Cancel" icon="pi pi-times" text onClick={hideDialog} />
+        <Button label="Save" icon="pi pi-check" text onClick={saveItem} /> < />
+    );
 
-
-      const itemDialogFooter = (
-                     <>
-         <Button label="Cancel" icon="pi pi-times" text onClick={hideDialog}/>
-          <Button label="Save" icon="pi pi-check" text onClick={saveItem}/>
-                     </>
-                 );
-
-    return(
+return(
     <#if pojo.createUpdateConfounded>
     <p-toast></p-toast>
     <div class="card">
     <message severity="{{info}}" text="{{msgsContents}}"></message>
     </div>
-
     <div class="p-fluid">
-
     <#else>
     <Dialog visible={visible} style={{width: '70vw'}} header="${pojo.name}" modal className="p-fluid" footer={itemDialogFooter} onHide={hideDialog}>
     </#if>
@@ -361,178 +322,153 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
         </div>
     </#list>
     <#else>
-    <TabView activeIndex={activeIndex} onTabChange={onTabChange}>
-    <TabPanel header="${pojo.name}">
-        <div className="formgrid grid">
-            <#list pojo.fields as field>
-            <#if field.list && field.association>
-            <div className="field col-6">
-                <label htmlFor="${field.name}">${field.fieldOfAssociation.formatedName}</label>
-                <MultiSelect value={item ? item.${field.name} : ''} options={${field.name}}  optionLabel="${field.fieldOfAssociation.name}.${field.fieldOfAssociation.typeAsPojo.labelOrReferenceOrId.name}" display="chip" placeholder="Select ${field.fieldOfAssociation.name}"  maxSelectedLabels={3}  onChange={(e) => onMultiSelectChange(e, '${field.name}')} />
-            </div>
-            <#elseif field.simple && !field.notVisibleInCreatePage>
-            <#if  field.type.simpleName == "Date" || field.dateTime>
-            <div className="field col-6">
-                <label htmlFor="${field.name}">${field.name?cap_first}</label>
-                <Calendar id="${field.name}" value={item ? item.${field.name} : ''} onChange={(e) => onInputDateChange(e, '${field.name}')} dateFormat="dd/mm/yy" showTime />
-            </div>
-            <#elseif  field.large>
-                <div className="field col-6">
-                    <label htmlFor="${field.name}">${field.name?cap_first}</label>
-                    <span className="p-float-label">
-                        <InputTextarea id="${field.name?uncap_first}" value={item ? item.${field.name} : ''} onChange={(e) => onInputTextChange(e, '${field.name}')} rows={5} cols={30}/>
-                         </span>
-                </div>
-            <#elseif field.pureString>
-                <div className="field col-6">
-                    <label htmlFor="${field.name?uncap_first}">${field.name?cap_first}</label>
-                    <InputText id="${field.name?uncap_first}" value={item ? item.${field.name} : ''} onChange={(e) => onInputTextChange(e, '${field.name?uncap_first}')} required autoFocus
-                    className={classNames({'p-invalid': submitted && !item.${field.name?uncap_first}})}/>
-                    {submitted && !item.${field.name?uncap_first} &&
-                    <small className="p-invalid">${field.name?cap_first} is required.</small>}
-                </div>
-
-
-            <#elseif field.type.simpleName == "Boolean">
-            <div className="field col-6">
-                <div  class="label-inputswitch">
-                    <label htmlFor="${field.name?uncap_first}">${field.name?cap_first}</label>
-                    <span className="p-float-label">
-                        <InputSwitch  id="${field.name}" checked={item ? item.${field.name} : ''} onChange={(e) => onBooleanInputChange(e, '${field.name}')} />
+        <TabView activeIndex={activeIndex} onTabChange={onTabChange}>
+            <TabPanel header="${pojo.name}">
+                <div className="formgrid grid">
+                    <#list pojo.fields as field>
+                    <#if field.list && field.association>
+                    <div className="field col-6">
+                        <label htmlFor="${field.name}">${field.fieldOfAssociation.formatedName}</label>
+                        <MultiSelect value={item ? item.${field.name} : ''} options={${field.name}}  optionLabel="${field.fieldOfAssociation.name}.${field.fieldOfAssociation.typeAsPojo.labelOrReferenceOrId.name}" display="chip" placeholder="Select ${field.fieldOfAssociation.name}"  maxSelectedLabels={3}  onChange={(e) => onMultiSelectChange(e, '${field.name}')} />
+                    </div>
+                    <#elseif field.simple && !field.notVisibleInCreatePage>
+                    <#if  field.type.simpleName == "Date" || field.dateTime>
+                    <div className="field col-6">
+                        <label htmlFor="${field.name}">${field.name?cap_first}</label>
+                        <Calendar id="${field.name}" value={item ? item.${field.name} : ''} onChange={(e) => onInputDateChange(e, '${field.name}')} dateFormat="dd/mm/yy" showTime />
+                    </div>
+                    <#elseif  field.large>
+                    <div className="field col-6">
+                        <label htmlFor="${field.name}">${field.name?cap_first}</label>
+                        <span className="p-float-label">
+                            <InputTextarea id="${field.name?uncap_first}" value={item ? item.${field.name} : ''} onChange={(e) => onInputTextChange(e, '${field.name}')} rows={5} cols={30}/>
                         </span>
-                </div>
-
-                <#elseif field.id == false>
+                    </div>
+                    <#elseif field.pureString>
+                    <div className="field col-6">
+                        <label htmlFor="${field.name?uncap_first}">${field.name?cap_first}</label>
+                        <InputText id="${field.name?uncap_first}" value={item ? item.${field.name} : ''} onChange={(e) => onInputTextChange(e, '${field.name?uncap_first}')} required autoFocus className={classNames({'p-invalid': submitted && !item.${field.name?uncap_first}})} />
+                        {submitted && !item.${field.name?uncap_first} && <small className="p-invalid">${field.name?cap_first} is required.</small>}
+                    </div>
+                    <#elseif field.type.simpleName == "Boolean">
+                    <div className="field col-6">
+                    <div  class="label-inputswitch">
+                        <label htmlFor="${field.name?uncap_first}">${field.name?cap_first}</label>
+                        <span className="p-float-label">
+                            <InputSwitch  id="${field.name}" checked={item ? item.${field.name} : ''} onChange={(e) => onBooleanInputChange(e, '${field.name}')} />
+                        </span>
+                    </div>
+                    <#elseif field.id == false>
                     <div className="field col-6">
                         <label htmlFor="${field.name?uncap_first}">${field.name?cap_first}</label>
                         <InputNumber id="${field.name?uncap_first}" value={item ? item.${field.name} : ''} onChange={(e) => onInputNumerChange(e, '${field.name?uncap_first}')}/>
                     </div>
-                </#if>
-
-                <#elseif field.generic && !field.notVisibleInCreatePage>
+                    </#if>
+                    <#elseif field.generic && !field.notVisibleInCreatePage>
                     <div className="field col-6">
                         <label htmlFor="${field.name?uncap_first}">${field.name?cap_first}</label>
                         <Dropdown  id="${field.name?uncap_first}Dropdown"  value={item ? item.${field.name} : ''} options={${field.name}s} onChange={(e) => onDropdownChange(e, '${field.name}')}   placeholder="Sélectionnez un ${field.name?uncap_first}" filter filterPlaceholder="Rechercher un ${field.name?uncap_first}" optionLabel="<#if field.typeAsPojo??>${field.typeAsPojo.labelOrReferenceOrId.name}<#else>${field..name}</#if>" />
                     </div>
-                </#if>
-                </#list>
-            </div>
-    </TabPanel>
-    <#list pojo.fields as field>
-        <#if field.list && (field.associationComplex || field.fakeAssociation)>
-        <TabPanel header="${field.name}">
-            <#if !field.createAndListPageInOneTab>
+                    </#if>
+                    </#list>
+                </div>
+            < /TabPanel>
+            <#list pojo.fields as field>
+                <#if field.list && (field.associationComplex || field.fakeAssociation)>
+            <TabPanel header="${field.name}">
+                <#if !field.createAndListPageInOneTab>
                 <TabView activeIndex={activeTab} onTabChange={(e) => setActiveTab(e.index)}>
-                <TabPanel header="Creation">
-                    </#if>
-
-                    <div className="grid">
-                        <#list field.typeAsPojo.fields as innerField>
+                    <TabPanel header="Creation">
+                        </#if>
+                        <div className="grid">
+                            <#list field.typeAsPojo.fields as innerField>
                             <#if  !innerField.notVisibleInCreatePage>
-                                <#if innerField.dateTime>
-                                    <div className="field col-6">
-                                        <label htmlFor="${innerField.name}">${innerField.name}</label>
-                                        <Calendar id="${innerField.name}" value={${field.typeAsPojo.name?uncap_first}?.${innerField.name}}  onChange={(e) => onInputDateChange${field.name?cap_first}(e, '${field.name?uncap_first}')} dateFormat="dd/mm/yy" showTime  />
-                                    </div>
-                                <#elseif innerField.pureString>
-                                    <div className="field col-6">
-                                        <label htmlFor="${innerField.name}">${innerField.name?cap_first}</label>
-                                        <InputText id="${innerField.name}" value={${field.typeAsPojo.name?uncap_first}.${innerField.name}} onChange={(e) => onInputTextChange${field.name?cap_first}(e, '${field.name?uncap_first}')} required autoFocus className={classNames({'p-invalid': submitted && !item.${field.name?uncap_first}})}/>
-                                    </div>
-                                <#elseif innerField.bool>
-                                    <div className="field col-6">
-                                        <label htmlFor="${innerField.name}">${innerField.name?cap_first}</label>
-                                        <span className="p-float-label">
-                                            <InputSwitch  id="${innerField.name}" checked={${field.typeAsPojo.name?uncap_first}.${innerField.name}} onChange={(e) => onBooleanInputChange${field.name?cap_first}(e, '${field.name?uncap_first}')} />
-                                            </span>
-                                    </div>
-                                <#elseif innerField.simple && innerField.id == false>
-                                    <div className="field col-6">
-                                        <label htmlFor="${innerField.name?uncap_first}">${innerField.name?cap_first}</label>
-                                        <InputNumber id="${innerField.name}" value={${field.typeAsPojo.name?uncap_first}.${innerField.name}}  onValueChange={(e) => onInputNumerChange${field.name?cap_first}(e, '${innerField.name?uncap_first}')}/>
-                                    </div>
-                                <#elseif innerField.generic && innerField.typeAsPojo.name != pojo.name>
-                                    <div className="field col-6">
-                                        <label htmlFor="${innerField.name}">${innerField.formatedName}</label>
-                                        <Dropdown id="${innerField.name?uncap_first}Dropdown" value={${field.typeAsPojo.name?uncap_first}.${innerField.name}} options={${innerField.name?uncap_first}s}
-                                                  onChange={(e) => onDropdownChange${field.name?cap_first}(e, '${field.name}')} placeholder="Sélectionnez un ${field.name?uncap_first}" filter  filterPlaceholder="Rechercher un ${innerField.name?uncap_first}"  optionLabel="${innerField.typeAsPojo.labelOrReferenceOrId.name!'walo'}" />
-                                    </div>
-                                <#elseif innerField.list && innerField.association>
-                                    <div className="field col-6">
-                                        <label>${innerField.fieldOfAssociation.formatedName}<#if innerField.requierd><span style="color: red;">*</span></#if></label>
-                                        <p-multiSelect appendTo="body" [options]="${innerField.name}" [(ngModel)]="${field.name}Element.${innerField.name}" defaultLabel="Selectionner un ${innerField.fieldOfAssociation.formatedName}" itemSize="30" [virtualScroll]="true"
-                                                       optionLabel="${innerField.fieldOfAssociation.name}.${innerField.fieldOfAssociation.typeAsPojo.labelOrReferenceOrId.name}"  display="chip"></p-multiSelect>
-                                        <label htmlFor="${innerField.name}">${innerField.fieldOfAssociation.formatedName}</label>
-                                        <MultiSelect value={${field.typeAsPojo.name?uncap_first}.${innerField.name}} options={${innerField.name}}  optionLabel="$${innerField.fieldOfAssociation.name}.${innerField.fieldOfAssociation.typeAsPojo.labelOrReferenceOrId.name}" display="chip" placeholder="Select ${innerField.fieldOfAssociation.formatedName}"  maxSelectedLabels={3}  onChange={(e) => onMultiSelectChange${field.name?cap_first}(e, '${innerField.name}')} />
-                                    </div>
-                                </#if>
+                            <#if innerField.dateTime>
+                            <div className="field col-6">
+                                <label htmlFor="${innerField.name}">${innerField.name}</label>
+                                <Calendar id="${innerField.name}" value={${field.typeAsPojo.name?uncap_first}?.${innerField.name}}  onChange={(e) => onInputDateChange${field.name?cap_first}(e, '${field.name?uncap_first}')} dateFormat="dd/mm/yy" showTime  />
+                            </div>
+                            <#elseif innerField.pureString>
+                            <div className="field col-6">
+                                <label htmlFor="${innerField.name}">${innerField.name?cap_first}</label>
+                                <InputText id="${innerField.name}" value={${field.typeAsPojo.name?uncap_first}.${innerField.name}} onChange={(e) => onInputTextChange${field.name?cap_first}(e, '${field.name?uncap_first}')} required autoFocus className={classNames({'p-invalid': submitted && !item.${field.name?uncap_first}})}/>
+                            </div>
+                            <#elseif innerField.bool>
+                            <div className="field col-6">
+                                <label htmlFor="${innerField.name}">${innerField.name?cap_first}</label>
+                                <span className="p-float-label">
+                                    <InputSwitch  id="${innerField.name}" checked={${field.typeAsPojo.name?uncap_first}.${innerField.name}} onChange={(e) => onBooleanInputChange${field.name?cap_first}(e, '${field.name?uncap_first}')} />
+                                </span>
+                            </div>
+                            <#elseif innerField.simple && innerField.id == false>
+                            <div className="field col-6">
+                                <label htmlFor="${innerField.name?uncap_first}">${innerField.name?cap_first}</label>
+                                <InputNumber id="${innerField.name}" value={${field.typeAsPojo.name?uncap_first}.${innerField.name}}  onValueChange={(e) => onInputNumerChange${field.name?cap_first}(e, '${innerField.name?uncap_first}')}/>
+                            </div>
+                            <#elseif innerField.generic && innerField.typeAsPojo.name != pojo.name>
+                            <div className="field col-6">
+                                <label htmlFor="${innerField.name}">${innerField.formatedName}</label>
+                                <Dropdown id="${innerField.name?uncap_first}Dropdown" value={${field.typeAsPojo.name?uncap_first}.${innerField.name}} options={${innerField.name?uncap_first}s} onChange={(e) => onDropdownChange${field.name?cap_first}(e, '${field.name}')} placeholder="Sélectionnez un ${field.name?uncap_first}" filter  filterPlaceholder="Rechercher un ${innerField.name?uncap_first}"  optionLabel="${innerField.typeAsPojo.labelOrReferenceOrId.name!'walo'}" />
+                            </div>
+                            <#elseif innerField.list && innerField.association>
+                            <div className="field col-6">
+                                <label htmlFor="${innerField.name}">${innerField.fieldOfAssociation.formatedName}</label>
+                                <MultiSelect value={${field.typeAsPojo.name?uncap_first}.${innerField.name}} options={${innerField.name}}  optionLabel="$${innerField.fieldOfAssociation.name}.${innerField.fieldOfAssociation.typeAsPojo.labelOrReferenceOrId.name}" display="chip" placeholder="Select ${innerField.fieldOfAssociation.formatedName}"  maxSelectedLabels={3}  onChange={(e) => onMultiSelectChange${field.name?cap_first}(e, '${innerField.name}')} />
+                            </div>
                             </#if>
-                        </#list>
-                        <div className="field col-1">
-                            <Button icon="pi pi-plus" label="OK" class="mt-4" onClick={add${field.name?cap_first}}/>
+                            </#if>
+                            </#list>
+                            <div className="field col-1">
+                                <Button icon="pi pi-plus" label="OK" class="mt-4" onClick={add${field.name?cap_first}} />
+                            </div>
                         </div>
-
-                    </div>
-
-                    <#if !field.createAndListPageInOneTab>
-                </TabPanel>
-                <TabPanel header="Liste">
-                    </#if>
-                    <#if field.createAndListPageInOneTab>
-                    <div class="p-col">
+                        <#if !field.createAndListPageInOneTab>
+                    </TabPanel>
+                    <TabPanel header="Liste">
+                        </#if>
+                        <#if field.createAndListPageInOneTab>
+                        <div class="p-col">
                         </#if>
                         <div className="card">
                             <DataTable value={item.${field.name?uncap_first}} tableStyle={{minWidth: '50rem'}} dataKey="id">
-
-                            <#list field.typeAsPojo.fields as myField>
+                                <#list field.typeAsPojo.fields as myField>
                                 <#if myField.simple && !myField.notVisibleInCreatePage>
-                                    <#if !myField.id>
-                                        <Column field="${myField.name}" header="${myField.formatedName}"></Column>
-                                    </#if>
+                                <#if !myField.id>
+                                <Column field="${myField.name}" header="${myField.formatedName}"></Column>
+                                </#if>
                                 <#elseif myField.generic && !myField.notVisibleInCreatePage>
-                                    <#if myField.typeAsPojo.name != pojo.name>
-                                        <Column field="${myField.name}.${myField.typeAsPojo.labelOrReferenceOrId.name!'walo'}" header="${myField.formatedName}"></Column>
-                                    </#if>
+                                <#if myField.typeAsPojo.name != pojo.name>
+                                <Column field="${myField.name}.${myField.typeAsPojo.labelOrReferenceOrId.name!'walo'}" header="${myField.formatedName}"></Column>
+                                </#if>
                                 <#else>
                                 </#if>
-                            </#list>
-                            <Column header="Actions" body={(rowData) => (
-                            <div>
-                                <Button icon="pi pi-times" rounded severity="warning"
-                                        className="mr-2 p-button-danger"
-                                        onClick={() => delete${field.typeAsPojo.name}(rowData)}/>
-                                <Button icon="pi pi-pencil" rounded severity="success" className="mr-2"
-                                        onClick={() => edit${field.typeAsPojo.name}(rowData)}/>
-                            </div>
-                            )}></Column>
-
+                                </#list>
+                                <Column header="Actions" body={(rowData) => (
+                                    <div>
+                                        <Button icon="pi pi-times" rounded severity="warning" className="mr-2 p-button-danger" onClick={()=> delete${field.typeAsPojo.name}(rowData)} />
+                                        <Button icon="pi pi-pencil" rounded severity="success" className="mr-2" onClick={()=> edit${field.typeAsPojo.name}(rowData)} />
+                                    </div>
+                                )}></Column>
                             </DataTable>
                         </div>
-
                         <#if field.createAndListPageInOneTab>
-                    </div>
-                    <#else>
-                </TabPanel>
-            </TabView>
-        </#if>
+                        </div>
+                        <#else>
+                    </TabPanel>
+                </TabView>
+                </#if>
             </TabPanel>
-
-        </#if>
-    </#list>
-
-    </TabView>
+                </#if>
+            </#list>
+        </TabView>
     </#if>
-
     <#if pojo.createUpdateConfounded>
     </div>
     <#else>
     </Dialog>
     </#if>
-
-
-    );
-
-    };
+);
+};
 export default Edit;
 
 

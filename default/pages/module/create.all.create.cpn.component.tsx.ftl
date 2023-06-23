@@ -49,58 +49,53 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
     useEffect(() => {
         const fetchData = async () => {
-         try {
-           <#assign i=0>
-            const [<#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>${fieldGeneric.name?uncap_first}sResponse <#if fieldGeneric?index != pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition?size -1>,</#if></#list>] = await Promise.all<<#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>${fieldGeneric.name?cap_first}Response<#if fieldGeneric?index != pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition?size -1>,</#if></#list>>([
-            <#list pojo.fieldsGenericIncludingInnerTypeInListField as fieldGeneric>
-                <#if fieldGeneric.typeAsPojo.ignoreFront == false &&  fieldGeneric.typeAsPojo.subModule.name == pojo.subModule.name>
-            ${fieldGeneric.name?cap_first}Service.getList(),
-                </#if>
-            </#list>
-           ]);
-            <#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>
-            set${fieldGeneric.name?cap_first}s(${fieldGeneric.name?uncap_first}sResponse.data);
-            </#list>
-
-         } catch (error) {
-             console.error(error);
-         }
+            try {
+                <#assign i=0>
+                const [<#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>${fieldGeneric.name?uncap_first}sResponse <#if fieldGeneric?index != pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition?size -1>,</#if></#list>] = await Promise.all<<#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>${fieldGeneric.name?cap_first}Response<#if fieldGeneric?index != pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition?size -1>,</#if></#list>>([
+                    <#list pojo.fieldsGenericIncludingInnerTypeInListField as fieldGeneric>
+                    <#if fieldGeneric.typeAsPojo.ignoreFront == false &&  fieldGeneric.typeAsPojo.subModule.name == pojo.subModule.name>
+                    ${fieldGeneric.name?cap_first}Service.getList(),
+                    </#if>
+                    </#list>
+                ]);
+                <#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>
+                set${fieldGeneric.name?cap_first}s(${fieldGeneric.name?uncap_first}sResponse.data);
+                </#list>
+            } catch (error) {
+                console.error(error);
+            }
         };
         fetchData();
     }, []);
 
     const onDropdownChange = (e, field) => {
-    setItem((prevState) => ({
-        ...prevState,
-        [field]: e.value,
-    }));
+        setItem((prevState) => ({ ...prevState, [field]: e.value, }));
     };
 
 <#list pojo.fields as field>
       <#if field.list && !field.association>
     const add${field.name?cap_first} = () => {
-     setSubmitted(true);
-      if( item.${field.name?uncap_first} == null )
-       item.${field.name?uncap_first} = new Array<${field.typeAsPojo.name?cap_first}Dto>();
-       let _item = ${pojo.name?uncap_first}Item;
+        setSubmitted(true);
+        if( item.${field.name?uncap_first} == null )
+        item.${field.name?uncap_first} = new Array<${field.typeAsPojo.name?cap_first}Dto>();
+        let _item = ${pojo.name?uncap_first}Item;
         if (!_item.id) {
-        item.${field.name?cap_first}.push(_item);
-        MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Created', life: 3000 });
-        setItem((prevState :any) => ({...prevState, ${field.name?cap_first}: item.${field.name?cap_first} }));
+            item.${field.name?cap_first}.push(_item);
+            MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Created', life: 3000 });
+            setItem((prevState :any) => ({...prevState, ${field.name?cap_first}: item.${field.name?cap_first} }));
         } else {
-        const updatedItems = item.${field.name?uncap_first}.map((item) =>
-         <#list field.typeAsPojo.fields as innerField>
-          <#if  !innerField.notVisibleInCreatePage>
-           item.id === ${field.typeAsPojo.name?uncap_first}.id ? { ...item, {...${field.typeAsPojo.name?uncap_first}} }: item,
-            </#if>
-             </#list>
-             );
-
-           MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Updated', life: 3000 });
-           setItem((prevState :any) => ({ ...prevState, ${field.name?cap_first}: updatedItems}));
-           }
-           set${field.typeAsPojo.name?cap_first}(new ${field.typeAsPojo.name}Dto());
-              };
+            const updatedItems = item.${field.name?uncap_first}.map((item) =>
+            <#list field.typeAsPojo.fields as innerField>
+                <#if  !innerField.notVisibleInCreatePage>
+                item.id === ${field.typeAsPojo.name?uncap_first}.id ? { ...item, {...${field.typeAsPojo.name?uncap_first}} }: item,
+                </#if>
+            </#list>
+            );
+            MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Updated', life: 3000 });
+            setItem((prevState :any) => ({ ...prevState, ${field.name?cap_first}: updatedItems}));
+        }
+        set${field.typeAsPojo.name?cap_first}(new ${field.typeAsPojo.name}Dto());
+    };
 
     const delete${field.typeAsPojo.name} = (rowData) => {
         const updatedItems = ${field.name?uncap_first}.filter((val) => val !== rowData);
@@ -145,7 +140,6 @@ const Create = ({visible, onClose, add, showToast, list}) => {
          _item[`<#noparse>${name}</#noparse>`] = val;
          set${field.typeAsPojo.name}(_item);
     };
-
       </#if>
 </#list>
 
@@ -156,20 +150,16 @@ const Create = ({visible, onClose, add, showToast, list}) => {
         onClose();
     };
 
-
     const saveItem = async () => {
         setSubmitted(true);
-
         let _items = [...items];
         let _item = {...item};
-
         if (!_item.id) {
              await ${pojo.name?cap_first}Service.save(_item);
               _items.push(_item);
              add(_item);
              MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first} Created', life: 3000 });
         }
-
         setItems(_items);
         onClose();
         setItem(emptyItem);
@@ -268,15 +258,12 @@ return(
     <#if field.requierd>[ngClass]="{'ng-invalid ng-dirty' : !valid${pojo.name?cap_first}${field.name?cap_first}}" </#if> />
     <#if field.requierd><small class='p-error' *ngIf='!valid${pojo.name?cap_first}${field.name?cap_first}'>${field.name?cap_first} est obligatoire.</small></#if>
     </div>
-
     <#elseif field.uploadOne>
     <div class="field col-12 md:col-${pojo.columnStyle}">
     <label for="${field?index}">${field.name18nCreate!'walo'}<#if field.requierd><span style="color: red;">*</span></#if></label>
     <p-fileUpload name="files" [customUpload]="true" (uploadHandler)="uploadOne($event, 0)" [auto]="true" ></p-fileUpload>
     <#if field.requierd><small class='p-error' *ngIf='!valid${pojo.name?cap_first}${field.name?cap_first}'>${field.name?cap_first} est obligatoire.</small></#if>
     </div>
-
-
     <#elseif field.bool>
     <div class="field align-inputswitch col-12  md:col-${pojo.columnStyle}">
     <div  class="label-inputswitch">
@@ -289,7 +276,6 @@ return(
     <#if field.requierd><small class='p-error' *ngIf='!valid${pojo.name?cap_first}${field.name?cap_first}'>${field.name?cap_first} est obligatoire.</small></#if>
     </div>
     </div>
-
     <#elseif field.id == false>
     <div class="field col-12 md:col-${pojo.columnStyle}">
     <label for="${field?index}">${field.name18nCreate!'walo'}<#if field.requierd><span style="color: red;">*</span></#if></label>
@@ -298,7 +284,6 @@ return(
     <#if field.requierd><small class='p-error' *ngIf='!valid${pojo.name?cap_first}${field.name?cap_first}'>${field.name?cap_first} est obligatoire.</small></#if>
     </div>
     </#if>
-
     <#elseif field.generic && !field.notVisibleInCreatePage>
     <div class="field col-11 md:col-<#if field.typeAsPojo.ignoreFront == false>${pojo.columnStyle -1}<#else >${pojo.columnStyle}</#if>">
     <label for="${field?index}">${field.name18nCreate!'walo'}<#if field.requierd><span style="color: red;">*</span></#if></label>
@@ -322,56 +307,53 @@ return(
         <TabView activeIndex={activeIndex} onTabChange={onTabChange}>
             <TabPanel header="${pojo.name}">
                 <div className="formgrid grid">
-                <#list pojo.fields as field>
-                <#if field.list && field.association>
-                <div className="field col-6">
-                <label htmlFor="${field.name}">${field.fieldOfAssociation.formatedName}</label>
-                <MultiSelect value={item.${field.name}} options={${field.name}}  optionLabel="${field.fieldOfAssociation.name}.${field.fieldOfAssociation.typeAsPojo.labelOrReferenceOrId.name}" display="chip" placeholder="Select ${field.fieldOfAssociation.name}"  maxSelectedLabels={3}  onChange={(e) => onMultiSelectChange(e, '${field.name}')} />
-                </div>
-                <#elseif field.simple && !field.notVisibleInCreatePage>
-                <#if  field.type.simpleName == "Date" || field.dateTime>
-                <div className="field col-6">
-                <label htmlFor="${field.name}">${field.name?cap_first}</label>
-                <Calendar id="${field.name}" value={item.${field.name}} onChange={(e) => onInputDateChange(e, '${field.name}')} dateFormat="dd/mm/yy" showTime />
-                </div>
-                <#elseif  field.large>
-                <div className="field col-6">
-                <label htmlFor="${field.name}">${field.name?cap_first}</label>
-                <span className="p-float-label">
-                <InputTextarea id="${field.name?uncap_first}" value={item.${field.name}} onChange={(e) => onInputTextChange(e, '${field.name}')} rows={5} cols={30}/>
-                </span>
-                </div>
-                <#elseif field.pureString>
-                <div className="field col-6">
-                <label htmlFor="${field.name?uncap_first}">${field.name?cap_first}</label>
-                <InputText id="${field.name?uncap_first}" value={item.${field.name?uncap_first}} onChange={(e) => onInputTextChange(e, '${field.name?uncap_first}')} required autoFocus className={classNames({'p-invalid': submitted && !item.${field.name?uncap_first}})} />
-                {submitted && !item.${field.name?uncap_first} && <small className="p-invalid">${field.name?cap_first} is required.</small>}
-                </div>
-
-                <#elseif field.type.simpleName == "Boolean">
-                <div className="field col-6">
-                <div  class="label-inputswitch">
-                <label htmlFor="${field.name?uncap_first}">${field.name?cap_first}</label>
-                <span className="p-float-label">
-                <InputSwitch  id="${field.name}" checked={item.${field.name}} onChange={(e) => onBooleanInputChange(e, '${field.name}')} />
-                </span>
-                </div>
-                </div>
-
-                <#elseif field.id == false>
-                <div className="field col-6">
-                <label htmlFor="${field.name?uncap_first}">${field.name?cap_first}</label>
-                <InputNumber id="${field.name?uncap_first}" value={item.${field.name?uncap_first}} onChange={(e) => onInputNumerChange(e, '${field.name?uncap_first}')} />
-                </div>
-                </#if>
-
-                <#elseif field.generic && !field.notVisibleInCreatePage>
-                <div className="field col-6">
-                <label htmlFor="${field.name?uncap_first}">${field.name?cap_first}</label>
-                <Dropdown  id="${field.name?uncap_first}Dropdown"  value={item.${field.name}} options={${field.name}s} onChange={(e) => onDropdownChange(e, '${field.name}')}   placeholder="Sélectionnez un ${field.name?uncap_first}" filter filterPlaceholder="Rechercher un ${field.name?uncap_first}" optionLabel="<#if field.typeAsPojo??>${field.typeAsPojo.labelOrReferenceOrId.name}<#else>${field..name}</#if>" />
-                </div>
-                </#if>
-                </#list>
+                    <#list pojo.fields as field>
+                    <#if field.list && field.association>
+                    <div className="field col-6">
+                    <label htmlFor="${field.name}">${field.fieldOfAssociation.formatedName}</label>
+                    <MultiSelect value={item.${field.name}} options={${field.name}}  optionLabel="${field.fieldOfAssociation.name}.${field.fieldOfAssociation.typeAsPojo.labelOrReferenceOrId.name}" display="chip" placeholder="Select ${field.fieldOfAssociation.name}"  maxSelectedLabels={3}  onChange={(e) => onMultiSelectChange(e, '${field.name}')} />
+                    </div>
+                    <#elseif field.simple && !field.notVisibleInCreatePage>
+                    <#if  field.type.simpleName == "Date" || field.dateTime>
+                    <div className="field col-6">
+                    <label htmlFor="${field.name}">${field.name?cap_first}</label>
+                    <Calendar id="${field.name}" value={item.${field.name}} onChange={(e) => onInputDateChange(e, '${field.name}')} dateFormat="dd/mm/yy" showTime />
+                    </div>
+                    <#elseif  field.large>
+                    <div className="field col-6">
+                    <label htmlFor="${field.name}">${field.name?cap_first}</label>
+                    <span className="p-float-label">
+                    <InputTextarea id="${field.name?uncap_first}" value={item.${field.name}} onChange={(e) => onInputTextChange(e, '${field.name}')} rows={5} cols={30}/>
+                    </span>
+                    </div>
+                    <#elseif field.pureString>
+                    <div className="field col-6">
+                    <label htmlFor="${field.name?uncap_first}">${field.name?cap_first}</label>
+                    <InputText id="${field.name?uncap_first}" value={item.${field.name?uncap_first}} onChange={(e) => onInputTextChange(e, '${field.name?uncap_first}')} required autoFocus className={classNames({'p-invalid': submitted && !item.${field.name?uncap_first}})} />
+                    {submitted && !item.${field.name?uncap_first} && <small className="p-invalid">${field.name?cap_first} is required.</small>}
+                    </div>
+                    <#elseif field.type.simpleName == "Boolean">
+                    <div className="field col-6">
+                    <div  class="label-inputswitch">
+                    <label htmlFor="${field.name?uncap_first}">${field.name?cap_first}</label>
+                    <span className="p-float-label">
+                    <InputSwitch  id="${field.name}" checked={item.${field.name}} onChange={(e) => onBooleanInputChange(e, '${field.name}')} />
+                    </span>
+                    </div>
+                    </div>
+                    <#elseif field.id == false>
+                    <div className="field col-6">
+                    <label htmlFor="${field.name?uncap_first}">${field.name?cap_first}</label>
+                    <InputNumber id="${field.name?uncap_first}" value={item.${field.name?uncap_first}} onChange={(e) => onInputNumerChange(e, '${field.name?uncap_first}')} />
+                    </div>
+                    </#if>
+                    <#elseif field.generic && !field.notVisibleInCreatePage>
+                    <div className="field col-6">
+                    <label htmlFor="${field.name?uncap_first}">${field.name?cap_first}</label>
+                    <Dropdown  id="${field.name?uncap_first}Dropdown"  value={item.${field.name}} options={${field.name}s} onChange={(e) => onDropdownChange(e, '${field.name}')}   placeholder="Sélectionnez un ${field.name?uncap_first}" filter filterPlaceholder="Rechercher un ${field.name?uncap_first}" optionLabel="<#if field.typeAsPojo??>${field.typeAsPojo.labelOrReferenceOrId.name}<#else>${field..name}</#if>" />
+                    </div>
+                    </#if>
+                    </#list>
                 </div>
             </TabPanel>
             <#list pojo.fields as field>
@@ -444,22 +426,20 @@ return(
                         <#else>
                         </#if>
                         </#list>
-                        <Column header="Actions" body={(rowData) => (<div>
-                        <Button icon="pi pi-times" rounded severity="warning" className="mr-2 p-button-danger" onClick={() => delete${field.typeAsPojo.name}(rowData)} />
-                        <Button icon="pi pi-pencil" rounded severity="success" className="mr-2" onClick={() => edit${field.typeAsPojo.name}(rowData)} /> </div>)}></Column>
+                        <Column header="Actions" body={(rowData)=> (<div>
+                        <Button icon="pi pi-times" rounded severity="warning" className="mr-2 p-button-danger" onClick={()=> delete${field.typeAsPojo.name}(rowData)} />
+                        <Button icon="pi pi-pencil" rounded severity="success" className="mr-2" onClick={()=> edit${field.typeAsPojo.name}(rowData)} /> </div>)}></Column>
                     </DataTable>
                     </div>
                     <#if field.createAndListPageInOneTab>
                     </div>
                     <#else>
                     </TabPanel>
-                </TabView>
+                < /TabView>
             </#if>
             </TabPanel>
-
             </#if>
             </#list>
-
         </TabView>
     </#if>
     <#if pojo.createUpdateConfounded>

@@ -41,9 +41,9 @@ import View from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?un
       <#assign dateFieldName = simpleField.name>
   </#if>
 </#list>
-    const List = () => {
-    const emptyItem = new ${pojo.name}Dto();
+const List = () => {
 
+    const emptyItem = new ${pojo.name}Dto();
     const [items, setItems] = useState<${pojo.name}Dto[]>([]);
     const [deleteItemDialog, setDeleteItemDialog] = useState(false);
     const [deleteItemsDialog, setDeleteItemsDialog] = useState(false);
@@ -77,22 +77,21 @@ import View from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?un
 
     useEffect(() => {
         const fetchData = async () => {
-        try {
-            <#assign i=0>
-            const [<#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>${fieldGeneric.name?uncap_first}sResponse <#if fieldGeneric?index != pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition?size -1>,</#if></#list>] = await Promise.all<<#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>${fieldGeneric.name?cap_first}Response<#if fieldGeneric?index != pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition?size -1>,</#if></#list>>([
-<#list pojo.fieldsGenericIncludingInnerTypeInListField as fieldGeneric>
-    <#if fieldGeneric.typeAsPojo.ignoreFront == false &&  fieldGeneric.typeAsPojo.subModule.name == pojo.subModule.name>
-                ${fieldGeneric.name?cap_first}Service.getList(),
-    </#if>
-</#list>
-            ]);
-<#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>
-            set${fieldGeneric.name?cap_first}s(${fieldGeneric.name?uncap_first}sResponse.data);
-</#list>
-
-        } catch (error) {
-            console.error(error);
-        }
+            try {
+                <#assign i=0>
+                const [<#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>${fieldGeneric.name?uncap_first}sResponse <#if fieldGeneric?index != pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition?size -1>,</#if></#list>] = await Promise.all<<#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>${fieldGeneric.name?cap_first}Response<#if fieldGeneric?index != pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition?size -1>,</#if></#list>>([
+    <#list pojo.fieldsGenericIncludingInnerTypeInListField as fieldGeneric>
+        <#if fieldGeneric.typeAsPojo.ignoreFront == false &&  fieldGeneric.typeAsPojo.subModule.name == pojo.subModule.name>
+                    ${fieldGeneric.name?cap_first}Service.getList(),
+        </#if>
+    </#list>
+                ]);
+    <#list pojo.fieldsGenericIncludingInnerTypeInListFieldWithCondition as fieldGeneric>
+                set${fieldGeneric.name?cap_first}s(${fieldGeneric.name?uncap_first}sResponse.data);
+    </#list>
+            } catch (error) {
+                console.error(error);
+            }
         };
         fetchData();
         fetchItems(criteria);
@@ -186,34 +185,33 @@ import View from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?un
     };
 
    const leftToolbarTemplate = () => {
-           return (
-               <React.Fragment>
-                   <div className="my-2">
-                       <Button label="New" icon="pi pi-plus" severity="success" className=" mr-2" onClick={ showCreateModal} />
-                       <Button label="Delete" icon="pi pi-trash" severity="danger" className=" mr-2" onClick={confirmDeleteSelected} disabled={!selectedItems || !selectedItems.length} />
-                       <Button label="Search" icon={`pi pi-<#noparse>${findByCriteriaShow ? 'angle-down' : 'angle-right'}</#noparse>`} className=" mr-2" severity="warning" onClick={showSearch} />
-                   </div>
-               </React.Fragment>
-           );
-       };
+       return (
+           <React.Fragment>
+               <div className="my-2">
+                   <Button label="New" icon="pi pi-plus" severity="success" className=" mr-2" onClick={ showCreateModal} />
+                   <Button label="Delete" icon="pi pi-trash" severity="danger" className=" mr-2" onClick={confirmDeleteSelected} disabled={!selectedItems || !selectedItems.length} />
+                   <Button label="Search" icon={`pi pi-<#noparse>${findByCriteriaShow ? 'angle-down' : 'angle-right'}</#noparse>`} className=" mr-2" severity="warning" onClick={showSearch} />
+               </div>
+           </React.Fragment>
+       );
+   };
 
-       const rightToolbarTemplate = () => {
-           return (
-               <React.Fragment>
-                   <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} chooseLabel="Import" className="mr-2 inline-block" />
-                   <Button label="Export" icon="pi pi-upload" severity="help" onClick={exportCSV} />
-               </React.Fragment>
+   const rightToolbarTemplate = () => {
+       return (
+           <React.Fragment>
+               <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} chooseLabel="Import" className="mr-2 inline-block" />
+               <Button label="Export" icon="pi pi-upload" severity="help" onClick={exportCSV} />
+           </React.Fragment>
+       );
+   };
 
-           );
-       };
-
-       const actionBodyTemplate = (rowData: PurchaseDto) => {
-           return ( <>
-               <Button icon="pi pi-pencil" rounded severity="success" className="mr-1" onClick={() => showEditModal(rowData)} />
-               <Button icon="pi pi-trash" rounded severity="warning" onClick={() => confirmDeleteItem(rowData)} />
-               <Button icon="pi pi-eye" rounded severity="info" className="mr-1" onClick={() => showViewModal(rowData)} /> < />
-           );
-       };
+    const actionBodyTemplate = (rowData: PurchaseDto) => {
+       return ( <>
+           <Button icon="pi pi-pencil" rounded severity="success" className="mr-1" onClick={() => showEditModal(rowData)} />
+           <Button icon="pi pi-trash" rounded severity="warning" onClick={() => confirmDeleteItem(rowData)} />
+           <Button icon="pi pi-eye" rounded severity="info" className="mr-1" onClick={() => showViewModal(rowData)} /> < />
+       );
+    };
 
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
@@ -224,8 +222,8 @@ import View from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?un
     );
 
     const deleteItemDialogFooter = ( <>
-                    <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemDialog} />
-                    <Button label="Yes" icon="pi pi-check" text onClick={deleteItem} /> < />
+        <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemDialog} />
+        <Button label="Yes" icon="pi pi-check" text onClick={deleteItem} /> < />
     );
 
     const deleteItemsDialogFooter = ( <>
@@ -250,25 +248,21 @@ return (
                                         <Calendar id="${field?index}-1" value={criteria.${field.name}From} onChange={(e) => setCriteria({ ...criteria, ${field.name}From: e.value as Date })} dateFormat="dd-MM-yy" />
                                         <label htmlFor="${field?index}-1">${field.name?cap_first} Min</label>
                                         </span>
-
                                         <span className="p-float-label mr-3 align-search-items mt-4">
                                         <Calendar id="${field?index}-2" value={criteria.${field.name}To} onChange={(e) => setCriteria({ ...criteria, ${field.name}To: e.value as Date })} dateFormat="dd-MM-yy" />
                                         <label htmlFor="${field?index}-2">${field.name?cap_first} Max</label>
                                         </span>
-
                                     <#elseif field.pureString>
                                         <span className="p-float-label mr-3 align-search-items mt-4">
                                         <InputText id="${field?index}" value={criteria.${field.name}} onChange={(e) => setCriteria({ ...criteria, ${field.name}: e.target.value })} />
                                         <label htmlFor="${field?index}">${field.name?cap_first}</label>
                                         </span>
-
                                     <#elseif field.nombre == true>
                                         <#if field.name != pojo.id.name>
                                         <span className="p-float-label mr-3 align-search-items mt-4">
                                         <InputNumber id="${field?index}-1" value={criteria.t${field.name}Min} onChange={(e) => setCriteria({ ...criteria, ${field.name}Min: e.value })} mode="decimal" />
                                         <label htmlFor="${field?index}-1">${field.name?cap_first} Min</label>
                                         </span>
-
                                         <span className="p-float-label mr-3 align-search-items mt-4">
                                         <InputNumber id="${field?index}-2" value={criteria.${field.name}Max} onChange={(e) => setCriteria({ ...criteria, ${field.name}Max: e.value })} mode="decimal" />
                                         <label htmlFor="${field?index}-2">${field.name?cap_first} Max</label>
@@ -285,7 +279,6 @@ return (
                         </div>
                         <Button label="Validate" icon="pi pi-sort-amount-down" className="p-button-info mr-2" onClick={fetchItems} />
                         </div>
-
                 </Card>
                 )}
                 <DataTable ref={dt} value={items} selection={selectedItems} onSelectionChange={(e) => setSelectedItems(e.value as ${pojo.name}Dto[])} dataKey="id" className="datatable-responsive" globalFilter={globalFilter} header={header} responsiveLayout="scroll" >
@@ -302,7 +295,6 @@ return (
                     </#if>
                     <#if field.dateTime>
                     <Column field="${field.name} | date :'dd/MM/yyyy HH:mm'" header="${field.name?cap_first}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
-
                     <#elseif field.bool>
                     <td><i *ngIf="element.${field.name}" class="pi pi-check checked-toogle"></i>
                     <i *ngIf="!element.${field.name}" class="pi pi-times unchecked-toogle"></i>
@@ -312,12 +304,10 @@ return (
                     </#if>
                     </#list>
                     <Column header="Actions" body={actionBodyTemplate} headerStyle={{minWidth: '10rem'}}></Column>
-
                 </DataTable>
                 <div className="p-d-flex p-ai-center p-jc-between">
                     <Paginator onPageChange={onPage} first={first} rows={rows} totalRecords={totalRecords} />
                 </div>
-
                 <Create visible={showCreateDialog} onClose={() => setShowCreateDialog(false)} add={add} showToast={toast} list={items} />
                 <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update} />
                 <View visible={showViewDialog} onClose={() =>  { setShowViewDialog(false); setSelectedItem(null); }} selectedItem={selectedItem} />
@@ -327,7 +317,6 @@ return (
                     {item && (<span>Are you sure you want to delete ${pojo.formatedNameLowerCase?uncap_first} <b>{item.id}</b>?</span>)}
                     </div>
                 </Dialog>
-
                 <Dialog visible={deleteItemsDialog} style={{width: '450px'}} header="Confirm" modal footer={deleteItemsDialogFooter} onHide={hideDeleteItemsDialog} >
                     <div className="flex align-items-center justify-content-center">
                     <i className="pi pi-exclamation-triangle mr-3" style={{fontSize: '2rem'}} />

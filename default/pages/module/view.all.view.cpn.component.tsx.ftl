@@ -56,14 +56,14 @@ return(
             <div className="field col-6">
                 <label htmlFor="${field.name}">${field.name?cap_first}</label>
                 <span className="p-float-label">
-               <InputTextarea id="${field.name?uncap_first}" value={selectedItem?.${field.name}} disabled rows={5} cols={30} />
+                   <InputTextarea id="${field.name?uncap_first}" value={selectedItem?.${field.name}} disabled rows={5} cols={30} />
                 </span>
             </div>
         <#elseif field.pureString>
             <div className="field col-6">
                 <label htmlFor="${field.name?uncap_first}">${field.name?cap_first}</label>
                 <InputText id="${field.name?uncap_first}" value={selectedItem?.${field.name?uncap_first}} disabled   />
-                 </div>
+            </div>
         <#elseif field.type.simpleName == "Boolean">
         <div className="field col-6">
             <div  class="label-inputswitch">

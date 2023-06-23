@@ -69,7 +69,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
     }, []);
 
     const onDropdownChange = (e, field) => {
-        setItem((prevState) => ({ ...prevState, [field]: e.value, }));
+        setItem((prevState) => ({ ...prevState, [field]: e.value}));
     };
 
 <#list pojo.fields as field>
@@ -107,6 +107,9 @@ const Create = ({visible, onClose, add, showToast, list}) => {
     const onInputNumerChange${field.name?cap_first} = (e, name) => {
          const val = e.value || 0;
          set${field.typeAsPojo.name}((prev${field.name?cap_first}) => ({...prev${field.name?cap_first}, [name]: val, }));
+    };
+    const onDropdownChange${field.name?cap_first} = (e, field) => {
+        set${field.typeAsPojo.name}((prevState) => ({ ...prevState, [field]: e.value}));
     };
 
     const onMultiSelectChange${field.name?cap_first} = (e, field) => {

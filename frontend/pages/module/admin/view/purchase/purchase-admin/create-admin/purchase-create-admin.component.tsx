@@ -59,6 +59,10 @@ const Create = ({visible, onClose, add, showToast, list}) => {
         setItem((prevState) => ({ ...prevState, [field]: e.value, }));
     };
 
+    const onDropdownChangePurchaseItems = (e, field) => {
+        setPurchaseItem((prevState) => ({...prevState, [field]: e.value}));
+    };
+
     const addPurchaseItems = () => {
         setSubmitted(true);
         if( item.purchaseItems == null )

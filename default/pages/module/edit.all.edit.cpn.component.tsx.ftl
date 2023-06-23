@@ -119,6 +119,11 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
         set${field.typeAsPojo.name}((prev${field.name?cap_first}) => ({ ...prev${field.name?cap_first}, [name]: val, }));
     };
 
+    const onDropdownChange${field.name?cap_first} = (e, field) => {
+        set${field.typeAsPojo.name}((prevState) => ({ ...prevState, [field]: e.value}));
+    };
+
+
     const onMultiSelectChange${field.name?cap_first} = (e, field) => {
         if (e && e.value && Array.isArray(e.value)) {
             const selectedValues = e.value.map(option => option && option.value);
@@ -139,7 +144,7 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
     };
 
     const onDropdownChange${field.name?cap_first} = (e, field) => {
-        set${field.typeAsPojo.name}((prevState) => ({ ...prevState, [field]: e.value,}));
+        set${field.typeAsPojo.name}((prevState) => ({ ...prevState, [field]: e.value}));
     };
 
     const onInputTextChange${field.name?cap_first} = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {

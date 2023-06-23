@@ -57,6 +57,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
     const saveItem = async () => {
         setSubmitted(true);
+
         let _items = [...items];
         let _item = {...item};
 

@@ -12,23 +12,20 @@ import {AxiosResponse} from 'axios';
 import React, {useEffect, useState} from 'react';
 import {Calendar, CalendarChangeEvent} from 'primereact/calendar';
 import { format } from 'date-fns';
+import {InputNumberChangeEvent} from 'primereact/inputnumber';
 import { InputSwitch } from "primereact/inputswitch";
-import {MultiSelect} from "primereact/multiselect";
-
-
-
-import {MessageService} from "/pages/controller/service/MessageService";
+import {MultiSelect} from "primereact/multiselect";import {MessageService} from "/pages/controller/service/MessageService";
 
 import {PurchaseService} from '/pages/controller/service/Purchase.service';
 
 import  {PurchaseDto}  from '/pages/controller/model/Purchase.model';
 
-import {PurchaseItemDto} from '/pages/controller/model/PurchaseItem.model';
-import {PurchaseItemService} from '/pages/controller/service/PurchaseItem.service';
 import {ProductDto} from '/pages/controller/model/Product.model';
 import {ProductService} from '/pages/controller/service/Product.service';
 import {ClientDto} from '/pages/controller/model/Client.model';
 import {ClientService} from '/pages/controller/service/Client.service';
+import {PurchaseItemDto} from '/pages/controller/model/PurchaseItem.model';
+import {PurchaseItemService} from '/pages/controller/service/PurchaseItem.service';
 const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
 
     const emptyItem = new PurchaseDto();
@@ -38,15 +35,15 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
       const [activeTab, setActiveTab] = useState(0);
       const [item, setItem] = useState<PurchaseDto>(selectedItem || emptyItem);
 
-      const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
-      const [selectedPurchaseItem, setSelectedPurchaseItem] = useState(null);
-      type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
       const [products, setProducts] = useState<ProductDto[]>([]);
       const [selectedProduct, setSelectedProduct] = useState(null);
       type ProductResponse = AxiosResponse<ProductDto[]>;
       const [clients, setClients] = useState<ClientDto[]>([]);
       const [selectedClient, setSelectedClient] = useState(null);
       type ClientResponse = AxiosResponse<ClientDto[]>;
+      const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
+      const [selectedPurchaseItem, setSelectedPurchaseItem] = useState(null);
+      type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
 
       const [purchaseItem, setPurchaseItem] = useState<PurchaseItemDto>(new PurchaseItemDto());
 
@@ -72,10 +69,10 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
         useEffect(() => {
               setItem(selectedItem ? { ...selectedItem } : { ...emptyItem });
 
-            setItem((prevState) => ({
-                ...prevState,
-                purchaseItems: selectedItem?.purchaseItems ?? [],
-            }));
+                   setItem((prevState) => ({
+                     ...prevState,
+                       purchaseItems:  selectedItem?.purchaseItems ?? [],
+                          }));
 
           }, [selectedItem]);
 
@@ -89,53 +86,45 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
           const addPurchaseItems = () => {
                    setSubmitted(true);
                    if( item.purchaseItems == null )
-                   item.purchaseItems = [];
-              let _item = {...purchaseItem};
-              if (!_item.id) {
+                   item.purchaseItems = new Array<PurchaseItemDto>();
 
-                  _item.product = selectedProduct;
-                  item.purchaseItems.push(_item);
+                   let _item = purchaseItem;
+                   if (!_item.id) {
+                      _item.product = selectedProduct;
+                          item.PurchaseItems.push(_item);
+                          MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Created', life: 3000 });
 
-                        setItem((prevState :any) => ({
-                          ...prevState,
-                           purchaseItems: item.purchaseItems
-                                }));
-                  MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Created', life: 3000 });
+                          setItem((prevState :any) => ({
+                           ...prevState,
+                              PurchaseItems: item.PurchaseItems
+                               }));
+                   } else {
 
-              } else {
-                  const updatedItems = item.purchaseItems.map((item) =>
-                      item.id === purchaseItem.id ? { ...item, product: { ...selectedProduct },price : purchaseItem.price,quantity: purchaseItem.quantity } : item,
-                  );
+                      if (item.purchaseItems.find((item) => item.id === purchaseItem.id)) {
+                          MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Updated', life: 3000 });
+                      }
+                      setItem((prevState :any) => ({
+                        ...prevState,
+                          PurchaseItems: updatedItems
+                          }));
+                          setSelectedPurchaseItem(null);
+                                    }
 
-                  if (item.purchaseItems.find((item) => item.id === purchaseItem.id)) {
-                      MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Updated', life: 3000 });
+                   setPurchaseItem(new PurchaseItemDto());
+                   setSelectedProduct(null);
 
-                  }
-
-
-                  setItem((prevState :any) => ({
-                      ...prevState,
-                      purchaseItems: updatedItems
-                  }));
-                  setSelectedPurchaseItem(null);
-              }
-
-              setPurchaseItem(new PurchaseItemDto());
-              setSelectedProduct(null);
-
-          };
-
-
-
-    const deletePurchaseItem = (rowData) => {
-               const updatedItems = item.purchaseItems.filter((val) => val !== rowData);
-               setItem((prevState) => ({
-                  ...prevState,
-                  purchaseItems: updatedItems,
-                        }));
-               setPurchaseItem(new PurchaseItemDto());
-             MessageService.showToast(showToast, {severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000});
               };
+
+              const deletePurchaseItem = (rowData) => {
+                  const updatedItems = purchaseItems.filter((val) => val !== rowData);
+                  setItem((prevState :any) => ({
+                    ...prevState,
+                    PurchaseItems: updatedItems
+                                  }));
+                  setPurchaseItem(new PurchaseItemDto());
+                  MessageService.showToast(showToast, {severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000});
+              };
+
 
 
         const editPurchaseItem = (rowData) => {
@@ -215,47 +204,47 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
                   } catch (error) {
                   console.log(error);
                   MessageService.showToast(showToast, { severity: 'Error', summary: 'Error', detail: 'Failed to save purchase', life: 3000 });
+                  MessageService.showToast(showToast, { severity: 'Error', summary: 'Error', detail: 'Failed to save purchase', life: 3000 });
 
                         }
                     };
     const onInputTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
-        const val = (e.target && e.target.value) || '';
-        let _item = {...item};
-        _item[`${name}`] = val;
-        setItem(_item);
-    };
+     const val = (e.target && e.target.value) || '';
+      let _item = {...item};
+      _item[`${name}`] = val;
+       setItem(_item);
+        };
 
-    const onInputDateChange = (e: CalendarChangeEvent, name: string) => {
-        const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
-        let _item = { ...item};
-        _item[`${name}`] = val;
-        setItem(_item);
-    };
+      const onInputDateChange = (e: CalendarChangeEvent, name: string) => {
+       const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
+       let _item = { ...item};
+         _item[`${name}`] = val;
+          setItem(_item);
+          };
 
-    const onInputNumerChange = (e: InputNumberChangeEvent, name: string) => {
-        const val = e.value === null ? null : +e.value;
+      const onInputNumerChange = (e: InputNumberChangeEvent, name: string) => {
+       const val = e.value === null ? null : +e.value;
         setItem((prevItem) => ({ ...prevItem, [name]: val, }));
-    };
+        };
 
-    const onMultiSelectChange = (e, field) => {
-        if (e && e.value && Array.isArray(e.value)) {
-            const selectedValues = e.value.map(option => option && option.value);
-            setItem(prevState => ({ ...prevState, [field]: selectedValues, }));
-        }
-    };
+       const onMultiSelectChange = (e, field) => {
+      if (e && e.value && Array.isArray(e.value)) {
+       const selectedValues = e.value.map(option => option && option.value);
+       setItem(prevState => ({ ...prevState, [field]: selectedValues, }));
+       }
+       };
 
-    const onBooleanInputChange = (e: any, name: string) => {
-        const val = e.value;
-        setItem((prevItem) => ({ ...prevItem, [name]: val, }));
-    };
-
-
+      const onBooleanInputChange = (e: any, name: string) => {
+      const val = e.value;
+       setItem((prevItem) => ({ ...prevItem, [name]: val, }));
+         };
 
 
-             const itemDialogFooter = (
+
+      const itemDialogFooter = (
                      <>
-                             <Button label="Cancel" icon="pi pi-times" text onClick={hideDialog}/>
-                             <Button label="Save" icon="pi pi-check" text onClick={saveItem}/>
+         <Button label="Cancel" icon="pi pi-times" text onClick={hideDialog}/>
+          <Button label="Save" icon="pi pi-check" text onClick={saveItem}/>
                      </>
                  );
 
@@ -292,7 +281,7 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
 
                     <div className="field col-6">
                         <label htmlFor="total">Total</label>
-                        <InputNumber id="total" value={item ? item.total : 0} onChange={(e) => onInputNumerChange(e, 'total')}/>
+                        <InputNumber id="total" value={item ? item.total : ''} onChange={(e) => onInputNumerChange(e, 'total')}/>
                     </div>
 
                 <div className="field col-6">

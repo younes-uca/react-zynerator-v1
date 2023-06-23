@@ -122,20 +122,6 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
                               ${field.name?cap_first}: item.${field.name?cap_first}
                                }));
                    } else {
-                      const updatedItems = item.${field.name?uncap_first}.map((item) =>
-                      //To be validate by Mr Zouani
-                      <#assign i=0>
-                             <#list field.typeAsPojo.fields as innerField>
-                                <#if  !innerField.notVisibleInCreatePage>
-                      item.id === ${field.typeAsPojo.name?uncap_first}.id ? { ...item, <#if innerField.generic &&
-                      innerField.typeAsPojo.name != pojo.name>${innerField.name?uncap_first}: { ...selected${innerField.name?cap_first}
-                       }<#assign i=0> <#list innerField.generic as innerField><#if innerField?index != innerField.generic?size -1>,</#if>
-                       </#list>,${innerField.name?uncap_first}: ${field.typeAsPojo.name?uncap_first}.${innerField.name?uncap_first} }
-                       <#if innerField?index != field.typeAsPojo.fields?size -1>,</#if>: item,
-                                    </#if>
-                                </#if>
-                            </#list>
-                          );
 
                       if (item.${field.name?uncap_first}.find((item) => item.id === ${pojo.name?uncap_first}Item.id)) {
                           MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Updated', life: 3000 });
@@ -254,7 +240,8 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
                  }
                   } catch (error) {
                   console.log(error);
-                  MessageService.showToast(showToast, { severity: 'Error', summary: 'Error', detail: 'Failed to save ${pojo.name?unccap_first}', life: 3000 });
+                  MessageService.showToast(showToast, { severity: 'Error', summary: 'Error', detail: 'Failed to save ${pojo.name?uncap_first}', life: 3000 });
+                  MessageService.showToast(showToast, { severity: 'Error', summary: 'Error', detail: 'Failed to save ${pojo.name?uncap_first}', life: 3000 });
 
                         }
                     };

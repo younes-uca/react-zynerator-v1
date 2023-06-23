@@ -191,7 +191,7 @@ import View from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?un
                    <div className="my-2">
                        <Button label="New" icon="pi pi-plus" severity="success" className=" mr-2" onClick={ showCreateModal} />
                        <Button label="Delete" icon="pi pi-trash" severity="danger" className=" mr-2" onClick={confirmDeleteSelected} disabled={!selectedItems || !selectedItems.length} />
-                       <Button label="Search" icon={`pi pi-${findByCriteriaShow ? 'angle-down' : 'angle-right'}`} className=" mr-2" severity="warning" onClick={showSearch} />
+                       <Button label="Search" icon={`pi pi-<#noparse>${findByCriteriaShow ? 'angle-down' : 'angle-right'}</#noparse>`} className=" mr-2" severity="warning" onClick={showSearch} />
                    </div>
                </React.Fragment>
            );

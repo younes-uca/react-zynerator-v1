@@ -13,13 +13,20 @@ import React, {useEffect, useRef, useState} from 'react';
 import { Paginator } from 'primereact/paginator';
 import {BaseCriteria} from '/pages/zynerator/criteria/BaseCriteria.model';
 import {MessageService} from '/pages/controller/service/MessageService';
+import {Card} from "primereact/card";
+import {Calendar} from "primereact/calendar";
+import {InputNumber} from "primereact/inputnumber";
+import {Dropdown} from "primereact/dropdown";
+import {AxiosResponse} from "axios";
 
 import {ClientService} from '/pages/controller/service/Client.service';
 import {ClientDto}  from '/pages/controller/model/Client.model';
+import {ClientCriteria} from "/pages/controller/criteria/ClientCriteria.model";
 
-//import Edit from '/pages/module/admin/view/purchase/client-admin/edit-admin/client-edit-admin.component';
+
+import Edit from '/pages/module/admin/view/purchase/client-admin/edit-admin/client-edit-admin.component';
 import Create from '/pages/module/admin/view/purchase/client-admin/create-admin/client-create-admin.component';
-//import View from '/pages/module/admin/view/purchase/client-admin/view-admin/client-view-admin.component';
+import View from '/pages/module/admin/view/purchase/client-admin/view-admin/client-view-admin.component';
 
     const List = () => {
     const emptyItem = new ClientDto();
@@ -42,11 +49,22 @@ import Create from '/pages/module/admin/view/purchase/client-admin/create-admin/
     const dt = useRef<DataTable<ClientDto[]>>();
     const [findByCriteriaShow, setFindByCriteriaShow] = useState(false);
 
+
     const showSearch = () => {
         setFindByCriteriaShow(!findByCriteriaShow);
     };
 
     useEffect(() => {
+        const fetchData = async () => {
+        try {
+            const [] = await Promise.all<>([
+            ]);
+
+        } catch (error) {
+            console.error(error);
+        }
+        };
+        fetchData();
         fetchItems(criteria);
     }, [criteria]);
 
@@ -137,51 +155,52 @@ import Create from '/pages/module/admin/view/purchase/client-admin/create-admin/
         MessageService.showToast(toast, { severity: 'success', summary: 'Successful', detail: 'Clients Deleted', life: 3000 });
     };
 
-    const leftToolbarTemplate = () => {
-        return (
-            <React.Fragment>
-                <div className="my-2">
-                    <Button label="New" icon="pi pi-plus" severity="success" className=" mr-2" onClick={ showCreateModal} />
-                    <Button label="Delete" icon="pi pi-trash" severity="danger" className=" mr-2" onClick={confirmDeleteSelected} disabled={!selectedItems || !selectedItems.length} />
-                    <Button label="Search" icon={`pi pi-${findByCriteriaShow ? 'angle-down' : 'angle-right'}`} className=" mr-2" severity="warning" onClick={showSearch} />
-                </div>
-            </React.Fragment>
-        );
-    };
+   const leftToolbarTemplate = () => {
+           return (
+               <React.Fragment>
+                   <div className="my-2">
+                       <Button label="New" icon="pi pi-plus" severity="success" className=" mr-2" onClick={ showCreateModal} />
+                       <Button label="Delete" icon="pi pi-trash" severity="danger" className=" mr-2" onClick={confirmDeleteSelected} disabled={!selectedItems || !selectedItems.length} />
+                       <Button label="Search" icon={`pi pi-${findByCriteriaShow ? 'angle-down' : 'angle-right'}`} className=" mr-2" severity="warning" onClick={showSearch} />
+                   </div>
+               </React.Fragment>
+           );
+       };
 
-    const rightToolbarTemplate = () => {
-        return (
-            <React.Fragment>
-                <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} chooseLabel="Import" className="mr-2 inline-block" />
-                <Button label="Export" icon="pi pi-upload" severity="help" onClick={exportCSV} />
-            </React.Fragment>
-        );
-    };
+       const rightToolbarTemplate = () => {
+           return (
+               <React.Fragment>
+                   <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} chooseLabel="Import" className="mr-2 inline-block" />
+                   <Button label="Export" icon="pi pi-upload" severity="help" onClick={exportCSV} />
+               </React.Fragment>
 
-    const actionBodyTemplate = (rowData: ClientDto) => {
-        return ( <>
-            <Button icon="pi pi-pencil" rounded severity="success" className="mr-1" onClick={() => showEditModal(rowData)} />
-            <Button icon="pi pi-trash" rounded severity="warning" onClick={() => confirmDeleteItem(rowData)} />
-            <Button icon="pi pi-eye" rounded severity="info" className="mr-1" onClick={() => showViewModal(rowData)} /> < />
-        );
-    };
+           );
+       };
+
+       const actionBodyTemplate = (rowData: PurchaseDto) => {
+           return ( <>
+               <Button icon="pi pi-pencil" rounded severity="success" className="mr-1" onClick={() => showEditModal(rowData)} />
+               <Button icon="pi pi-trash" rounded severity="warning" onClick={() => confirmDeleteItem(rowData)} />
+               <Button icon="pi pi-eye" rounded severity="info" className="mr-1" onClick={() => showViewModal(rowData)} /> < />
+           );
+       };
 
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 className="m-0">Manage Clients</h5>
-            <span className="block mt-2 md:mt-0 p-input-icon-left"><i className="pi pi-search" />
-            <InputText type="search" onInput={(e) => setGlobalFilter(e.currentTarget.value)} placeholder="Search..." /> </span>
+        <h5 className="m-0">Manage Clients</h5>
+        <span className="block mt-2 md:mt-0 p-input-icon-left"><i className="pi pi-search" />
+        <InputText type="search" onInput={(e) => setGlobalFilter(e.currentTarget.value)} placeholder="Search..." /> </span>
         </div>
     );
 
     const deleteItemDialogFooter = ( <>
-        <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemDialog} />
-        <Button label="Yes" icon="pi pi-check" text onClick={deleteItem} />< />
+                    <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemDialog} />
+                    <Button label="Yes" icon="pi pi-check" text onClick={deleteItem} /> < />
     );
 
     const deleteItemsDialogFooter = ( <>
-        <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemsDialog}/>
-        <Button label="Yes" icon="pi pi-check" text onClick={deleteSelectedItems}/>
+        <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemsDialog} />
+        <Button label="Yes" icon="pi pi-check" text onClick={deleteSelectedItems} /> < />
     );
 
 return (
@@ -190,6 +209,26 @@ return (
             <div className="card">
                 <Toast ref={toast} />
                 <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+                {findByCriteriaShow && (
+                <Card>
+                    <div className="search-container">
+                        <div className="grid">
+                                        <span className="p-float-label mr-3 align-search-items mt-4">
+                                        <InputText id="1" value={criteria.fullName} onChange={(e) => setCriteria({ ...criteria, fullName: e.target.value })} />
+                                        <label htmlFor="1">FullName</label>
+                                        </span>
+
+                                        <span className="p-float-label mr-3 align-search-items mt-4">
+                                        <InputText id="2" value={criteria.email} onChange={(e) => setCriteria({ ...criteria, email: e.target.value })} />
+                                        <label htmlFor="2">Email</label>
+                                        </span>
+
+                        </div>
+                        <Button label="Validate" icon="pi pi-sort-amount-down" className="p-button-info mr-2" onClick={fetchItems} />
+                        </div>
+
+                </Card>
+                )}
                 <DataTable ref={dt} value={items} selection={selectedItems} onSelectionChange={(e) => setSelectedItems(e.value as ClientDto[])} dataKey="id" className="datatable-responsive" globalFilter={globalFilter} header={header} responsiveLayout="scroll" >
                     <Column selectionMode="multiple" headerStyle={{ width: '4rem' }}> </Column>
                     
@@ -206,8 +245,8 @@ return (
                 </div>
 
                 <Create visible={showCreateDialog} onClose={() => setShowCreateDialog(false)} add={add} showToast={toast} list={items} />
-                { /* <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update} />
-                <View visible={showViewDialog} onClose={() =>  { setShowViewDialog(false); setSelectedItem(null); }} selectedItem={selectedItem} /> */}
+                <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update} />
+                <View visible={showViewDialog} onClose={() =>  { setShowViewDialog(false); setSelectedItem(null); }} selectedItem={selectedItem} />
                 <Dialog visible={deleteItemDialog} style={{width: '450px'}} header="Confirm" modal footer={deleteItemDialogFooter} onHide={hideDeleteItemDialog}>
                     <div className="flex align-items-center justify-content-center">
                     <i className="pi pi-exclamation-triangle mr-3" style={{fontSize: '2rem'}}/>

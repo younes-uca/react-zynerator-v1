@@ -4,6 +4,7 @@ import {BaseCriteria} from "/pages/zynerator/criteria/BaseCriteria.model";
 import {PaginatedList} from "/pages/zynerator/dto/PaginatedList.model";
 import {BaseDto} from "/pages/zynerator/dto/BaseDto.model";
 import {ClientDto} from '/pages/controller/model/Client.model';
+import {ClientCriteria} from "/pages/controller/criteria/ClientCriteria.model";
 
 
 

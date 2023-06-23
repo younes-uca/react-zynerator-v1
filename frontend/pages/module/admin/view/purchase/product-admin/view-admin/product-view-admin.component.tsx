@@ -1,12 +1,19 @@
 import {Button} from 'primereact/button';
 import {Column} from 'primereact/column';
-import { TabView, TabPanel } from 'primereact/tabview';
+import {Dropdown} from 'primereact/dropdown';
+import {TabView, TabPanel} from 'primereact/tabview';
 import {DataTable} from 'primereact/datatable';
 import {Dialog} from 'primereact/dialog';
-import {InputNumber} from 'primereact/inputnumber';
+import {InputNumber, InputNumberChangeEvent} from 'primereact/inputnumber';
 import {InputText} from 'primereact/inputtext';
+import {classNames} from 'primereact/utils';
+import { InputTextarea } from 'primereact/inputtextarea';
+import {AxiosResponse} from 'axios';
 import React, {useEffect, useState} from 'react';
-
+import {Calendar, CalendarChangeEvent} from 'primereact/calendar';
+import { format } from 'date-fns';
+import { InputSwitch } from "primereact/inputswitch";
+import {MultiSelect} from "primereact/multiselect";
 import  {ProductDto}  from '/pages/controller/model/Product.model';
 
 const View = ({visible,onClose,selectedItem}) => {
@@ -41,15 +48,13 @@ return(
 
             <div className="field col-6">
                 <label htmlFor="code">Code</label>
-                <InputText id="code" value={item.code} disabled required autoFocus className={classNames({'p-invalid': submitted && !item.code})} />
-                {submitted && !item.code && <small className="p-invalid">Code is required.</small>}
-            </div>
+                <InputText id="code" value={selectedItem?.code} disabled   />
+                 </div>
 
             <div className="field col-6">
                 <label htmlFor="reference">Reference</label>
-                <InputText id="reference" value={item.reference} disabled required autoFocus className={classNames({'p-invalid': submitted && !item.reference})} />
-                {submitted && !item.reference && <small className="p-invalid">Reference is required.</small>}
-            </div>
+                <InputText id="reference" value={selectedItem?.reference} disabled   />
+                 </div>
 
         </div>
 </TabPanel>

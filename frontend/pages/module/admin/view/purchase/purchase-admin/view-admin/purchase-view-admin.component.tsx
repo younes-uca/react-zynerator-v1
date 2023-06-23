@@ -11,7 +11,9 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import {AxiosResponse} from 'axios';
 import React, {useEffect, useState} from 'react';
 import {Calendar, CalendarChangeEvent} from 'primereact/calendar';
-
+import { format } from 'date-fns';
+import { InputSwitch } from "primereact/inputswitch";
+import {MultiSelect} from "primereact/multiselect";
 import  {PurchaseDto}  from '/pages/controller/model/Purchase.model';
 
 const View = ({visible,onClose,selectedItem}) => {
@@ -46,20 +48,18 @@ return(
 
             <div className="field col-6">
                 <label htmlFor="reference">Reference</label>
-                <InputText id="reference" value={item.reference} disabled  />
-                {submitted && !item.reference && <small className="p-invalid">Reference is required.</small>}
-            </div>
+                <InputText id="reference" value={selectedItem?.reference} disabled   />
+                 </div>
 
         <div className="field col-6">
             <label htmlFor="purchaseDate">PurchaseDate</label>
-            <Calendar id="purchaseDate" value={item.purchaseDate} disabled dateFormat="dd/mm/yy" showTime />
+            <Calendar id="purchaseDate" value={selectedItem?.purchaseDate} disabled dateFormat="dd/mm/yy" showTime />
         </div>
 
             <div className="field col-6">
                 <label htmlFor="image">Image</label>
-                <InputText id="image" value={item.image} disabled  />
-                {submitted && !item.image && <small className="p-invalid">Image is required.</small>}
-            </div>
+                <InputText id="image" value={selectedItem?.image} disabled   />
+                 </div>
 
                 <div className="field col-6">
                     <label htmlFor="total">Total</label>
@@ -69,13 +69,13 @@ return(
             <div className="field col-6">
                 <label htmlFor="description">Description</label>
                 <span className="p-float-label">
-               <InputTextarea id="description" value={item.description} disabled rows={5} cols={30} />
+               <InputTextarea id="description" value={selectedItem?.description} disabled rows={5} cols={30} />
                 </span>
             </div>
 
                 <div className="field col-6">
                     <label htmlFor="client">Client</label>
-                    <Dropdown  id="clientDropdown"  value={selectedItem?.client?.id} disabled  />
+                    <Dropdown  id="clientDropdown"  value={selectedItem?.client?.fullName}  disabled  />
                 </div>
         </div>
 </TabPanel>

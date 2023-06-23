@@ -1,12 +1,19 @@
 import {Button} from 'primereact/button';
 import {Column} from 'primereact/column';
-import { TabView, TabPanel } from 'primereact/tabview';
+import {Dropdown} from 'primereact/dropdown';
+import {TabView, TabPanel} from 'primereact/tabview';
 import {DataTable} from 'primereact/datatable';
 import {Dialog} from 'primereact/dialog';
-import {InputNumber} from 'primereact/inputnumber';
+import {InputNumber, InputNumberChangeEvent} from 'primereact/inputnumber';
 import {InputText} from 'primereact/inputtext';
+import {classNames} from 'primereact/utils';
+import { InputTextarea } from 'primereact/inputtextarea';
+import {AxiosResponse} from 'axios';
 import React, {useEffect, useState} from 'react';
-
+import {Calendar, CalendarChangeEvent} from 'primereact/calendar';
+import { format } from 'date-fns';
+import { InputSwitch } from "primereact/inputswitch";
+import {MultiSelect} from "primereact/multiselect";
 import  {ClientDto}  from '/pages/controller/model/Client.model';
 
 const View = ({visible,onClose,selectedItem}) => {
@@ -41,15 +48,13 @@ return(
 
             <div className="field col-6">
                 <label htmlFor="fullName">FullName</label>
-                <InputText id="fullName" value={item.fullName} disabled required autoFocus className={classNames({'p-invalid': submitted && !item.fullName})} />
-                {submitted && !item.fullName && <small className="p-invalid">FullName is required.</small>}
-            </div>
+                <InputText id="fullName" value={selectedItem?.fullName} disabled   />
+                 </div>
 
             <div className="field col-6">
                 <label htmlFor="email">Email</label>
-                <InputText id="email" value={item.email} disabled required autoFocus className={classNames({'p-invalid': submitted && !item.email})} />
-                {submitted && !item.email && <small className="p-invalid">Email is required.</small>}
-            </div>
+                <InputText id="email" value={selectedItem?.email} disabled   />
+                 </div>
 
         </div>
 </TabPanel>

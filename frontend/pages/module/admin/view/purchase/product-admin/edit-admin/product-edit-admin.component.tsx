@@ -1,3 +1,12 @@
+import {Button} from 'primereact/button';
+import {Column} from 'primereact/column';
+import {Dropdown} from 'primereact/dropdown';
+import {TabView, TabPanel} from 'primereact/tabview';
+import {DataTable} from 'primereact/datatable';
+import {Dialog} from 'primereact/dialog';
+import {InputNumber, InputNumberChangeEvent} from 'primereact/inputnumber';
+import {InputText} from 'primereact/inputtext';
+import {classNames} from 'primereact/utils';
 import { InputTextarea } from 'primereact/inputtextarea';
 import {AxiosResponse} from 'axios';
 import React, {useEffect, useState} from 'react';
@@ -5,9 +14,7 @@ import {Calendar, CalendarChangeEvent} from 'primereact/calendar';
 import { format } from 'date-fns';
 import {InputNumberChangeEvent} from 'primereact/inputnumber';
 import { InputSwitch } from "primereact/inputswitch";
-import {MultiSelect} from "primereact/multiselect";
-
-import {MessageService} from "/pages/controller/service/MessageService";
+import {MultiSelect} from "primereact/multiselect";import {MessageService} from "/pages/controller/service/MessageService";
 
 import {ProductService} from '/pages/controller/service/Product.service';
 
@@ -64,6 +71,7 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
       const saveItem = async () => {
             setSubmitted(true);
             let _item = {...item};
+
              try {
                  if (_item.id) {
                  await ProductService.update(_item).then((response) => {
@@ -78,15 +86,47 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
                   } catch (error) {
                   console.log(error);
                   MessageService.showToast(showToast, { severity: 'Error', summary: 'Error', detail: 'Failed to save product', life: 3000 });
+                  MessageService.showToast(showToast, { severity: 'Error', summary: 'Error', detail: 'Failed to save product', life: 3000 });
 
                         }
                     };
+    const onInputTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
+     const val = (e.target && e.target.value) || '';
+      let _item = {...item};
+      _item[`${name}`] = val;
+       setItem(_item);
+        };
+
+      const onInputDateChange = (e: CalendarChangeEvent, name: string) => {
+       const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
+       let _item = { ...item};
+         _item[`${name}`] = val;
+          setItem(_item);
+          };
+
+      const onInputNumerChange = (e: InputNumberChangeEvent, name: string) => {
+       const val = e.value === null ? null : +e.value;
+        setItem((prevItem) => ({ ...prevItem, [name]: val, }));
+        };
+
+       const onMultiSelectChange = (e, field) => {
+      if (e && e.value && Array.isArray(e.value)) {
+       const selectedValues = e.value.map(option => option && option.value);
+       setItem(prevState => ({ ...prevState, [field]: selectedValues, }));
+       }
+       };
+
+      const onBooleanInputChange = (e: any, name: string) => {
+      const val = e.value;
+       setItem((prevItem) => ({ ...prevItem, [name]: val, }));
+         };
 
 
-             const itemDialogFooter = (
+
+      const itemDialogFooter = (
                      <>
-                             <Button label="Cancel" icon="pi pi-times" text onClick={hideDialog}/>
-                             <Button label="Save" icon="pi pi-check" text onClick={saveItem}/>
+         <Button label="Cancel" icon="pi pi-times" text onClick={hideDialog}/>
+          <Button label="Save" icon="pi pi-check" text onClick={saveItem}/>
                      </>
                  );
 

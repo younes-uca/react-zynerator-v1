@@ -18,12 +18,12 @@ import {MultiSelect} from "primereact/multiselect";
 import {MessageService} from "/pages/controller/service/MessageService";
 import {PurchaseService} from '/pages/controller/service/Purchase.service';
 import  {PurchaseDto}  from '/pages/controller/model/Purchase.model';
-import {PurchaseItemDto} from '/pages/controller/model/PurchaseItem.model';
-import {PurchaseItemService} from '/pages/controller/service/PurchaseItem.service';
 import {ProductDto} from '/pages/controller/model/Product.model';
 import {ProductService} from '/pages/controller/service/Product.service';
 import {ClientDto} from '/pages/controller/model/Client.model';
 import {ClientService} from '/pages/controller/service/Client.service';
+import {PurchaseItemDto} from '/pages/controller/model/PurchaseItem.model';
+import {PurchaseItemService} from '/pages/controller/service/PurchaseItem.service';
 const Create = ({visible, onClose, add, showToast, list}) => {
 
     const emptyItem = new PurchaseDto();
@@ -31,15 +31,15 @@ const Create = ({visible, onClose, add, showToast, list}) => {
     const [item, setItem] = useState<PurchaseDto>(emptyItem);
     const [submitted, setSubmitted] = useState(false); const [activeIndex, setActiveIndex] = useState<number>(0);
     const [activeTab, setActiveTab] = useState(0);
-    const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
-    const [selectedPurchaseItem, setSelectedPurchaseItem] = useState(null);
-    type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
     const [products, setProducts] = useState<ProductDto[]>([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     type ProductResponse = AxiosResponse<ProductDto[]>;
     const [clients, setClients] = useState<ClientDto[]>([]);
     const [selectedClient, setSelectedClient] = useState(null);
     type ClientResponse = AxiosResponse<ClientDto[]>;
+    const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
+    const [selectedPurchaseItem, setSelectedPurchaseItem] = useState(null);
+    type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
     const [purchaseItem, setPurchaseItem] = useState<PurchaseItemDto>(new PurchaseItemDto());
 
     useEffect(() => {
@@ -67,49 +67,46 @@ const Create = ({visible, onClose, add, showToast, list}) => {
     };
 
     const addPurchaseItems = () => {
-        setSubmitted(true);
-        if( item.purchaseItems == null ){
-            item.purchaseItems = [];}
-        let _item = {...purchaseItem};
-        if (!_item.id) {
+         setSubmitted(true);
+         if( item.purchaseItems == null )
+         item.purchaseItems = new Array<PurchaseItemDto>();
 
+         let _item = purchaseItem;
+         if (!_item.id) {
             _item.product = selectedProduct;
-            item.purchaseItems.push(_item);
+                item.purchaseItems.push(_item);
+                MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Created', life: 3000 });
 
-            setItem((prevState :any) => ({
-                ...prevState,
-                purchaseItems: item.purchaseItems
-            }));
-            MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Created', life: 3000 });
-
-        } else {
+                setItem((prevState :any) => ({
+                 ...prevState,
+                    PurchaseItems: item.purchaseItems
+                     }));
+         } else {
             const updatedItems = item.purchaseItems.map((item) =>
-                item === purchaseItem ? { ...item, product: { ...selectedProduct }} : item,
-            );
+            item.id === purchaseItem.id ? { ...item, product: { ...selectedProduct } } : item,
+                );
 
-            if (item.purchaseItems.find((item) => item === purchaseItem)) {
+            if (item.purchaseItems.find((item) => item.id === purchaseItem.id)) {
                 MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Updated', life: 3000 });
-
             }
-
             setItem((prevState :any) => ({
-                ...prevState,
-                purchaseItems: updatedItems
-            }));
-            setSelectedPurchaseItem(null);
-        }
+              ...prevState,
+                PurchaseItems: updatedItems
+                }));
+                setSelectedPurchaseItem(null);
+                          }
 
-        setPurchaseItem(new PurchaseItemDto());
-        setSelectedProduct(null);
+         setPurchaseItem(new PurchaseItemDto());
+         setSelectedProduct(null);
 
     };
 
     const deletePurchaseItem = (rowData) => {
         const updatedItems = purchaseItems.filter((val) => val !== rowData);
         setItem((prevState :any) => ({
-            ...prevState,
-            purchaseItems: updatedItems
-        }));
+          ...prevState,
+          PurchaseItems: updatedItems
+                        }));
         setPurchaseItem(new PurchaseItemDto());
         MessageService.showToast(showToast, {severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000});
     };
@@ -164,7 +161,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
     const saveItem = async () => {
         setSubmitted(true);
-         item.purchaseItems = purchaseItems;
+
         let _items = [...items];
         let _item = {...item};
 
@@ -267,7 +264,7 @@ return(
                         <div className="grid">
                             <div className="field col-6">
                             <label htmlFor="product">Product</label>
-                            <Dropdown id="productDropdown" value={selectedProduct} options={products} onChange={(e) => setSelectedProduct(e.value)} placeholder="Sélectionnez un purchaseItems" filter  filterPlaceholder="Rechercher un product"  optionLabel="reference" />
+                            <Dropdown id="productDropdown" value={selectedProduct} options={products} onChange={(e) => setSelectedProduct(e.value)} placeholder="Sélectionnez un product" filter  filterPlaceholder="Rechercher un product"  optionLabel="reference" />
                             </div>
                             <div className="field col-6">
                             <label htmlFor="price">Price</label>

@@ -93,12 +93,12 @@ const Create = ({visible, onClose, add, showToast, list}) => {
                         </#if>
                      </#if>
                  </#list>
-                item.${field.name?cap_first}.push(_item);
+                item.${field.name?uncap_first}.push(_item);
                 MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Created', life: 3000 });
 
                 setItem((prevState :any) => ({
                  ...prevState,
-                    ${field.name?cap_first}: item.${field.name?cap_first}
+                    ${field.name?uncap_first}: item.${field.name?cap_first}
                      }));
          } else {
             const updatedItems = item.${field.name?uncap_first}.map((item) =>

@@ -98,6 +98,8 @@ export interface AppMenuItem extends MenuModel {
     disabled?: boolean;
     replaceUrl?: boolean;
     command?: ({ originalEvent, item }: CommandProps) => void;
+    customPath?: boolean;
+    url?: string;
 }
 
 export interface AppMenuItemProps {
@@ -106,4 +108,5 @@ export interface AppMenuItemProps {
     index?: number;
     root?: boolean;
     className?: string;
+
 }

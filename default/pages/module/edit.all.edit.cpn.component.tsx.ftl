@@ -360,7 +360,7 @@ return(
                     <#elseif field.id == false>
                     <div className="field col-6">
                         <label htmlFor="${field.name?uncap_first}">${field.name?cap_first}</label>
-                        <InputNumber id="${field.name?uncap_first}" value={item ? item.${field.name} : ''} onChange={(e) => onInputNumerChange(e, '${field.name?uncap_first}')}/>
+                        <InputNumber id="${field.name?uncap_first}" value={item ? item.${field.name} : 0} onChange={(e) => onInputNumerChange(e, '${field.name?uncap_first}')}/>
                     </div>
                     </#if>
                     <#elseif field.generic && !field.notVisibleInCreatePage>
@@ -407,7 +407,7 @@ return(
                             <#elseif innerField.generic && innerField.typeAsPojo.name != pojo.name>
                             <div className="field col-6">
                                 <label htmlFor="${innerField.name}">${innerField.formatedName}</label>
-                                <Dropdown id="${innerField.name?uncap_first}Dropdown" value={${field.typeAsPojo.name?uncap_first}.${innerField.name}} options={${innerField.name?uncap_first}s} onChange={(e) => onDropdownChange${field.name?cap_first}(e, '${field.name}')} placeholder="Sélectionnez un ${field.name?uncap_first}" filter  filterPlaceholder="Rechercher un ${innerField.name?uncap_first}"  optionLabel="${innerField.typeAsPojo.labelOrReferenceOrId.name!'walo'}" />
+                                <Dropdown id="${innerField.name?uncap_first}Dropdown" value={${field.typeAsPojo.name?uncap_first}.${innerField.name}} options={${innerField.name?uncap_first}s} onChange={(e) => onDropdownChange${field.name?cap_first}(e, '${innerField.name}')} placeholder="Sélectionnez un ${innerField.name}" filter  filterPlaceholder="Rechercher un ${innerField.name?uncap_first}"  optionLabel="${innerField.typeAsPojo.labelOrReferenceOrId.name!'walo'}" />
                             </div>
                             <#elseif innerField.list && innerField.association>
                             <div className="field col-6">

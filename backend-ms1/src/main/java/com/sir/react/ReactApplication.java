@@ -57,7 +57,7 @@ public class ReactApplication {
     @Bean
     public CommandLineRunner demo(UserService userService, RoleService roleService) {
     return (args) -> {
-        if(false){
+        if(true){
 
             createClient();
             createProduct();

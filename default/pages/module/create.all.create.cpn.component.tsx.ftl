@@ -388,7 +388,7 @@ return(
                             <#elseif innerField.generic && innerField.typeAsPojo.name != pojo.name>
                             <div className="field col-6">
                             <label htmlFor="${innerField.name}">${innerField.formatedName}</label>
-                            <Dropdown id="${innerField.name?uncap_first}Dropdown" value={${field.typeAsPojo.name?uncap_first}.${innerField.name}} options={${innerField.name?uncap_first}s} onChange={(e) => onDropdownChange${field.name?cap_first}(e, '${field.name}')} placeholder="Sélectionnez un ${field.name?uncap_first}" filter  filterPlaceholder="Rechercher un ${innerField.name?uncap_first}"  optionLabel="${innerField.typeAsPojo.labelOrReferenceOrId.name!'walo'}" />
+                            <Dropdown id="${innerField.name?uncap_first}Dropdown" value={${field.typeAsPojo.name?uncap_first}.${innerField.name}} options={${innerField.name?uncap_first}s} onChange={(e) => onDropdownChange${field.name?cap_first}(e, '${innerField.name}')} placeholder="Sélectionnez un ${innerField.name}" filter  filterPlaceholder="Rechercher un ${innerField.name?uncap_first}"  optionLabel="${innerField.typeAsPojo.labelOrReferenceOrId.name!'walo'}" />
                              </div>
                             <#elseif innerField.list && innerField.association>
                             <div className="field col-6">

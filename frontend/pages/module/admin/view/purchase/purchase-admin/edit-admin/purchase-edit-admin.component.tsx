@@ -214,7 +214,7 @@ return(
                     </div>
                     <div className="field col-6">
                         <label htmlFor="total">Total</label>
-                        <InputNumber id="total" value={item ? item.total : ''} onChange={(e) => onInputNumerChange(e, 'total')}/>
+                        <InputNumber id="total" value={item ? item.total : 0} onChange={(e) => onInputNumerChange(e, 'total')}/>
                     </div>
                     <div className="field col-6">
                         <label htmlFor="description">Description</label>
@@ -234,7 +234,7 @@ return(
                         <div className="grid">
                             <div className="field col-6">
                                 <label htmlFor="product">Product</label>
-                                <Dropdown id="productDropdown" value={purchaseItem.product} options={products} onChange={(e) => onDropdownChangePurchaseItems(e, 'purchaseItems')} placeholder="Sélectionnez un purchaseItems" filter  filterPlaceholder="Rechercher un product"  optionLabel="reference" />
+                                <Dropdown id="productDropdown" value={purchaseItem.product} options={products} onChange={(e) => onDropdownChangePurchaseItems(e, 'product')} placeholder="Sélectionnez un produit" filter  filterPlaceholder="Rechercher un product"  optionLabel="reference" />
                             </div>
                             <div className="field col-6">
                                 <label htmlFor="price">Price</label>

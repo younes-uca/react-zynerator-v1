@@ -49,12 +49,12 @@ return(
             <div className="field col-6">
                 <label htmlFor="fullName">FullName</label>
                 <InputText id="fullName" value={selectedItem?.fullName} disabled   />
-                 </div>
+            </div>
 
             <div className="field col-6">
                 <label htmlFor="email">Email</label>
                 <InputText id="email" value={selectedItem?.email} disabled   />
-                 </div>
+            </div>
 
         </div>
 </TabPanel>

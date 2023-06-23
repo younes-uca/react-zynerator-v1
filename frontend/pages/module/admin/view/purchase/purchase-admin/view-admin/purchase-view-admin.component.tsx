@@ -49,7 +49,7 @@ return(
             <div className="field col-6">
                 <label htmlFor="reference">Reference</label>
                 <InputText id="reference" value={selectedItem?.reference} disabled   />
-                 </div>
+            </div>
 
         <div className="field col-6">
             <label htmlFor="purchaseDate">PurchaseDate</label>
@@ -59,7 +59,7 @@ return(
             <div className="field col-6">
                 <label htmlFor="image">Image</label>
                 <InputText id="image" value={selectedItem?.image} disabled   />
-                 </div>
+            </div>
 
                 <div className="field col-6">
                     <label htmlFor="total">Total</label>
@@ -69,7 +69,7 @@ return(
             <div className="field col-6">
                 <label htmlFor="description">Description</label>
                 <span className="p-float-label">
-               <InputTextarea id="description" value={selectedItem?.description} disabled rows={5} cols={30} />
+                   <InputTextarea id="description" value={selectedItem?.description} disabled rows={5} cols={30} />
                 </span>
             </div>
 

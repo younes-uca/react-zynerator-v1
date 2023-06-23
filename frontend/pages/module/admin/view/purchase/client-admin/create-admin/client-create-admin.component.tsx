@@ -28,22 +28,18 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
     useEffect(() => {
         const fetchData = async () => {
-         try {
-            const [] = await Promise.all<>([
-           ]);
-
-         } catch (error) {
-             console.error(error);
-         }
+            try {
+                const [] = await Promise.all<>([
+                ]);
+            } catch (error) {
+                console.error(error);
+            }
         };
         fetchData();
     }, []);
 
     const onDropdownChange = (e, field) => {
-    setItem((prevState) => ({
-        ...prevState,
-        [field]: e.value,
-    }));
+        setItem((prevState) => ({ ...prevState, [field]: e.value, }));
     };
 
 
@@ -54,20 +50,16 @@ const Create = ({visible, onClose, add, showToast, list}) => {
         onClose();
     };
 
-
     const saveItem = async () => {
         setSubmitted(true);
-
         let _items = [...items];
         let _item = {...item};
-
         if (!_item.id) {
              await ClientService.save(_item);
               _items.push(_item);
              add(_item);
              MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'Client Created', life: 3000 });
         }
-
         setItems(_items);
         onClose();
         setItem(emptyItem);
@@ -114,24 +106,18 @@ return(
         <TabView activeIndex={activeIndex} onTabChange={onTabChange}>
             <TabPanel header="Client">
                 <div className="formgrid grid">
-
-                <div className="field col-6">
-                <label htmlFor="fullName">FullName</label>
-                <InputText id="fullName" value={item.fullName} onChange={(e) => onInputTextChange(e, 'fullName')} required autoFocus className={classNames({'p-invalid': submitted && !item.fullName})} />
-                {submitted && !item.fullName && <small className="p-invalid">FullName is required.</small>}
-                </div>
-
-
-                <div className="field col-6">
-                <label htmlFor="email">Email</label>
-                <InputText id="email" value={item.email} onChange={(e) => onInputTextChange(e, 'email')} required autoFocus className={classNames({'p-invalid': submitted && !item.email})} />
-                {submitted && !item.email && <small className="p-invalid">Email is required.</small>}
-                </div>
-
-
+                    <div className="field col-6">
+                    <label htmlFor="fullName">FullName</label>
+                    <InputText id="fullName" value={item.fullName} onChange={(e) => onInputTextChange(e, 'fullName')} required autoFocus className={classNames({'p-invalid': submitted && !item.fullName})} />
+                    {submitted && !item.fullName && <small className="p-invalid">FullName is required.</small>}
+                    </div>
+                    <div className="field col-6">
+                    <label htmlFor="email">Email</label>
+                    <InputText id="email" value={item.email} onChange={(e) => onInputTextChange(e, 'email')} required autoFocus className={classNames({'p-invalid': submitted && !item.email})} />
+                    {submitted && !item.email && <small className="p-invalid">Email is required.</small>}
+                    </div>
                 </div>
             </TabPanel>
-
         </TabView>
     </Dialog>
 );

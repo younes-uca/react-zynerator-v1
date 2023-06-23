@@ -28,9 +28,9 @@ import Edit from '/pages/module/admin/view/purchase/client-admin/edit-admin/clie
 import Create from '/pages/module/admin/view/purchase/client-admin/create-admin/client-create-admin.component';
 import View from '/pages/module/admin/view/purchase/client-admin/view-admin/client-view-admin.component';
 
-    const List = () => {
-    const emptyItem = new ClientDto();
+const List = () => {
 
+    const emptyItem = new ClientDto();
     const [items, setItems] = useState<ClientDto[]>([]);
     const [deleteItemDialog, setDeleteItemDialog] = useState(false);
     const [deleteItemsDialog, setDeleteItemsDialog] = useState(false);
@@ -56,13 +56,12 @@ import View from '/pages/module/admin/view/purchase/client-admin/view-admin/clie
 
     useEffect(() => {
         const fetchData = async () => {
-        try {
-            const [] = await Promise.all<>([
-            ]);
-
-        } catch (error) {
-            console.error(error);
-        }
+            try {
+                const [] = await Promise.all<>([
+                ]);
+            } catch (error) {
+                console.error(error);
+            }
         };
         fetchData();
         fetchItems(criteria);
@@ -156,34 +155,33 @@ import View from '/pages/module/admin/view/purchase/client-admin/view-admin/clie
     };
 
    const leftToolbarTemplate = () => {
-           return (
-               <React.Fragment>
-                   <div className="my-2">
-                       <Button label="New" icon="pi pi-plus" severity="success" className=" mr-2" onClick={ showCreateModal} />
-                       <Button label="Delete" icon="pi pi-trash" severity="danger" className=" mr-2" onClick={confirmDeleteSelected} disabled={!selectedItems || !selectedItems.length} />
-                       <Button label="Search" icon={`pi pi-${findByCriteriaShow ? 'angle-down' : 'angle-right'}`} className=" mr-2" severity="warning" onClick={showSearch} />
-                   </div>
-               </React.Fragment>
-           );
-       };
+       return (
+           <React.Fragment>
+               <div className="my-2">
+                   <Button label="New" icon="pi pi-plus" severity="success" className=" mr-2" onClick={ showCreateModal} />
+                   <Button label="Delete" icon="pi pi-trash" severity="danger" className=" mr-2" onClick={confirmDeleteSelected} disabled={!selectedItems || !selectedItems.length} />
+                   <Button label="Search" icon={`pi pi-${findByCriteriaShow ? 'angle-down' : 'angle-right'}`} className=" mr-2" severity="warning" onClick={showSearch} />
+               </div>
+           </React.Fragment>
+       );
+   };
 
-       const rightToolbarTemplate = () => {
-           return (
-               <React.Fragment>
-                   <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} chooseLabel="Import" className="mr-2 inline-block" />
-                   <Button label="Export" icon="pi pi-upload" severity="help" onClick={exportCSV} />
-               </React.Fragment>
+   const rightToolbarTemplate = () => {
+       return (
+           <React.Fragment>
+               <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} chooseLabel="Import" className="mr-2 inline-block" />
+               <Button label="Export" icon="pi pi-upload" severity="help" onClick={exportCSV} />
+           </React.Fragment>
+       );
+   };
 
-           );
-       };
-
-       const actionBodyTemplate = (rowData: PurchaseDto) => {
-           return ( <>
-               <Button icon="pi pi-pencil" rounded severity="success" className="mr-1" onClick={() => showEditModal(rowData)} />
-               <Button icon="pi pi-trash" rounded severity="warning" onClick={() => confirmDeleteItem(rowData)} />
-               <Button icon="pi pi-eye" rounded severity="info" className="mr-1" onClick={() => showViewModal(rowData)} /> < />
-           );
-       };
+    const actionBodyTemplate = (rowData: PurchaseDto) => {
+       return ( <>
+           <Button icon="pi pi-pencil" rounded severity="success" className="mr-1" onClick={() => showEditModal(rowData)} />
+           <Button icon="pi pi-trash" rounded severity="warning" onClick={() => confirmDeleteItem(rowData)} />
+           <Button icon="pi pi-eye" rounded severity="info" className="mr-1" onClick={() => showViewModal(rowData)} /> < />
+       );
+    };
 
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
@@ -194,8 +192,8 @@ import View from '/pages/module/admin/view/purchase/client-admin/view-admin/clie
     );
 
     const deleteItemDialogFooter = ( <>
-                    <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemDialog} />
-                    <Button label="Yes" icon="pi pi-check" text onClick={deleteItem} /> < />
+        <Button label="No" icon="pi pi-times" text onClick={hideDeleteItemDialog} />
+        <Button label="Yes" icon="pi pi-check" text onClick={deleteItem} /> < />
     );
 
     const deleteItemsDialogFooter = ( <>
@@ -217,16 +215,13 @@ return (
                                         <InputText id="1" value={criteria.fullName} onChange={(e) => setCriteria({ ...criteria, fullName: e.target.value })} />
                                         <label htmlFor="1">FullName</label>
                                         </span>
-
                                         <span className="p-float-label mr-3 align-search-items mt-4">
                                         <InputText id="2" value={criteria.email} onChange={(e) => setCriteria({ ...criteria, email: e.target.value })} />
                                         <label htmlFor="2">Email</label>
                                         </span>
-
                         </div>
                         <Button label="Validate" icon="pi pi-sort-amount-down" className="p-button-info mr-2" onClick={fetchItems} />
                         </div>
-
                 </Card>
                 )}
                 <DataTable ref={dt} value={items} selection={selectedItems} onSelectionChange={(e) => setSelectedItems(e.value as ClientDto[])} dataKey="id" className="datatable-responsive" globalFilter={globalFilter} header={header} responsiveLayout="scroll" >
@@ -238,12 +233,10 @@ return (
                     <Column field="email" header="Email" sortable headerStyle={{ minWidth: '15rem' }}></Column>
                     
                     <Column header="Actions" body={actionBodyTemplate} headerStyle={{minWidth: '10rem'}}></Column>
-
                 </DataTable>
                 <div className="p-d-flex p-ai-center p-jc-between">
                     <Paginator onPageChange={onPage} first={first} rows={rows} totalRecords={totalRecords} />
                 </div>
-
                 <Create visible={showCreateDialog} onClose={() => setShowCreateDialog(false)} add={add} showToast={toast} list={items} />
                 <Edit  visible={showEditDialog} onClose={() =>  { setShowEditDialog(false); setSelectedItem(null); }} showToast={toast} selectedItem={selectedItem} update={update} />
                 <View visible={showViewDialog} onClose={() =>  { setShowViewDialog(false); setSelectedItem(null); }} selectedItem={selectedItem} />
@@ -253,7 +246,6 @@ return (
                     {item && (<span>Are you sure you want to delete client <b>{item.id}</b>?</span>)}
                     </div>
                 </Dialog>
-
                 <Dialog visible={deleteItemsDialog} style={{width: '450px'}} header="Confirm" modal footer={deleteItemsDialogFooter} onHide={hideDeleteItemsDialog} >
                     <div className="flex align-items-center justify-content-center">
                     <i className="pi pi-exclamation-triangle mr-3" style={{fontSize: '2rem'}} />

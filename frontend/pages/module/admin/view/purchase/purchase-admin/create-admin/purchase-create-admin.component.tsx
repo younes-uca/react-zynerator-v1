@@ -18,17 +18,12 @@ import {MultiSelect} from "primereact/multiselect";
 import {MessageService} from "/pages/controller/service/MessageService";
 import {PurchaseService} from '/pages/controller/service/Purchase.service';
 import  {PurchaseDto}  from '/pages/controller/model/Purchase.model';
+import {PurchaseItemDto} from '/pages/controller/model/PurchaseItem.model';
+import {PurchaseItemService} from '/pages/controller/service/PurchaseItem.service';
 import {ProductDto} from '/pages/controller/model/Product.model';
 import {ProductService} from '/pages/controller/service/Product.service';
 import {ClientDto} from '/pages/controller/model/Client.model';
 import {ClientService} from '/pages/controller/service/Client.service';
-<<<<<<< HEAD
-import {PurchaseItemDto} from '/pages/controller/model/PurchaseItem.model';
-import {PurchaseItemService} from '/pages/controller/service/PurchaseItem.service';
-=======
-import _default from "chart.js/dist/core/core.layouts";
-import update = _default.update;
->>>>>>> bb3a455b5fdf111f2ec4bce4b950914cf21c5034
 const Create = ({visible, onClose, add, showToast, list}) => {
 
     const emptyItem = new PurchaseDto();
@@ -36,115 +31,54 @@ const Create = ({visible, onClose, add, showToast, list}) => {
     const [item, setItem] = useState<PurchaseDto>(emptyItem);
     const [submitted, setSubmitted] = useState(false); const [activeIndex, setActiveIndex] = useState<number>(0);
     const [activeTab, setActiveTab] = useState(0);
-<<<<<<< HEAD
-=======
     const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
     type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
->>>>>>> bb3a455b5fdf111f2ec4bce4b950914cf21c5034
     const [products, setProducts] = useState<ProductDto[]>([]);
-
     type ProductResponse = AxiosResponse<ProductDto[]>;
     const [clients, setClients] = useState<ClientDto[]>([]);
-
     type ClientResponse = AxiosResponse<ClientDto[]>;
-    const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
-    const [selectedPurchaseItem, setSelectedPurchaseItem] = useState(null);
-    type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
     const [purchaseItem, setPurchaseItem] = useState<PurchaseItemDto>(new PurchaseItemDto());
 
     useEffect(() => {
         const fetchData = async () => {
-         try {
-            const [productsResponse ,clientsResponse ] = await Promise.all<ProductResponse,ClientResponse>([
-            ProductService.getList(),
-            ClientService.getList(),
-           ]);
-            setProducts(productsResponse.data);
-            setClients(clientsResponse.data);
-
-         } catch (error) {
-             console.error(error);
-         }
+            try {
+                const [productsResponse ,clientsResponse ] = await Promise.all<ProductResponse,ClientResponse>([
+                    ProductService.getList(),
+                    ClientService.getList(),
+                ]);
+                setProducts(productsResponse.data);
+                setClients(clientsResponse.data);
+            } catch (error) {
+                console.error(error);
+            }
         };
         fetchData();
     }, []);
 
     const onDropdownChange = (e, field) => {
-    setItem((prevState) => ({
-        ...prevState,
-        [field]: e.value,
-    }));
+        setItem((prevState) => ({ ...prevState, [field]: e.value, }));
     };
 
     const addPurchaseItems = () => {
-<<<<<<< HEAD
-         setSubmitted(true);
-         if( item.purchaseItems == null )
-         item.purchaseItems = new Array<PurchaseItemDto>();
-
-         let _item = purchaseItem;
-         if (!_item.id) {
-            _item.product = selectedProduct;
-                item.purchaseItems.push(_item);
-                MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Created', life: 3000 });
-
-                setItem((prevState :any) => ({
-                 ...prevState,
-                    PurchaseItems: item.purchaseItems
-                     }));
-         } else {
-            const updatedItems = item.purchaseItems.map((item) =>
-            item.id === purchaseItem.id ? { ...item, product: { ...selectedProduct } } : item,
-                );
-
-            if (item.purchaseItems.find((item) => item.id === purchaseItem.id)) {
-                MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Updated', life: 3000 });
-            }
-            setItem((prevState :any) => ({
-              ...prevState,
-                PurchaseItems: updatedItems
-                }));
-                setSelectedPurchaseItem(null);
-                          }
-
-         setPurchaseItem(new PurchaseItemDto());
-         setSelectedProduct(null);
-=======
         setSubmitted(true);
         if( item.purchaseItems == null )
-            item.purchaseItems = [];
-
-        let _item = {...purchaseItem};
+        item.purchaseItems = new Array<PurchaseItemDto>();
+        let _item = purchaseItem;
         if (!_item.id) {
             item.purchaseItems.push(_item);
-            setItem((prevState :any) => ({
-                ...prevState,
-                purchaseItems: item.purchaseItems
-            }));
             MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Created', life: 3000 });
-
+            setItem((prevState :any) => ({...prevState, purchaseItems: item.purchaseItems }));
         } else {
-
-            const updatedItems = item.purchaseItems.map((item) => item.id === purchaseItem.id ? {...purchaseItem} : item,);
-              MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Updated', life: 3000 });
-
-            setItem((prevState :any) => ({...prevState, purchaseItems: updatedItems}));
-
+            const updatedItems = item.purchaseItems.map((item) => item.id === purchaseItem.id ? {...purchaseItem} : item);
+            MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Updated', life: 3000 });
+            setItem((prevState :any) => ({ ...prevState, PurchaseItems: updatedItems}));
         }
-
         setPurchaseItem(new PurchaseItemDto());
-
->>>>>>> bb3a455b5fdf111f2ec4bce4b950914cf21c5034
-
     };
 
-
-            const deletePurchaseItem = (rowData) => {
+    const deletePurchaseItem = (rowData) => {
         const updatedItems = purchaseItems.filter((val) => val !== rowData);
-        setItem((prevState :any) => ({
-          ...prevState,
-          PurchaseItems: updatedItems
-                        }));
+        setItem((prevState :any) => ({...prevState,purchaseItems: updatedItems }));
         setPurchaseItem(new PurchaseItemDto());
         MessageService.showToast(showToast, {severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000});
     };
@@ -166,12 +100,6 @@ const Create = ({visible, onClose, add, showToast, list}) => {
             setPurchaseItem(prevState => ({ ...prevState, [field]: selectedValues, }));
         }
     };
-    const onDropdownChangePurchaseItems = (e, field) => {
-        setPurchaseItem((prevState) => ({
-            ...prevState,
-            [field]: e.value,
-        }));
-    };
 
     const onBooleanInputChangePurchaseItems = (e: any, name: string) => {
        const val = e.value;
@@ -192,7 +120,6 @@ const Create = ({visible, onClose, add, showToast, list}) => {
          setPurchaseItem(_item);
     };
 
-
     const onTabChange = (e: { index: number }) => { setActiveIndex(e.index); };
 
     const hideDialog = () => {
@@ -200,20 +127,16 @@ const Create = ({visible, onClose, add, showToast, list}) => {
         onClose();
     };
 
-
     const saveItem = async () => {
         setSubmitted(true);
-
         let _items = [...items];
         let _item = {...item};
-
         if (!_item.id) {
              await PurchaseService.save(_item);
               _items.push(_item);
              add(_item);
              MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'Purchase Created', life: 3000 });
         }
-
         setItems(_items);
         onClose();
         setItem(emptyItem);
@@ -262,42 +185,34 @@ return(
         <TabView activeIndex={activeIndex} onTabChange={onTabChange}>
             <TabPanel header="Purchase">
                 <div className="formgrid grid">
-
-                <div className="field col-6">
-                <label htmlFor="reference">Reference</label>
-                <InputText id="reference" value={item.reference} onChange={(e) => onInputTextChange(e, 'reference')} required autoFocus className={classNames({'p-invalid': submitted && !item.reference})} />
-                {submitted && !item.reference && <small className="p-invalid">Reference is required.</small>}
-                </div>
-
-
-                <div className="field col-6">
-                <label htmlFor="purchaseDate">PurchaseDate</label>
-                <Calendar id="purchaseDate" value={item.purchaseDate} onChange={(e) => onInputDateChange(e, 'purchaseDate')} dateFormat="dd/mm/yy" showTime />
-                </div>
-
-                <div className="field col-6">
-                <label htmlFor="image">Image</label>
-                <InputText id="image" value={item.image} onChange={(e) => onInputTextChange(e, 'image')} required autoFocus className={classNames({'p-invalid': submitted && !item.image})} />
-                {submitted && !item.image && <small className="p-invalid">Image is required.</small>}
-                </div>
-
-
-                <div className="field col-6">
-                <label htmlFor="total">Total</label>
-                <InputNumber id="total" value={item.total} onChange={(e) => onInputNumerChange(e, 'total')} />
-                </div>
-
-                <div className="field col-6">
-                <label htmlFor="description">Description</label>
-                <span className="p-float-label">
-                <InputTextarea id="description" value={item.description} onChange={(e) => onInputTextChange(e, 'description')} rows={5} cols={30}/>
-                </span>
-                </div>
-
-                <div className="field col-6">
-                <label htmlFor="client">Client</label>
-                <Dropdown  id="clientDropdown"  value={item.client} options={clients} onChange={(e) => onDropdownChange(e, 'client')}   placeholder="Sélectionnez un client" filter filterPlaceholder="Rechercher un client" optionLabel="fullName" />
-                </div>
+                    <div className="field col-6">
+                    <label htmlFor="reference">Reference</label>
+                    <InputText id="reference" value={item.reference} onChange={(e) => onInputTextChange(e, 'reference')} required autoFocus className={classNames({'p-invalid': submitted && !item.reference})} />
+                    {submitted && !item.reference && <small className="p-invalid">Reference is required.</small>}
+                    </div>
+                    <div className="field col-6">
+                    <label htmlFor="purchaseDate">PurchaseDate</label>
+                    <Calendar id="purchaseDate" value={item.purchaseDate} onChange={(e) => onInputDateChange(e, 'purchaseDate')} dateFormat="dd/mm/yy" showTime />
+                    </div>
+                    <div className="field col-6">
+                    <label htmlFor="image">Image</label>
+                    <InputText id="image" value={item.image} onChange={(e) => onInputTextChange(e, 'image')} required autoFocus className={classNames({'p-invalid': submitted && !item.image})} />
+                    {submitted && !item.image && <small className="p-invalid">Image is required.</small>}
+                    </div>
+                    <div className="field col-6">
+                    <label htmlFor="total">Total</label>
+                    <InputNumber id="total" value={item.total} onChange={(e) => onInputNumerChange(e, 'total')} />
+                    </div>
+                    <div className="field col-6">
+                    <label htmlFor="description">Description</label>
+                    <span className="p-float-label">
+                    <InputTextarea id="description" value={item.description} onChange={(e) => onInputTextChange(e, 'description')} rows={5} cols={30}/>
+                    </span>
+                    </div>
+                    <div className="field col-6">
+                    <label htmlFor="client">Client</label>
+                    <Dropdown  id="clientDropdown"  value={item.client} options={clients} onChange={(e) => onDropdownChange(e, 'client')}   placeholder="Sélectionnez un client" filter filterPlaceholder="Rechercher un client" optionLabel="fullName" />
+                    </div>
                 </div>
             </TabPanel>
             <TabPanel header="purchaseItems">
@@ -305,15 +220,9 @@ return(
                     <TabPanel header="Creation">
                         <div className="grid">
                             <div className="field col-6">
-<<<<<<< HEAD
                             <label htmlFor="product">Product</label>
-                            <Dropdown id="productDropdown" value={selectedProduct} options={products} onChange={(e) => setSelectedProduct(e.value)} placeholder="Sélectionnez un product" filter  filterPlaceholder="Rechercher un product"  optionLabel="reference" />
-=======
-                                <label htmlFor="product">Product</label>
-                                <Dropdown id="productDropdown" value={purchaseItem.product} options={products}
-                                          onChange={(e) => onDropdownChangePurchaseItems(e, 'product')} placeholder="Sélectionnez un purchaseItems" filter  filterPlaceholder="Rechercher un product"  optionLabel="reference" />
->>>>>>> bb3a455b5fdf111f2ec4bce4b950914cf21c5034
-                            </div>
+                            <Dropdown id="productDropdown" value={purchaseItem.product} options={products} onChange={(e) => onDropdownChangePurchaseItems(e, 'purchaseItems')} placeholder="Sélectionnez un purchaseItems" filter  filterPlaceholder="Rechercher un product"  optionLabel="reference" />
+                             </div>
                             <div className="field col-6">
                             <label htmlFor="price">Price</label>
                             <InputNumber id="price" value={purchaseItem.price}  onValueChange={(e) => onInputNumerChangePurchaseItems(e, 'price')}/>
@@ -333,16 +242,14 @@ return(
                         <Column field="product.reference" header="Product"></Column>
                         <Column field="price" header="Price"></Column>
                         <Column field="quantity" header="Quantity"></Column>
-                        <Column header="Actions" body={(rowData) => (<div>
-                        <Button icon="pi pi-times" rounded severity="warning" className="mr-2 p-button-danger" onClick={() => deletePurchaseItem(rowData)} />
-                        <Button icon="pi pi-pencil" rounded severity="success" className="mr-2" onClick={() => editPurchaseItem(rowData)} /> </div>)}></Column>
+                        <Column header="Actions" body={(rowData)=> (<div>
+                        <Button icon="pi pi-times" rounded severity="warning" className="mr-2 p-button-danger" onClick={()=> deletePurchaseItem(rowData)} />
+                        <Button icon="pi pi-pencil" rounded severity="success" className="mr-2" onClick={()=> editPurchaseItem(rowData)} /> </div>)}></Column>
                     </DataTable>
                     </div>
                     </TabPanel>
-                </TabView>
+                < /TabView>
             </TabPanel>
-
-
         </TabView>
     </Dialog>
 );

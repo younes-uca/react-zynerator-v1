@@ -28,22 +28,18 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
     useEffect(() => {
         const fetchData = async () => {
-         try {
-            const [] = await Promise.all<>([
-           ]);
-
-         } catch (error) {
-             console.error(error);
-         }
+            try {
+                const [] = await Promise.all<>([
+                ]);
+            } catch (error) {
+                console.error(error);
+            }
         };
         fetchData();
     }, []);
 
     const onDropdownChange = (e, field) => {
-    setItem((prevState) => ({
-        ...prevState,
-        [field]: e.value,
-    }));
+        setItem((prevState) => ({ ...prevState, [field]: e.value, }));
     };
 
 
@@ -54,20 +50,16 @@ const Create = ({visible, onClose, add, showToast, list}) => {
         onClose();
     };
 
-
     const saveItem = async () => {
         setSubmitted(true);
-
         let _items = [...items];
         let _item = {...item};
-
         if (!_item.id) {
              await ProductService.save(_item);
               _items.push(_item);
              add(_item);
              MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
         }
-
         setItems(_items);
         onClose();
         setItem(emptyItem);
@@ -114,24 +106,18 @@ return(
         <TabView activeIndex={activeIndex} onTabChange={onTabChange}>
             <TabPanel header="Product">
                 <div className="formgrid grid">
-
-                <div className="field col-6">
-                <label htmlFor="code">Code</label>
-                <InputText id="code" value={item.code} onChange={(e) => onInputTextChange(e, 'code')} required autoFocus className={classNames({'p-invalid': submitted && !item.code})} />
-                {submitted && !item.code && <small className="p-invalid">Code is required.</small>}
-                </div>
-
-
-                <div className="field col-6">
-                <label htmlFor="reference">Reference</label>
-                <InputText id="reference" value={item.reference} onChange={(e) => onInputTextChange(e, 'reference')} required autoFocus className={classNames({'p-invalid': submitted && !item.reference})} />
-                {submitted && !item.reference && <small className="p-invalid">Reference is required.</small>}
-                </div>
-
-
+                    <div className="field col-6">
+                    <label htmlFor="code">Code</label>
+                    <InputText id="code" value={item.code} onChange={(e) => onInputTextChange(e, 'code')} required autoFocus className={classNames({'p-invalid': submitted && !item.code})} />
+                    {submitted && !item.code && <small className="p-invalid">Code is required.</small>}
+                    </div>
+                    <div className="field col-6">
+                    <label htmlFor="reference">Reference</label>
+                    <InputText id="reference" value={item.reference} onChange={(e) => onInputTextChange(e, 'reference')} required autoFocus className={classNames({'p-invalid': submitted && !item.reference})} />
+                    {submitted && !item.reference && <small className="p-invalid">Reference is required.</small>}
+                    </div>
                 </div>
             </TabPanel>
-
         </TabView>
     </Dialog>
 );

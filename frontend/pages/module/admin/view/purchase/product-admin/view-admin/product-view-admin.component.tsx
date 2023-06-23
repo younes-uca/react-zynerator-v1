@@ -49,12 +49,12 @@ return(
             <div className="field col-6">
                 <label htmlFor="code">Code</label>
                 <InputText id="code" value={selectedItem?.code} disabled   />
-                 </div>
+            </div>
 
             <div className="field col-6">
                 <label htmlFor="reference">Reference</label>
                 <InputText id="reference" value={selectedItem?.reference} disabled   />
-                 </div>
+            </div>
 
         </div>
 </TabPanel>

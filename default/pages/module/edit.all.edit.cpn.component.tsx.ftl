@@ -41,7 +41,6 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
                   <#list pojo.dependencies as dependency>
                       <#if dependency?? && dependency.name??>
       const [${dependency.name?uncap_first}s, set${dependency.name?cap_first}s] = useState<${dependency.name?cap_first}Dto[]>([]);
-      const [selected${dependency.name?cap_first}, setSelected${dependency.name?cap_first}] = useState(null);
       type ${dependency.name?cap_first}Response = AxiosResponse<${dependency.name?cap_first}Dto[]>;
                       </#if>
                   </#list>
@@ -104,52 +103,31 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
                    setSubmitted(true);
                    if( item.${field.name?uncap_first} == null )
                    item.${field.name?uncap_first} = new Array<${field.typeAsPojo.name?cap_first}Dto>();
-
                    let _item = ${pojo.name?uncap_first}Item;
                    if (!_item.id) {
-                           <#list field.typeAsPojo.fields as innerField>
-                              <#if  !innerField.notVisibleInCreatePage>
-                                  <#if innerField.generic && innerField.typeAsPojo.name != pojo.name>
-                      _item.${innerField.name?uncap_first} = selected${innerField.name?cap_first};
-                                  </#if>
-                               </#if>
-                           </#list>
-                          item.${field.name?cap_first}.push(_item);
-                          MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Created', life: 3000 });
+                   item.${field.name?cap_first}.push(_item);
+                   MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Created', life: 3000 });
 
-                          setItem((prevState :any) => ({
-                           ...prevState,
-                              ${field.name?cap_first}: item.${field.name?cap_first}
-                               }));
+                   setItem((prevState :any) => ({...prevState, ${field.name?cap_first}: item.${field.name?cap_first} }));
                    } else {
-
-                      if (item.${field.name?uncap_first}.find((item) => item.id === ${pojo.name?uncap_first}Item.id)) {
-                          MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Updated', life: 3000 });
-                      }
-                      setItem((prevState :any) => ({
-                        ...prevState,
-                          ${field.name?cap_first}: updatedItems
-                          }));
-                          setSelected${field.typeAsPojo.name?cap_first}(null);
-                                    }
-
-                   set${field.typeAsPojo.name?cap_first}(new ${field.typeAsPojo.name}Dto());
+                      const updatedItems = item.${field.name?uncap_first}.map((item) =>
                       <#list field.typeAsPojo.fields as innerField>
-                      <#if  !innerField.notVisibleInCreatePage>
-                          <#if innerField.generic && innerField.typeAsPojo.name != pojo.name>
-                   setSelected${innerField.name?cap_first}(null);
-                          </#if>
-                      </#if>
-                  </#list>
+                                <#if  !innerField.notVisibleInCreatePage>
+                     item.id === ${field.typeAsPojo.name?uncap_first}.id ? { ...item, {...${field.typeAsPojo.name?uncap_first}} }: item,
+                                    </#if>
+                       </#list>
+                          );
 
-              };
+                 MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Updated', life: 3000 });
+
+                 setItem((prevState :any) => ({ ...prevState, ${field.name?cap_first}: updatedItems}));
+                          }
+                set${field.typeAsPojo.name?cap_first}(new ${field.typeAsPojo.name}Dto());
+                };
 
               const delete${field.typeAsPojo.name} = (rowData) => {
                   const updatedItems = ${field.name?uncap_first}.filter((val) => val !== rowData);
-                  setItem((prevState :any) => ({
-                    ...prevState,
-                    ${field.name?cap_first}: updatedItems
-                                  }));
+                  setItem((prevState :any) => ({...prevState, ${field.name?cap_first}: updatedItems }));
                   set${pojo.name?cap_first}Item(new ${field.typeAsPojo.name}Dto());
                   MessageService.showToast(showToast, {severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first}Item Deleted', life: 3000});
               };
@@ -159,13 +137,6 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
         const edit${field.typeAsPojo.name} = (rowData) => {
            setActiveTab(0);
            set${pojo.name?cap_first}Item(rowData);
-               <#list field.typeAsPojo.fields as innerField>
-                   <#if  !innerField.notVisibleInCreatePage>
-                       <#if innerField.generic && innerField.typeAsPojo.name != pojo.name>
-           setSelected${innerField.name?cap_first}(rowData.${innerField.name?uncap_first});
-                       </#if>
-                   </#if>
-               </#list>
 
            };
 
@@ -203,6 +174,8 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
 
           set${field.typeAsPojo.name}(_item);
           };
+          const onDropdownChange${field.name?cap_first} = (e, field) => {
+                  set${field.typeAsPojo.name}((prevState) => ({ ...prevState, [field]: e.value,}));};
 
           const onInputTextChange${field.name?cap_first} = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
            const val = (e.target && e.target.value) || '';
@@ -240,8 +213,7 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
                  }
                   } catch (error) {
                   console.log(error);
-                  MessageService.showToast(showToast, { severity: 'Error', summary: 'Error', detail: 'Failed to save ${pojo.name?uncap_first}', life: 3000 });
-                  MessageService.showToast(showToast, { severity: 'Error', summary: 'Error', detail: 'Failed to save ${pojo.name?uncap_first}', life: 3000 });
+                  MessageService.showToast(showToast, { severity: 'Error', summary: 'Error', detail: 'Failed to save ${pojo.name?unccap_first}', life: 3000 });
 
                         }
                     };
@@ -482,8 +454,8 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
                                 <#elseif innerField.generic && innerField.typeAsPojo.name != pojo.name>
                                     <div className="field col-6">
                                         <label htmlFor="${innerField.name}">${innerField.formatedName}</label>
-                                        <Dropdown id="${innerField.name?uncap_first}Dropdown" value={selected${innerField.name?cap_first}} options={${innerField.name?uncap_first}s}
-                                                  onChange={(e) => setSelected${innerField.name?cap_first}(e.value)} placeholder="Sélectionnez un ${field.name?uncap_first}" filter  filterPlaceholder="Rechercher un ${innerField.name?uncap_first}"  optionLabel="${innerField.typeAsPojo.labelOrReferenceOrId.name!'walo'}" />
+                                        <Dropdown id="${innerField.name?uncap_first}Dropdown" value={${field.typeAsPojo.name?uncap_first}.${innerField.name}} options={${innerField.name?uncap_first}s}
+                                                  onChange={(e) => onDropdownChange${field.name?cap_first}(e, '${field.name}')} placeholder="Sélectionnez un ${field.name?uncap_first}" filter  filterPlaceholder="Rechercher un ${innerField.name?uncap_first}"  optionLabel="${innerField.typeAsPojo.labelOrReferenceOrId.name!'walo'}" />
                                     </div>
                                 <#elseif innerField.list && innerField.association>
                                     <div className="field col-6">

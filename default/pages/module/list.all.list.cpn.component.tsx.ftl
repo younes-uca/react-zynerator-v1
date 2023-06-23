@@ -292,8 +292,7 @@ return (
                     <Column field="${field.name}" header="${field.name?cap_first}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
                     <#elseif field.generic>
                     <Column field="${field.name}.${field.typeAsPojo.labelOrReferenceOrId.name}" header="${field.name?cap_first}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
-                    </#if>
-                    <#if field.dateTime>
+                    <#elseif field.dateTime>
                     <Column field="${field.name} | date :'dd/MM/yyyy HH:mm'" header="${field.name?cap_first}" sortable headerStyle={{ minWidth: '15rem' }}></Column>
                     <#elseif field.bool>
                     <td><i *ngIf="element.${field.name}" class="pi pi-check checked-toogle"></i>

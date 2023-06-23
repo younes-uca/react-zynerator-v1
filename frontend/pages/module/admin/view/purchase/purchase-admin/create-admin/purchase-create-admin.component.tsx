@@ -79,7 +79,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
     };
 
     const deletePurchaseItem = (rowData) => {
-        const updatedItems = purchaseItems.filter((val) => val !== rowData);
+        const updatedItems = item.purchaseItems.filter((val) => val !== rowData);
         setItem((prevState :any) => ({...prevState,purchaseItems: updatedItems }));
         setPurchaseItem(new PurchaseItemDto());
         MessageService.showToast(showToast, {severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000});

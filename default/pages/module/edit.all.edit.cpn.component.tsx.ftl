@@ -33,7 +33,7 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
     const [submitted, setSubmitted] = useState(false);
     const [activeIndex, setActiveIndex] = useState<number>(0);
     const [activeTab, setActiveTab] = useState(0);
-    const [item, setItem] = useState<${pojo.name?cap_first}Dto>(selectedItem || emptyItem);
+    const [item, setItem] = useState<${pojo.name?cap_first}Dto>( emptyItem);
 <#if pojo.dependencies??>
     <#list pojo.dependencies as dependency>
         <#if dependency?? && dependency.name??>
@@ -68,16 +68,15 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
             }
         };
     fetchData();
-    }, []);
-
-    useEffect(() => {
-        setItem(selectedItem ? { ...selectedItem } : { ...emptyItem });
-<#list pojo.fields as field>
-    <#if field.list>
-        setItem((prevState) => ({ ...prevState,${field.name?uncap_first}:  selectedItem?.${field.name?uncap_first} ?? [], }));
-    </#if>
-</#list>
+    setItem(selectedItem ? { ...selectedItem } : { ...emptyItem });
+    <#list pojo.fields as field>
+        <#if field.list>
+     setItem((prevState) => ({ ...prevState,${field.name?uncap_first}:  selectedItem?.${field.name?uncap_first} ?? [], }));
+        </#if>
+    </#list>
     }, [selectedItem]);
+
+
 
     const onDropdownChange = (e, field) => {
         setItem((prevState) => ({ ...prevState, [field]: e.value, }));
@@ -103,7 +102,7 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
     };
 
     const delete${field.typeAsPojo.name} = (rowData) => {
-        const updatedItems = ${field.name?uncap_first}.filter((val) => val !== rowData);
+        const updatedItems = item.${field.name?uncap_first}.filter((val) => val !== rowData);
         setItem((prevState :any) => ({...prevState, ${field.name?uncap_first}: updatedItems }));
         set${pojo.name?cap_first}Item(new ${field.typeAsPojo.name}Dto());
         MessageService.showToast(showToast, {severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first}Item Deleted', life: 3000});

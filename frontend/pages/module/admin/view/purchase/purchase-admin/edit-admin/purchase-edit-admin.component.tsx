@@ -36,7 +36,6 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
       const [item, setItem] = useState<PurchaseDto>(selectedItem || emptyItem);
 
       const [products, setProducts] = useState<ProductDto[]>([]);
-      const [selectedProduct, setSelectedProduct] = useState(null);
       type ProductResponse = AxiosResponse<ProductDto[]>;
       const [clients, setClients] = useState<ClientDto[]>([]);
       const [selectedClient, setSelectedClient] = useState(null);
@@ -83,9 +82,11 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
                 }));
            };
 
+
           const addPurchaseItems = () => {
                    setSubmitted(true);
                    if( item.purchaseItems == null )
+<<<<<<< HEAD
                    item.purchaseItems = new Array<PurchaseItemDto>();
 
                    let _item = purchaseItem;
@@ -109,6 +110,27 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
                           }));
                           setSelectedPurchaseItem(null);
                                     }
+=======
+                   item.purchaseItems = [];
+
+              let _item = {...purchaseItem};
+              if (!_item.id) {
+                  item.purchaseItems.push(_item);
+
+                        setItem((prevState :any) => ({
+                          ...prevState,
+                           purchaseItems: item.purchaseItems
+                                }));
+                  MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Created', life: 3000 });
+
+              } else {
+
+                  const updatedItems = item.purchaseItems.map((item) =>
+                      item.id === purchaseItem.id ? {...purchaseItem} : item,);
+
+                  if (item.purchaseItems.find((item) => item.id === purchaseItem.id)) {
+                      MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'PurchaseItem Updated', life: 3000 });
+>>>>>>> bb3a455b5fdf111f2ec4bce4b950914cf21c5034
 
                    setPurchaseItem(new PurchaseItemDto());
                    setSelectedProduct(null);
@@ -118,11 +140,35 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
               const deletePurchaseItem = (rowData) => {
                   const updatedItems = purchaseItems.filter((val) => val !== rowData);
                   setItem((prevState :any) => ({
+<<<<<<< HEAD
                     ...prevState,
                     PurchaseItems: updatedItems
                                   }));
                   setPurchaseItem(new PurchaseItemDto());
                   MessageService.showToast(showToast, {severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000});
+=======
+                      ...prevState,
+                      purchaseItems: updatedItems
+                  }));
+                  setSelectedPurchaseItem(null);
+              }
+
+              setPurchaseItem(new PurchaseItemDto());
+
+
+          };
+
+
+
+    const deletePurchaseItem = (rowData) => {
+               const updatedItems = item.purchaseItems.filter((val) => val !== rowData);
+               setItem((prevState) => ({
+                  ...prevState,
+                  purchaseItems: updatedItems,
+                        }));
+               setPurchaseItem(new PurchaseItemDto());
+             MessageService.showToast(showToast, {severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000});
+>>>>>>> bb3a455b5fdf111f2ec4bce4b950914cf21c5034
               };
 
 
@@ -130,7 +176,6 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
         const editPurchaseItem = (rowData) => {
            setActiveTab(0);
            setPurchaseItem(rowData);
-           setSelectedProduct(rowData.product);
 
            };
 
@@ -160,7 +205,12 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
              }));
           };
 
-
+    const onDropdownChangePurchaseItems = (e, field) => {
+        setPurchaseItem((prevState) => ({
+            ...prevState,
+            [field]: e.value,
+        }));
+    };
           const onInputDateChangePurchaseItems = (e: CalendarChangeEvent, name: string) => {
                const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
                 let _item = { ...purchaseItem};
@@ -304,8 +354,8 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
                     <div className="grid">
                                     <div className="field col-6">
                                         <label htmlFor="product">Product</label>
-                                        <Dropdown id="productDropdown" value={selectedProduct} options={products}
-                                                  onChange={(e) => setSelectedProduct(e.value)} placeholder="Sélectionnez un purchaseItems" filter  filterPlaceholder="Rechercher un product"  optionLabel="reference" />
+                                        <Dropdown id="productDropdown" value={purchaseItem.product} options={products}
+                                                  onChange={(e) => onDropdownChangePurchaseItems(e, 'product')} placeholder="Sélectionnez un purchaseItems" filter  filterPlaceholder="Rechercher un product"  optionLabel="reference" />
                                     </div>
                                     <div className="field col-6">
                                         <label htmlFor="price">Price</label>

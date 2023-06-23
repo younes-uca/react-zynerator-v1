@@ -80,17 +80,11 @@ const Create = ({visible, onClose, add, showToast, list}) => {
         item.${field.name?uncap_first} = new Array<${field.typeAsPojo.name?cap_first}Dto>();
         let _item = ${pojo.name?uncap_first}Item;
         if (!_item.id) {
-            item.${field.name?cap_first}.push(_item);
+            item.${field.name?uncap_first}.push(_item);
             MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Created', life: 3000 });
-            setItem((prevState :any) => ({...prevState, ${field.name?cap_first}: item.${field.name?cap_first} }));
+            setItem((prevState :any) => ({...prevState, ${field.name?uncap_first}: item.${field.name?uncap_first} }));
         } else {
-            const updatedItems = item.${field.name?uncap_first}.map((item) =>
-            <#list field.typeAsPojo.fields as innerField>
-                <#if  !innerField.notVisibleInCreatePage>
-                item.id === ${field.typeAsPojo.name?uncap_first}.id ? { ...item, {...${field.typeAsPojo.name?uncap_first}} }: item,
-                </#if>
-            </#list>
-            );
+            const updatedItems = item.${field.name?uncap_first}.map((item) => item.id === ${field.typeAsPojo.name?uncap_first}.id ? {...${field.typeAsPojo.name?uncap_first}} : item);
             MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Updated', life: 3000 });
             setItem((prevState :any) => ({ ...prevState, ${field.name?cap_first}: updatedItems}));
         }
@@ -99,7 +93,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
     const delete${field.typeAsPojo.name} = (rowData) => {
         const updatedItems = ${field.name?uncap_first}.filter((val) => val !== rowData);
-        setItem((prevState :any) => ({...prevState,${field.name?cap_first}: updatedItems }));
+        setItem((prevState :any) => ({...prevState,${field.name?uncap_first}: updatedItems }));
         set${pojo.name?cap_first}Item(new ${field.typeAsPojo.name}Dto());
         MessageService.showToast(showToast, {severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first}Item Deleted', life: 3000});
     };

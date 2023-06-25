@@ -244,7 +244,7 @@ return (
                                         <label htmlFor="3">Image</label>
                                         </span>
                                         <span className="p-float-label mr-3 align-search-items mt-4">
-                                        <InputNumber id="4-1" value={criteria.ttotalMin} onChange={(e) => setCriteria({ ...criteria, totalMin: e.value })} mode="decimal" />
+                                        <InputNumber id="4-1" value={criteria.totalMin} onChange={(e) => setCriteria({ ...criteria, totalMin: e.value })} mode="decimal" />
                                         <label htmlFor="4-1">Total Min</label>
                                         </span>
                                         <span className="p-float-label mr-3 align-search-items mt-4">

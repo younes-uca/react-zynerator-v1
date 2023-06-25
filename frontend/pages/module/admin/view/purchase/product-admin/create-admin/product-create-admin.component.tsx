@@ -39,7 +39,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
     }, []);
 
     const onDropdownChange = (e, field) => {
-        setItem((prevState) => ({ ...prevState, [field]: e.value, }));
+        setItem((prevState) => ({ ...prevState, [field]: e.value}));
     };
 
 

@@ -25,7 +25,7 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
     const [submitted, setSubmitted] = useState(false);
     const [activeIndex, setActiveIndex] = useState<number>(0);
     const [activeTab, setActiveTab] = useState(0);
-    const [item, setItem] = useState<ClientDto>(selectedItem || emptyItem);
+    const [item, setItem] = useState<ClientDto>( emptyItem);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -38,11 +38,10 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
             }
         };
     fetchData();
-    }, []);
-
-    useEffect(() => {
-        setItem(selectedItem ? { ...selectedItem } : { ...emptyItem });
+    setItem(selectedItem ? { ...selectedItem } : { ...emptyItem });
     }, [selectedItem]);
+
+
 
     const onDropdownChange = (e, field) => {
         setItem((prevState) => ({ ...prevState, [field]: e.value, }));

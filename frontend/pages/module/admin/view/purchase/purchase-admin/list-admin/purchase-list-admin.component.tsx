@@ -194,7 +194,7 @@ const List = () => {
     const actionBodyTemplate = (rowData: PurchaseDto) => {
        return ( <>
            <Button icon="pi pi-pencil" rounded severity="success" className="mr-1" onClick={() => showEditModal(rowData)} />
-           <Button icon="pi pi-trash" rounded severity="warning" onClick={() => confirmDeleteItem(rowData)} />
+           <Button icon="pi pi-trash" rounded  severity="danger" className="mr-1"  onClick={() => confirmDeleteItem(rowData)} />
            <Button icon="pi pi-eye" rounded severity="info" className="mr-1" onClick={() => showViewModal(rowData)} /> < />
        );
     };
@@ -244,7 +244,7 @@ return (
                                         <label htmlFor="3">Image</label>
                                         </span>
                                         <span className="p-float-label mr-3 align-search-items mt-4">
-                                        <InputNumber id="4-1" value={criteria.totalMin} onChange={(e) => setCriteria({ ...criteria, totalMin: e.value })} mode="decimal" />
+                                        <InputNumber id="4-1" value={criteria.ttotalMin} onChange={(e) => setCriteria({ ...criteria, totalMin: e.value })} mode="decimal" />
                                         <label htmlFor="4-1">Total Min</label>
                                         </span>
                                         <span className="p-float-label mr-3 align-search-items mt-4">
@@ -270,9 +270,14 @@ return (
                     
                     
                     <Column field="purchaseDate" header="PurchaseDate" sortable headerStyle={{ minWidth: '15rem' }}></Column>
-
+                    
+                    
                     <Column field="image" header="Image" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                    
+                    
                     <Column field="total" header="Total" sortable headerStyle={{ minWidth: '15rem' }}></Column>
+                    
+                    
                     <Column field="client.fullName" header="Client" sortable headerStyle={{ minWidth: '15rem' }}></Column>
                     
                     <Column header="Actions" body={actionBodyTemplate} headerStyle={{minWidth: '10rem'}}></Column>

@@ -31,7 +31,10 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
     const [submitted, setSubmitted] = useState(false);
     const [activeIndex, setActiveIndex] = useState<number>(0);
     const [activeTab, setActiveTab] = useState(0);
-    const [item, setItem] = useState<PurchaseDto>(selectedItem || emptyItem);
+
+    const [item, setItem] = useState<PurchaseDto>( emptyItem);
+    const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
+    type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
     const [products, setProducts] = useState<ProductDto[]>([]);
     type ProductResponse = AxiosResponse<ProductDto[]>;
     const [clients, setClients] = useState<ClientDto[]>([]);
@@ -53,12 +56,11 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
             }
         };
     fetchData();
-    }, []);
-
-    useEffect(() => {
-        setItem(selectedItem ? { ...selectedItem } : { ...emptyItem });
-        setItem((prevState) => ({ ...prevState,purchaseItems:  selectedItem?.purchaseItems ?? [], }));
+    setItem(selectedItem ? { ...selectedItem } : { ...emptyItem });
+     setItem((prevState) => ({ ...prevState,purchaseItems:  selectedItem?.purchaseItems ?? [], }));
     }, [selectedItem]);
+
+
 
     const onDropdownChange = (e, field) => {
         setItem((prevState) => ({ ...prevState, [field]: e.value, }));
@@ -82,15 +84,11 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
     };
 
     const deletePurchaseItem = (rowData) => {
-        /*const updatedItems = item.purchaseItems.forEach((element, index) => {
-            if (element === rowData) { item.purchaseItems.splice(index, 1); }
-        });*/
         const updatedItems = item.purchaseItems.filter((val) => val !== rowData);
         setItem((prevState :any) => ({...prevState, purchaseItems: updatedItems }));
+        setPurchaseItem(new PurchaseItemDto());
         MessageService.showToast(showToast, {severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000});
     };
-
-
 
     const editPurchaseItem = (rowData) => {
         setActiveTab(0);
@@ -100,6 +98,10 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
     const onInputNumerChangePurchaseItems = (e, name) => {
         const val = e.value || 0;
         setPurchaseItem((prevPurchaseItems) => ({ ...prevPurchaseItems, [name]: val, }));
+    };
+
+    const onDropdownChangePurchaseItems = (e, field) => {
+        setPurchaseItem((prevState) => ({ ...prevState, [field]: e.value}));
     };
 
     const onMultiSelectChangePurchaseItems = (e, field) => {
@@ -119,10 +121,6 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
         let _item = { ...purchaseItem};
         _item[`${name}`] = val;
         setPurchaseItem(_item);
-    };
-
-    const onDropdownChangePurchaseItems = (e, field) => {
-        setPurchaseItem((prevState) => ({ ...prevState, [field]: e.value,}));
     };
 
     const onInputTextChangePurchaseItems = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
@@ -236,7 +234,7 @@ return(
                         <div className="grid">
                             <div className="field col-6">
                                 <label htmlFor="product">Product</label>
-                                <Dropdown id="productDropdown" value={purchaseItem.product} options={products} onChange={(e) => onDropdownChangePurchaseItems(e, 'product')} placeholder="Sélectionnez un produit" filter  filterPlaceholder="Rechercher un product"  optionLabel="reference" />
+                                <Dropdown id="productDropdown" value={purchaseItem.product} options={products} onChange={(e) => onDropdownChangePurchaseItems(e, 'product')} placeholder="Sélectionnez un product" filter  filterPlaceholder="Rechercher un product"  optionLabel="reference" />
                             </div>
                             <div className="field col-6">
                                 <label htmlFor="price">Price</label>

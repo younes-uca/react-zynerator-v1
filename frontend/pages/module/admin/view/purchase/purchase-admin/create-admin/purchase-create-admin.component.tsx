@@ -56,10 +56,8 @@ const Create = ({visible, onClose, add, showToast, list}) => {
     }, []);
 
     const onDropdownChange = (e, field) => {
-        setItem((prevState) => ({ ...prevState, [field]: e.value, }));
+        setItem((prevState) => ({ ...prevState, [field]: e.value}));
     };
-
-
 
     const addPurchaseItems = () => {
         setSubmitted(true);
@@ -95,6 +93,9 @@ const Create = ({visible, onClose, add, showToast, list}) => {
          const val = e.value || 0;
          setPurchaseItem((prevPurchaseItems) => ({...prevPurchaseItems, [name]: val, }));
     };
+    const onDropdownChangePurchaseItems = (e, field) => {
+        setPurchaseItem((prevState) => ({ ...prevState, [field]: e.value}));
+    };
 
     const onMultiSelectChangePurchaseItems = (e, field) => {
         if (e && e.value && Array.isArray(e.value)) {
@@ -102,13 +103,6 @@ const Create = ({visible, onClose, add, showToast, list}) => {
             setPurchaseItem(prevState => ({ ...prevState, [field]: selectedValues, }));
         }
     };
-    const onDropdownChangePurchaseItems = (e, fieldName) => {
-        setPurchaseItem((prevPurchaseItem) => ({
-            ...prevPurchaseItem,
-            [fieldName]: e.value
-        }));
-    };
-
 
     const onBooleanInputChangePurchaseItems = (e: any, name: string) => {
        const val = e.value;
@@ -230,7 +224,7 @@ return(
                         <div className="grid">
                             <div className="field col-6">
                             <label htmlFor="product">Product</label>
-                            <Dropdown id="productDropdown" value={purchaseItem.product} options={products} onChange={(e) => onDropdownChangePurchaseItems(e, 'product')} placeholder="Sélectionnez un produit" filter  filterPlaceholder="Rechercher un product"  optionLabel="reference" />
+                            <Dropdown id="productDropdown" value={purchaseItem.product} options={products} onChange={(e) => onDropdownChangePurchaseItems(e, 'product')} placeholder="Sélectionnez un product" filter  filterPlaceholder="Rechercher un product"  optionLabel="reference" />
                              </div>
                             <div className="field col-6">
                             <label htmlFor="price">Price</label>

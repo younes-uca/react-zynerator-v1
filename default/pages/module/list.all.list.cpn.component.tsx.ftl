@@ -260,7 +260,7 @@ return (
                                     <#elseif field.nombre == true>
                                         <#if field.name != pojo.id.name>
                                         <span className="p-float-label mr-3 align-search-items mt-4">
-                                        <InputNumber id="${field?index}-1" value={criteria.t${field.name}Min} onChange={(e) => setCriteria({ ...criteria, ${field.name}Min: e.value })} mode="decimal" />
+                                        <InputNumber id="${field?index}-1" value={criteria.${field.name}Min} onChange={(e) => setCriteria({ ...criteria, ${field.name}Min: e.value })} mode="decimal" />
                                         <label htmlFor="${field?index}-1">${field.name?cap_first} Min</label>
                                         </span>
                                         <span className="p-float-label mr-3 align-search-items mt-4">

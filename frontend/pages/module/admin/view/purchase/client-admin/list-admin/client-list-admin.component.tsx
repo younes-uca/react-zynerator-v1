@@ -178,7 +178,7 @@ const List = () => {
     const actionBodyTemplate = (rowData: PurchaseDto) => {
        return ( <>
            <Button icon="pi pi-pencil" rounded severity="success" className="mr-1" onClick={() => showEditModal(rowData)} />
-           <Button icon="pi pi-trash" rounded severity="danger" className="mr-1" onClick={() => confirmDeleteItem(rowData)} />
+           <Button icon="pi pi-trash" rounded  severity="danger" className="mr-1"  onClick={() => confirmDeleteItem(rowData)} />
            <Button icon="pi pi-eye" rounded severity="info" className="mr-1" onClick={() => showViewModal(rowData)} /> < />
        );
     };

@@ -152,10 +152,11 @@ const Create = ({visible, onClose, add, showToast, list}) => {
         let _items = [...items];
         let _item = {...item};
         if (!_item.id) {
-             await ${pojo.name?cap_first}Service.save(_item);
-              _items.push(_item);
-             add(_item);
-             MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first} Created', life: 3000 });
+            const response = await ${pojo.name?cap_first}Service.save(_item);
+			_item.id = response.data.id;
+            _items.push(_item);
+            add(_item);
+            MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first} Created', life: 3000 });
         }
         setItems(_items);
         onClose();

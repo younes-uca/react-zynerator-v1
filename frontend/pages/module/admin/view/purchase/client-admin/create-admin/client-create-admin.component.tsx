@@ -39,7 +39,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
     }, []);
 
     const onDropdownChange = (e, field) => {
-        setItem((prevState) => ({ ...prevState, [field]: e.value, }));
+        setItem((prevState) => ({ ...prevState, [field]: e.value}));
     };
 
 
@@ -55,8 +55,11 @@ const Create = ({visible, onClose, add, showToast, list}) => {
         let _items = [...items];
         let _item = {...item};
         if (!_item.id) {
-             await ClientService.save(_item);
-              _items.push(_item);
+            //lolo
+            const response = await  ClientService.save(_item);
+            console.log('haaaa id de client ==> '+response.data.id);
+            _item.id = response.data.id;
+            _items.push(_item);
              add(_item);
              MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'Client Created', life: 3000 });
         }

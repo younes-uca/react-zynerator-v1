@@ -32,8 +32,6 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
     const [activeIndex, setActiveIndex] = useState<number>(0);
     const [activeTab, setActiveTab] = useState(0);
     const [item, setItem] = useState<PurchaseDto>(selectedItem || emptyItem);
-    const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
-    type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
     const [products, setProducts] = useState<ProductDto[]>([]);
     type ProductResponse = AxiosResponse<ProductDto[]>;
     const [clients, setClients] = useState<ClientDto[]>([]);
@@ -69,7 +67,7 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
     const addPurchaseItems = () => {
         setSubmitted(true);
         if( item.purchaseItems == null )
-        item.purchaseItems = new Array<PurchaseItemDto>();
+        item.purchaseItems = [];
         let _item = purchaseItem;
         if (!_item.id) {
             item.purchaseItems.push(_item);

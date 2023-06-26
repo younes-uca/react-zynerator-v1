@@ -69,11 +69,6 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
         };
     fetchData();
     setItem(selectedItem ? { ...selectedItem } : { ...emptyItem });
-    <#list pojo.fields as field>
-        <#if field.list>
-     setItem((prevState) => ({ ...prevState,${field.name?uncap_first}:  selectedItem?.${field.name?uncap_first} ?? [], }));
-        </#if>
-    </#list>
     }, [selectedItem]);
 
 

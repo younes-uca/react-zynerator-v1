@@ -110,7 +110,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
     };
 
     const onInputDateChangePurchaseItems = (e: CalendarChangeEvent, name: string) => {
-        const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
+        const val = e.value || '';
         let _item = { ...purchaseItem};
         _item[`${name}`] = val;
         setPurchaseItem(_item);

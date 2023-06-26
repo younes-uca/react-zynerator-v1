@@ -38,7 +38,6 @@ PurchaseHistoryDao> implements PurchaseAdminService {
                 element.setPurchase(t);
                 purchaseItemService.create(element);
             }
-
         }
         return t;
     }

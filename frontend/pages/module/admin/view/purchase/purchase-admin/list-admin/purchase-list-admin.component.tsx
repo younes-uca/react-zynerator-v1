@@ -54,6 +54,7 @@ const List = () => {
     const toast = useRef<Toast>();
     const dt = useRef<DataTable<PurchaseDto[]>>();
     const [findByCriteriaShow, setFindByCriteriaShow] = useState(false);
+    const [isSearchTriggered, setIsSearchTriggered] = useState(false);
 
     const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
     type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
@@ -62,21 +63,9 @@ const List = () => {
     const [clients, setClients] = useState<ClientDto[]>([]);
     type ClientResponse = AxiosResponse<ClientDto[]>;
 
-    const showSearch = () => {
-        setFindByCriteriaShow(!findByCriteriaShow);
-    };
+    const showSearch = () => { setFindByCriteriaShow(!findByCriteriaShow);};
 
-
-    const search = async (criteria) => {
-        try {
-            const response = await PurchaseService.findPaginatedByCriteria(criteria);
-            const paginatedItems = response.data;
-            setTotalRecords(paginatedItems.dataSize);
-            setItems(paginatedItems.list);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    const handleValidateClick = () => {setIsSearchTriggered(true);};
 
     useEffect(() => {
         const fetchData = async () => {
@@ -91,9 +80,13 @@ const List = () => {
                 console.error(error);
             }
         };
+        if (isSearchTriggered) {
+            fetchItems(criteria);
+            setIsSearchTriggered(false);
+        }
         fetchData();
         fetchItems(criteria);
-    }, [criteria]);
+    }, [isSearchTriggered]);
 
     const fetchItems = async (critera) => {
         try {
@@ -271,7 +264,7 @@ return (
                                         <Dropdown id="6" value={criteria.client} options={clients} onChange={(e) => setCriteria({ ...criteria, client: e.target.value })} optionLabel="fullName" filter showClear placeholder="Client" />
                                         </span>
                         </div>
-                        <Button label="Validate" icon="pi pi-sort-amount-down" className="p-button-info mr-2" onClick={search} />
+                        <Button label="Validate" icon="pi pi-sort-amount-down" className="p-button-info mr-2" onClick={handleValidateClick} />
                         </div>
                 </Card>
                 )}

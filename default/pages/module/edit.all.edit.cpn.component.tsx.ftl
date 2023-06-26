@@ -98,7 +98,7 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
 
     const delete${field.typeAsPojo.name} = (rowData) => {
         const updatedItems = item.${field.name?uncap_first}.filter((val) => val !== rowData);
-        setItem((prevState :any) => ({...prevState, ${field.name?uncap_first}: updatedItems }));
+        setItem((prevState ) => ({...prevState, ${field.name?uncap_first}: updatedItems }));
         set${pojo.name?cap_first}Item(new ${field.typeAsPojo.name}Dto());
         MessageService.showToast(showToast, {severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first}Item Deleted', life: 3000});
     };

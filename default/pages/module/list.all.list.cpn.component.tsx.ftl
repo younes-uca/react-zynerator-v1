@@ -61,6 +61,7 @@ const List = () => {
     const toast = useRef<Toast>();
     const dt = useRef<DataTable<${pojo.name}Dto[]>>();
     const [findByCriteriaShow, setFindByCriteriaShow] = useState(false);
+    const [isSearchTriggered, setIsSearchTriggered] = useState(false);
 
 <#if pojo.dependencies??>
     <#list pojo.dependencies as dependency>
@@ -71,9 +72,9 @@ const List = () => {
     </#list>
 </#if>
 
-    const showSearch = () => {
-        setFindByCriteriaShow(!findByCriteriaShow);
-    };
+    const showSearch = () => { setFindByCriteriaShow(!findByCriteriaShow); };
+
+    const handleValidateClick = () => {setIsSearchTriggered(true);};
 
     useEffect(() => {
         const fetchData = async () => {
@@ -93,9 +94,13 @@ const List = () => {
                 console.error(error);
             }
         };
+        if (isSearchTriggered) {
+            fetchItems(criteria);
+            setIsSearchTriggered(false);
+        }
         fetchData();
         fetchItems(criteria);
-    }, [criteria]);
+    }, [isSearchTriggered]);
 
     const fetchItems = async (criteria) => {
         try {
@@ -277,7 +282,7 @@ return (
                                 </#if>
                             </#list>
                         </div>
-                        <Button label="Validate" icon="pi pi-sort-amount-down" className="p-button-info mr-2" onClick={fetchItems} />
+                        <Button label="Validate" icon="pi pi-sort-amount-down" className="p-button-info mr-2" onClick={handleValidateClick} />
                         </div>
                 </Card>
                 )}

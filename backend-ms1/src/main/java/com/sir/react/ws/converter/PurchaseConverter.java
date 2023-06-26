@@ -47,7 +47,6 @@ public class PurchaseConverter extends AbstractConverter<Purchase, PurchaseDto, 
             if(this.client && dto.getClient()!=null)
                 item.setClient(clientConverter.toItem(dto.getClient())) ;
 
-
             if(this.purchaseItems && ListUtil.isNotEmpty(dto.getPurchaseItems()))
                 item.setPurchaseItems(purchaseItemConverter.toItem(dto.getPurchaseItems()));
 

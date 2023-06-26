@@ -66,6 +66,18 @@ const List = () => {
         setFindByCriteriaShow(!findByCriteriaShow);
     };
 
+
+    const search = async (criteria) => {
+        try {
+            const response = await PurchaseService.findPaginatedByCriteria(criteria);
+            const paginatedItems = response.data;
+            setTotalRecords(paginatedItems.dataSize);
+            setItems(paginatedItems.list);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -83,7 +95,7 @@ const List = () => {
         fetchItems(criteria);
     }, [criteria]);
 
-    const fetchItems = async (criteria) => {
+    const fetchItems = async (critera) => {
         try {
             const response = await PurchaseService.findPaginatedByCriteria(criteria);
             const paginatedItems = response.data;
@@ -244,7 +256,7 @@ return (
                                         <label htmlFor="3">Image</label>
                                         </span>
                                         <span className="p-float-label mr-3 align-search-items mt-4">
-                                        <InputNumber id="4-1" value={criteria.ttotalMin} onChange={(e) => setCriteria({ ...criteria, totalMin: e.value })} mode="decimal" />
+                                        <InputNumber id="4-1" value={criteria.totalMin} onChange={(e) => setCriteria({ ...criteria, totalMin: e.value })} mode="decimal" />
                                         <label htmlFor="4-1">Total Min</label>
                                         </span>
                                         <span className="p-float-label mr-3 align-search-items mt-4">
@@ -259,7 +271,7 @@ return (
                                         <Dropdown id="6" value={criteria.client} options={clients} onChange={(e) => setCriteria({ ...criteria, client: e.target.value })} optionLabel="fullName" filter showClear placeholder="Client" />
                                         </span>
                         </div>
-                        <Button label="Validate" icon="pi pi-sort-amount-down" className="p-button-info mr-2" onClick={fetchItems} />
+                        <Button label="Validate" icon="pi pi-sort-amount-down" className="p-button-info mr-2" onClick={search} />
                         </div>
                 </Card>
                 )}

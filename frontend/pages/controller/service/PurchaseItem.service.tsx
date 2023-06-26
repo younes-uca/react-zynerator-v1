@@ -30,8 +30,8 @@ export const PurchaseItemService = {
       return axios.post(API_URL + 'purchaseItem/multiple', items);
    },
 
-   findPaginatedByCriteria(criteria:PurchaseItemCriteria):Promise<AxiosResponse<PaginatedList<BaseDto>>> {
-     return axios.post<PaginatedList<BaseDto>>(API_URL + `purchaseItem/find-paginated-by-criteria`, criteria);
+   findPaginatedByCriteria(criteria:PurchaseItemCriteria):Promise<AxiosResponse<PaginatedList<PurchaseItemDto>>> {
+     return axios.post<PaginatedList<PurchaseItemDto>>(API_URL + 'purchaseItem/find-paginated-by-criteria', criteria);
    }
 };
 

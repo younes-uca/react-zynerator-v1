@@ -30,8 +30,8 @@ export const ${pojo.name}Service = {
       return axios.post(API_URL + '${pojo.name?uncap_first}/multiple', items);
    },
 
-   findPaginatedByCriteria(criteria:${pojo.name}Criteria):Promise<AxiosResponse<PaginatedList<BaseDto>>> {
-     return axios.post<PaginatedList<BaseDto>>(API_URL + `${pojo.name?uncap_first}/find-paginated-by-criteria`, criteria);
+   findPaginatedByCriteria(criteria:${pojo.name}Criteria):Promise<AxiosResponse<PaginatedList<${pojo.name}Dto>>> {
+     return axios.post<PaginatedList<${pojo.name}Dto>>(API_URL + '${pojo.name?uncap_first}/find-paginated-by-criteria', criteria);
    }
 };
 

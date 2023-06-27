@@ -235,7 +235,7 @@ return(
                             <InputNumber id="quantity" value={purchaseItem.quantity}  onValueChange={(e) => onInputNumerChangePurchaseItems(e, 'quantity')}/>
                             </div>
                             <div className="field col-1">
-                                <Button icon="pi pi-plus" label="OK" class="mt-4" onClick={addPurchaseItems} />
+                                <Button icon="pi pi-plus" label="OK" className="mt-4" onClick={addPurchaseItems} />
                             </div>
                         </div>
                     </TabPanel>

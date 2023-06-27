@@ -228,7 +228,7 @@ return (
             <div className="card">
                 <Toast ref={toast} />
                 <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
-                {findByCriteriaShow && (
+             {findByCriteriaShow && (
                 <Card>
                     <div className="search-container">
                         <div className="grid">
@@ -264,7 +264,9 @@ return (
                                         <Dropdown id="6" value={criteria.client} options={clients} onChange={(e) => setCriteria({ ...criteria, client: e.target.value })} optionLabel="fullName" filter showClear placeholder="Client" />
                                         </span>
                         </div>
-                        <Button label="Validate" icon="pi pi-sort-amount-down" className="p-button-info mr-2" onClick={handleValidateClick} />
+                        <div style={{ marginTop : '1rem', display: 'flex', justifyContent: 'flex-end' }}>
+                            <Button label="Validate" icon="pi pi-sort-amount-down" className="p-button-info mr-2" onClick={handleValidateClick} />
+                        </div>
                         </div>
                 </Card>
                 )}

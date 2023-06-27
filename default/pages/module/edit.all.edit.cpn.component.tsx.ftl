@@ -412,7 +412,7 @@ return(
                             </#if>
                             </#list>
                             <div className="field col-1">
-                                <Button icon="pi pi-plus" label="OK" class="mt-4" onClick={add${field.name?cap_first}} />
+                                <Button icon="pi pi-plus" label="OK" className="mt-4" onClick={add${field.name?cap_first}} />
                             </div>
                         </div>
                         <#if !field.createAndListPageInOneTab>

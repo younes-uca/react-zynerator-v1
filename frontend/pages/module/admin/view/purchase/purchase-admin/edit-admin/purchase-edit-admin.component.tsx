@@ -83,13 +83,16 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
         setPurchaseItem(new PurchaseItemDto());
     };
 
-  const deletePurchaseItem = (rowData) => {
+/*  const deletePurchaseItem = (rowData) => {
         const updatedItems = item.purchaseItems.filter((val) => val !== rowData);
         setItem((prevState ) => ({...prevState, purchaseItems: updatedItems }));
         setPurchaseItem(new PurchaseItemDto());
         MessageService.showToast(showToast, {severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000});
+    };*/
+    const deletePurchaseItem = (rowData: PurchaseItemDto) => {
+        setItem((prevItem) => ({...prevItem, purchaseItems : prevItem.purchaseItems.filter((element) => element !== rowData),
+        }));
     };
-
 
     const editPurchaseItem = (rowData) => {
         setActiveTab(0);

@@ -282,7 +282,9 @@ return (
                                 </#if>
                             </#list>
                         </div>
-                        <Button label="Validate" icon="pi pi-sort-amount-down" className="p-button-info mr-2" onClick={handleValidateClick} />
+                        <div style={{ marginTop : '1rem', display: 'flex', justifyContent: 'flex-end' }} >
+                            <Button label="Validate" icon="pi pi-sort-amount-down" className="p-button-info mr-2" onClick={handleValidateClick} />
+                        </div>
                         </div>
                 </Card>
                 )}

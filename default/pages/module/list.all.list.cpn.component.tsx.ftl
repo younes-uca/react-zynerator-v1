@@ -77,7 +77,7 @@ const List = () => {
     const handleValidateClick = () => {setIsSearchTriggered(true);};
 
     const handleCancelClick = () => {
-        setCriteria(new PurchaseCriteria());
+        setCriteria(new ${pojo.name}Criteria());
         setIsSearchTriggered(true);
     };
 

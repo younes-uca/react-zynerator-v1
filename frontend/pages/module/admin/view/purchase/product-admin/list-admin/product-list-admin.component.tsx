@@ -56,7 +56,7 @@ const List = () => {
     const handleValidateClick = () => {setIsSearchTriggered(true);};
 
     const handleCancelClick = () => {
-        setCriteria(new PurchaseCriteria());
+        setCriteria(new ProductCriteria());
         setIsSearchTriggered(true);
     };
 

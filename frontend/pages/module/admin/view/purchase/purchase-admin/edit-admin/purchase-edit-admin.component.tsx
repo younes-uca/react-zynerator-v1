@@ -19,10 +19,10 @@ import {MultiSelect} from "primereact/multiselect";import {MessageService} from 
 import {PurchaseService} from '/pages/controller/service/Purchase.service';
 import  {PurchaseDto}  from '/pages/controller/model/Purchase.model';
 
-import {ClientDto} from '/pages/controller/model/Client.model';
-import {ClientService} from '/pages/controller/service/Client.service';
 import {ProductDto} from '/pages/controller/model/Product.model';
 import {ProductService} from '/pages/controller/service/Product.service';
+import {ClientDto} from '/pages/controller/model/Client.model';
+import {ClientService} from '/pages/controller/service/Client.service';
 import {PurchaseItemDto} from '/pages/controller/model/PurchaseItem.model';
 import {PurchaseItemService} from '/pages/controller/service/PurchaseItem.service';
 const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
@@ -32,10 +32,10 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
     const [activeIndex, setActiveIndex] = useState<number>(0);
     const [activeTab, setActiveTab] = useState(0);
     const [item, setItem] = useState<PurchaseDto>( emptyItem);
-    const [clients, setClients] = useState<ClientDto[]>([]);
-    type ClientResponse = AxiosResponse<ClientDto[]>;
     const [products, setProducts] = useState<ProductDto[]>([]);
     type ProductResponse = AxiosResponse<ProductDto[]>;
+    const [clients, setClients] = useState<ClientDto[]>([]);
+    type ClientResponse = AxiosResponse<ClientDto[]>;
     const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
     type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
     const [purchaseItem, setPurchaseItem] = useState<PurchaseItemDto>(new PurchaseItemDto());
@@ -97,6 +97,7 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
         const val = e.value || 0;
         setPurchaseItem((prevPurchaseItems) => ({ ...prevPurchaseItems, [name]: val, }));
     };
+
 
     const onMultiSelectChangePurchaseItems = (e, field) => {
         if (e && e.value && Array.isArray(e.value)) {

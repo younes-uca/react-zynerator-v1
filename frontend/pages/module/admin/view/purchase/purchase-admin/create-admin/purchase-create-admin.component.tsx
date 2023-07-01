@@ -18,10 +18,10 @@ import {MultiSelect} from "primereact/multiselect";
 import {MessageService} from "/pages/controller/service/MessageService";
 import {PurchaseService} from '/pages/controller/service/Purchase.service';
 import  {PurchaseDto}  from '/pages/controller/model/Purchase.model';
-import {ClientDto} from '/pages/controller/model/Client.model';
-import {ClientService} from '/pages/controller/service/Client.service';
 import {ProductDto} from '/pages/controller/model/Product.model';
 import {ProductService} from '/pages/controller/service/Product.service';
+import {ClientDto} from '/pages/controller/model/Client.model';
+import {ClientService} from '/pages/controller/service/Client.service';
 import {PurchaseItemDto} from '/pages/controller/model/PurchaseItem.model';
 import {PurchaseItemService} from '/pages/controller/service/PurchaseItem.service';
 const Create = ({visible, onClose, add, showToast, list}) => {
@@ -31,10 +31,10 @@ const Create = ({visible, onClose, add, showToast, list}) => {
     const [item, setItem] = useState<PurchaseDto>(emptyItem);
     const [submitted, setSubmitted] = useState(false); const [activeIndex, setActiveIndex] = useState<number>(0);
     const [activeTab, setActiveTab] = useState(0);
-    const [clients, setClients] = useState<ClientDto[]>([]);
-    type ClientResponse = AxiosResponse<ClientDto[]>;
     const [products, setProducts] = useState<ProductDto[]>([]);
     type ProductResponse = AxiosResponse<ProductDto[]>;
+    const [clients, setClients] = useState<ClientDto[]>([]);
+    type ClientResponse = AxiosResponse<ClientDto[]>;
     const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
     type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
     const [purchaseItem, setPurchaseItem] = useState<PurchaseItemDto>(new PurchaseItemDto());

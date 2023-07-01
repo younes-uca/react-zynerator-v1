@@ -31,7 +31,7 @@ export const ProductService = {
    },
 
    findPaginatedByCriteria(criteria:ProductCriteria):Promise<AxiosResponse<PaginatedList<ProductDto>>> {
-     return axios.post<PaginatedList<ProductDto>>(API_URL + `product/find-paginated-by-criteria`, criteria);
+     return axios.post<PaginatedList<ProductDto>>(API_URL + 'product/find-paginated-by-criteria', criteria);
    }
 };
 

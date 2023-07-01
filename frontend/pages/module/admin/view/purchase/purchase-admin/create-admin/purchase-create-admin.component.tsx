@@ -18,12 +18,12 @@ import {MultiSelect} from "primereact/multiselect";
 import {MessageService} from "/pages/controller/service/MessageService";
 import {PurchaseService} from '/pages/controller/service/Purchase.service';
 import  {PurchaseDto}  from '/pages/controller/model/Purchase.model';
-import {PurchaseItemDto} from '/pages/controller/model/PurchaseItem.model';
-import {PurchaseItemService} from '/pages/controller/service/PurchaseItem.service';
-import {ProductDto} from '/pages/controller/model/Product.model';
-import {ProductService} from '/pages/controller/service/Product.service';
 import {ClientDto} from '/pages/controller/model/Client.model';
 import {ClientService} from '/pages/controller/service/Client.service';
+import {ProductDto} from '/pages/controller/model/Product.model';
+import {ProductService} from '/pages/controller/service/Product.service';
+import {PurchaseItemDto} from '/pages/controller/model/PurchaseItem.model';
+import {PurchaseItemService} from '/pages/controller/service/PurchaseItem.service';
 const Create = ({visible, onClose, add, showToast, list}) => {
 
     const emptyItem = new PurchaseDto();
@@ -31,12 +31,12 @@ const Create = ({visible, onClose, add, showToast, list}) => {
     const [item, setItem] = useState<PurchaseDto>(emptyItem);
     const [submitted, setSubmitted] = useState(false); const [activeIndex, setActiveIndex] = useState<number>(0);
     const [activeTab, setActiveTab] = useState(0);
-    const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
-    type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
-    const [products, setProducts] = useState<ProductDto[]>([]);
-    type ProductResponse = AxiosResponse<ProductDto[]>;
     const [clients, setClients] = useState<ClientDto[]>([]);
     type ClientResponse = AxiosResponse<ClientDto[]>;
+    const [products, setProducts] = useState<ProductDto[]>([]);
+    type ProductResponse = AxiosResponse<ProductDto[]>;
+    const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
+    type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
     const [purchaseItem, setPurchaseItem] = useState<PurchaseItemDto>(new PurchaseItemDto());
 
     useEffect(() => {
@@ -78,7 +78,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
 
     const deletePurchaseItem = (rowData) => {
         const updatedItems = item.purchaseItems.filter((val) => val !== rowData);
-        setItem((prevState :any) => ({...prevState,purchaseItems: updatedItems }));
+        setItem((prevState ) => ({...prevState,purchaseItems: updatedItems }));
         setPurchaseItem(new PurchaseItemDto());
         MessageService.showToast(showToast, {severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000});
     };
@@ -110,7 +110,7 @@ const Create = ({visible, onClose, add, showToast, list}) => {
     };
 
     const onInputDateChangePurchaseItems = (e: CalendarChangeEvent, name: string) => {
-        const val = e.value || '';
+        const val = e.value || ''; // Utilisez e.value au lieu de e.target.value
         let _item = { ...purchaseItem};
         _item[`${name}`] = val;
         setPurchaseItem(_item);
@@ -135,10 +135,11 @@ const Create = ({visible, onClose, add, showToast, list}) => {
         let _items = [...items];
         let _item = {...item};
         if (!_item.id) {
-             await PurchaseService.save(_item);
-              _items.push(_item);
-             add(_item);
-             MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'Purchase Created', life: 3000 });
+            const response = await PurchaseService.save(_item);
+			_item.id = response.data.id;
+            _items.push(_item);
+            add(_item);
+            MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'Purchase Created', life: 3000 });
         }
         setItems(_items);
         onClose();

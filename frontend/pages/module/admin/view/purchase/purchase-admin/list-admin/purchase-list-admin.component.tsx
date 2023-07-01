@@ -23,12 +23,12 @@ import {PurchaseService} from '/pages/controller/service/Purchase.service';
 import {PurchaseDto}  from '/pages/controller/model/Purchase.model';
 import {PurchaseCriteria} from "/pages/controller/criteria/PurchaseCriteria.model";
 
-import {PurchaseItemDto} from '/pages/controller/model/PurchaseItem.model';
-import {PurchaseItemService} from '/pages/controller/service/PurchaseItem.service';
-import {ProductDto} from '/pages/controller/model/Product.model';
-import {ProductService} from '/pages/controller/service/Product.service';
 import {ClientDto} from '/pages/controller/model/Client.model';
 import {ClientService} from '/pages/controller/service/Client.service';
+import {ProductDto} from '/pages/controller/model/Product.model';
+import {ProductService} from '/pages/controller/service/Product.service';
+import {PurchaseItemDto} from '/pages/controller/model/PurchaseItem.model';
+import {PurchaseItemService} from '/pages/controller/service/PurchaseItem.service';
 
 import Edit from '/pages/module/admin/view/purchase/purchase-admin/edit-admin/purchase-edit-admin.component';
 import Create from '/pages/module/admin/view/purchase/purchase-admin/create-admin/purchase-create-admin.component';
@@ -55,16 +55,15 @@ const List = () => {
     const dt = useRef<DataTable<PurchaseDto[]>>();
     const [findByCriteriaShow, setFindByCriteriaShow] = useState(false);
     const [isSearchTriggered, setIsSearchTriggered] = useState(false);
-    const [isSearchTriggeredkh, setIsSearchTriggeredkh] = useState(false);
 
-    const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
-    type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
-    const [products, setProducts] = useState<ProductDto[]>([]);
-    type ProductResponse = AxiosResponse<ProductDto[]>;
     const [clients, setClients] = useState<ClientDto[]>([]);
     type ClientResponse = AxiosResponse<ClientDto[]>;
+    const [products, setProducts] = useState<ProductDto[]>([]);
+    type ProductResponse = AxiosResponse<ProductDto[]>;
+    const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
+    type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
 
-    const showSearch = () => { setFindByCriteriaShow(!findByCriteriaShow);};
+    const showSearch = () => { setFindByCriteriaShow(!findByCriteriaShow); };
 
     const handleValidateClick = () => {setIsSearchTriggered(true);};
 
@@ -94,7 +93,7 @@ const List = () => {
         fetchItems(criteria);
     }, [isSearchTriggered]);
 
-    const fetchItems = async (critera) => {
+    const fetchItems = async (criteria) => {
         try {
             const response = await PurchaseService.findPaginatedByCriteria(criteria);
             const paginatedItems = response.data;
@@ -228,16 +227,13 @@ const List = () => {
         <Button label="Yes" icon="pi pi-check" text onClick={deleteSelectedItems} /> < />
     );
 
-
-
-
-    return (
+return (
     <div className="grid crud-demo">
         <div className="col-12">
             <div className="card">
                 <Toast ref={toast} />
                 <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
-             {findByCriteriaShow && (
+                {findByCriteriaShow && (
                 <Card>
                     <div className="search-container">
                         <div className="grid">
@@ -273,10 +269,10 @@ const List = () => {
                                         <Dropdown id="6" value={criteria.client} options={clients} onChange={(e) => setCriteria({ ...criteria, client: e.target.value })} optionLabel="fullName" filter showClear placeholder="Client" />
                                         </span>
                         </div>
-                        <div style={{ marginTop : '1rem', display: 'flex', justifyContent: 'flex-end' }}>
+                        <div style={{ marginTop : '1rem', display: 'flex', justifyContent: 'flex-end' }} >
                             <Button label="Validate" icon="pi pi-sort-amount-down" className="p-button-info mr-2" onClick={handleValidateClick} />
                             <Button label="Cancel" className="p-button-secondary mr-2"  icon="pi pi-times" onClick={handleCancelClick} />
-                        </div>
+                    </div>
                         </div>
                 </Card>
                 )}

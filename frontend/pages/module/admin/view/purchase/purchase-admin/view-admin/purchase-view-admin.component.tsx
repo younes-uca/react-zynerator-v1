@@ -37,7 +37,7 @@ const View = ({visible,onClose,selectedItem}) => {
     };
 
     const itemDialogFooter = ( <>
-        <Button label="Cancel" icon="pi pi-times"  text onClick={hideDialog} /> < />
+        <Button label="Cancel" icon="pi pi-times" text onClick={hideDialog} /> < />
     );
 
 return(

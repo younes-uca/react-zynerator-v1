@@ -25,10 +25,9 @@
         "primereact": "9.2.3",
         "react": "18.2.0",
         "react-dom": "18.2.0",
-        "react-transition-group": "^4.4.5",
         "typescript": "5.0.4"
     },
     "devDependencies": {
-        "sass": "^1.63.6"
+        "sass": "^1.58.3"
     }
 }

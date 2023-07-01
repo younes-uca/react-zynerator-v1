@@ -55,13 +55,11 @@ const Create = ({visible, onClose, add, showToast, list}) => {
         let _items = [...items];
         let _item = {...item};
         if (!_item.id) {
-            //lolo
-            const response = await  ClientService.save(_item);
-            console.log('haaaa id de client ==> '+response.data.id);
-            _item.id = response.data.id;
+            const response = await ClientService.save(_item);
+			_item.id = response.data.id;
             _items.push(_item);
-             add(_item);
-             MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'Client Created', life: 3000 });
+            add(_item);
+            MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'Client Created', life: 3000 });
         }
         setItems(_items);
         onClose();

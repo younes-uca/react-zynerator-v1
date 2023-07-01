@@ -55,6 +55,7 @@ const List = () => {
     const dt = useRef<DataTable<PurchaseDto[]>>();
     const [findByCriteriaShow, setFindByCriteriaShow] = useState(false);
     const [isSearchTriggered, setIsSearchTriggered] = useState(false);
+    const [isSearchTriggeredkh, setIsSearchTriggeredkh] = useState(false);
 
     const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
     type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
@@ -66,6 +67,11 @@ const List = () => {
     const showSearch = () => { setFindByCriteriaShow(!findByCriteriaShow);};
 
     const handleValidateClick = () => {setIsSearchTriggered(true);};
+
+    const handleCancelClick = () => {
+        setCriteria(new PurchaseCriteria());
+        setIsSearchTriggered(true);
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -222,7 +228,10 @@ const List = () => {
         <Button label="Yes" icon="pi pi-check" text onClick={deleteSelectedItems} /> < />
     );
 
-return (
+
+
+
+    return (
     <div className="grid crud-demo">
         <div className="col-12">
             <div className="card">
@@ -266,6 +275,7 @@ return (
                         </div>
                         <div style={{ marginTop : '1rem', display: 'flex', justifyContent: 'flex-end' }}>
                             <Button label="Validate" icon="pi pi-sort-amount-down" className="p-button-info mr-2" onClick={handleValidateClick} />
+                            <Button label="Cancel" className="p-button-secondary mr-2"  icon="pi pi-times" onClick={handleCancelClick} />
                         </div>
                         </div>
                 </Card>

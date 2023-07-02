@@ -33,7 +33,6 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
     const [activeTab, setActiveTab] = useState(0);
 
     const [item, setItem] = useState<PurchaseDto>( emptyItem);
-    const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
     type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
     const [products, setProducts] = useState<ProductDto[]>([]);
     type ProductResponse = AxiosResponse<ProductDto[]>;
@@ -57,8 +56,7 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
         };
     fetchData();
     setItem(selectedItem ? { ...selectedItem } : { ...emptyItem });
-     setItem((prevState) => ({ ...prevState,purchaseItems:  selectedItem?.purchaseItems ?? [], }));
-    }, [selectedItem]);
+       }, [selectedItem]);
 
 
 
@@ -84,9 +82,18 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
     };
 
     const deletePurchaseItem = (rowData) => {
+        if(item.purchaseItems.length > 1){
         const updatedItems = item.purchaseItems.filter((val) => val !== rowData);
-        setItem((prevState :any) => ({...prevState, purchaseItems: updatedItems }));
-        setPurchaseItem(new PurchaseItemDto());
+        setItem((prevState ) => ({...prevState, purchaseItems: updatedItems }));
+        }
+        else {
+
+            setItem((prevState ) => ({...prevState, purchaseItems: null}));
+
+
+        }
+        console.log(item.purchaseItems);
+
         MessageService.showToast(showToast, {severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000});
     };
 
@@ -145,7 +152,6 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
         try {
             if (_item.id) {
                 await PurchaseService.update(_item).then((response) => {
-                    console.log(response.data);
                     update(response.data);
                     onClose();
                 });

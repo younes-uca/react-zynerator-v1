@@ -1,0 +1,37 @@
+[
+{
+id: 1,
+fullName: "fullName1",
+email: "email1"
+},
+{
+id: 2,
+fullName: "fullName2",
+email: "email2"
+},
+{
+id: 3,
+fullName: "fullName3",
+email: "email3"
+},
+{
+id: 4,
+fullName: "fullName4",
+email: "email4"
+},
+{
+id: 5,
+fullName: "fullName5",
+email: "email5"
+},
+{
+id: 6,
+fullName: "fullName6",
+email: "email6"
+},
+{
+id: 7,
+fullName: "fullName7",
+email: "email7"
+}
+]

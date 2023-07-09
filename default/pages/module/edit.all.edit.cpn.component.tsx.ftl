@@ -137,9 +137,6 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
         set${field.typeAsPojo.name}(_item);
     };
 
-    const onDropdownChange${field.name?cap_first} = (e, field) => {
-        set${field.typeAsPojo.name}((prevState) => ({ ...prevState, [field]: e.value}));
-    };
 
     const onInputTextChange${field.name?cap_first} = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
         const val = (e.target && e.target.value) || '';

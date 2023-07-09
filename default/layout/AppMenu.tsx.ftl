@@ -38,19 +38,21 @@ const AppMenu = () => {
                         }
                     ]
                 },
+                <#list roles[0].menuRoles as menuRole>
                 {
-                    label: 'Crud',
+                    label: '${menuRole.menu.libelle}',
                     icon: 'pi pi-fw pi-pencil',
                     items: [
-                  <#list pojos as pojo>
+                    <#list menuRole.menu.menuItems as menuItem>
                       {
-                     label: '${pojo.name?cap_first}',
-                     to: '/module/admin/view/${pojo.subModule.name}/${pojo.name?uncap_first}-admin/list-admin/${pojo.name?uncap_first}-list-admin.component'
+                      label: '${menuItem.libelle}',
+                     to: '/module/admin/view/${menuItem.pojo.subModule.name}/${menuItem.pojo.formatedUrl}-admin/list-admin/${menuItem.pojo.formatedUrl}-list-admin.component'
                       },
                     </#list>
-
                     ]
-                },
+                    },
+                </#list>
+
                 {
                     label: 'Timeline',
                     icon: 'pi pi-fw pi-calendar',

@@ -215,7 +215,7 @@ const List = () => {
        );
    };
 
-    const actionBodyTemplate = (rowData: PurchaseDto) => {
+    const actionBodyTemplate = (rowData: ${pojo.name?cap_first}Dto) => {
        return ( <>
            <Button icon="pi pi-pencil" rounded severity="success" className="mr-1" onClick={() => showEditModal(rowData)} />
            <Button icon="pi pi-trash" rounded  severity="danger" className="mr-1"  onClick={() => confirmDeleteItem(rowData)} />

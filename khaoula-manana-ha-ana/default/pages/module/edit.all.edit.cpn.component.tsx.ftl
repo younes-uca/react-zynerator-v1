@@ -83,7 +83,7 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
         setSubmitted(true);
         if( item.${field.name?uncap_first} == null )
         item.${field.name?uncap_first} = new Array<${field.typeAsPojo.name?cap_first}Dto>();
-        let _item = ${pojo.name?uncap_first}Item;
+        let _item = ${field.typeAsPojo.name?uncap_first};
         if (!_item.id) {
             item.${field.name?uncap_first}.push(_item);
             MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: '${field.typeAsPojo.name?cap_first} Created', life: 3000 });
@@ -99,13 +99,13 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
     const delete${field.typeAsPojo.name} = (rowData) => {
         const updatedItems = item.${field.name?uncap_first}.filter((val) => val !== rowData);
         setItem((prevState ) => ({...prevState, ${field.name?uncap_first}: updatedItems }));
-        set${pojo.name?cap_first}Item(new ${field.typeAsPojo.name}Dto());
+        set${field.typeAsPojo.name?uncap_first}(new ${field.typeAsPojo.name}Dto());
         MessageService.showToast(showToast, {severity: 'success', summary: 'Successful', detail: '${pojo.name?cap_first}Item Deleted', life: 3000});
     };
 
     const edit${field.typeAsPojo.name} = (rowData) => {
         setActiveTab(0);
-        set${pojo.name?cap_first}Item(rowData);
+        set${field.typeAsPojo.name?uncap_first}(rowData);
     };
 
     const onInputNumerChange${field.name?cap_first} = (e, name) => {

@@ -19,25 +19,26 @@ import {MultiSelect} from "primereact/multiselect";import {MessageService} from 
 import {PurchaseService} from '/pages/controller/service/Purchase.service';
 import  {PurchaseDto}  from '/pages/controller/model/Purchase.model';
 
-import {PurchaseItemDto} from '/pages/controller/model/PurchaseItem.model';
-import {PurchaseItemService} from '/pages/controller/service/PurchaseItem.service';
 import {ProductDto} from '/pages/controller/model/Product.model';
 import {ProductService} from '/pages/controller/service/Product.service';
 import {ClientDto} from '/pages/controller/model/Client.model';
 import {ClientService} from '/pages/controller/service/Client.service';
+import {PurchaseItemDto} from '/pages/controller/model/PurchaseItem.model';
+import {PurchaseItemService} from '/pages/controller/service/PurchaseItem.service';
 const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
 
     const emptyItem = new PurchaseDto();
     const [submitted, setSubmitted] = useState(false);
     const [activeIndex, setActiveIndex] = useState<number>(0);
     const [activeTab, setActiveTab] = useState(0);
-
     const [item, setItem] = useState<PurchaseDto>( emptyItem);
     type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
     const [products, setProducts] = useState<ProductDto[]>([]);
     type ProductResponse = AxiosResponse<ProductDto[]>;
     const [clients, setClients] = useState<ClientDto[]>([]);
     type ClientResponse = AxiosResponse<ClientDto[]>;
+    const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
+    type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
     const [purchaseItem, setPurchaseItem] = useState<PurchaseItemDto>(new PurchaseItemDto());
 
     useEffect(() => {
@@ -56,7 +57,10 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
         };
     fetchData();
     setItem(selectedItem ? { ...selectedItem } : { ...emptyItem });
+
        }, [selectedItem]);
+
+
 
 
 
@@ -67,7 +71,7 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
     const addPurchaseItems = () => {
         setSubmitted(true);
         if( item.purchaseItems == null )
-        item.purchaseItems = [];
+        item.purchaseItems = new Array<PurchaseItemDto>();
         let _item = purchaseItem;
         if (!_item.id) {
             item.purchaseItems.push(_item);
@@ -85,6 +89,7 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
         if(item.purchaseItems.length > 1){
         const updatedItems = item.purchaseItems.filter((val) => val !== rowData);
         setItem((prevState ) => ({...prevState, purchaseItems: updatedItems }));
+
         }
         else {
 
@@ -93,6 +98,8 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
 
         }
         console.log(item.purchaseItems);
+
+        setPurchaseItem(new PurchaseItemDto());
 
         MessageService.showToast(showToast, {severity: 'success', summary: 'Successful', detail: 'PurchaseItem Deleted', life: 3000});
     };
@@ -107,9 +114,6 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
         setPurchaseItem((prevPurchaseItems) => ({ ...prevPurchaseItems, [name]: val, }));
     };
 
-    const onDropdownChangePurchaseItems = (e, field) => {
-        setPurchaseItem((prevState) => ({ ...prevState, [field]: e.value}));
-    };
 
     const onMultiSelectChangePurchaseItems = (e, field) => {
         if (e && e.value && Array.isArray(e.value)) {
@@ -128,6 +132,10 @@ const Edit = ({visible, onClose, showToast, selectedItem, update}) => {
         let _item = { ...purchaseItem};
         _item[`${name}`] = val;
         setPurchaseItem(_item);
+    };
+
+    const onDropdownChangePurchaseItems = (e, field) => {
+        setPurchaseItem((prevState) => ({ ...prevState, [field]: e.value}));
     };
 
     const onInputTextChangePurchaseItems = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
@@ -251,7 +259,7 @@ return(
                                 <InputNumber id="quantity" value={purchaseItem.quantity}  onValueChange={(e) => onInputNumerChangePurchaseItems(e, 'quantity')}/>
                             </div>
                             <div className="field col-1">
-                                <Button icon="pi pi-plus" label="OK" class="mt-4" onClick={addPurchaseItems} />
+                                <Button icon="pi pi-plus" label="OK" className="mt-4" onClick={addPurchaseItems} />
                             </div>
                         </div>
                     </TabPanel>

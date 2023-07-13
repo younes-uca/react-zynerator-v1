@@ -23,12 +23,12 @@ import {PurchaseService} from '/pages/controller/service/Purchase.service';
 import {PurchaseDto}  from '/pages/controller/model/Purchase.model';
 import {PurchaseCriteria} from "/pages/controller/criteria/PurchaseCriteria.model";
 
-import {PurchaseItemDto} from '/pages/controller/model/PurchaseItem.model';
-import {PurchaseItemService} from '/pages/controller/service/PurchaseItem.service';
 import {ProductDto} from '/pages/controller/model/Product.model';
 import {ProductService} from '/pages/controller/service/Product.service';
 import {ClientDto} from '/pages/controller/model/Client.model';
 import {ClientService} from '/pages/controller/service/Client.service';
+import {PurchaseItemDto} from '/pages/controller/model/PurchaseItem.model';
+import {PurchaseItemService} from '/pages/controller/service/PurchaseItem.service';
 
 import Edit from '/pages/module/admin/view/purchase/purchase-admin/edit-admin/purchase-edit-admin.component';
 import Create from '/pages/module/admin/view/purchase/purchase-admin/create-admin/purchase-create-admin.component';
@@ -54,16 +54,22 @@ const List = () => {
     const toast = useRef<Toast>();
     const dt = useRef<DataTable<PurchaseDto[]>>();
     const [findByCriteriaShow, setFindByCriteriaShow] = useState(false);
+    const [isSearchTriggered, setIsSearchTriggered] = useState(false);
 
-    const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
-    type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
     const [products, setProducts] = useState<ProductDto[]>([]);
     type ProductResponse = AxiosResponse<ProductDto[]>;
     const [clients, setClients] = useState<ClientDto[]>([]);
     type ClientResponse = AxiosResponse<ClientDto[]>;
+    const [purchaseItems, setPurchaseItems] = useState<PurchaseItemDto[]>([]);
+    type PurchaseItemResponse = AxiosResponse<PurchaseItemDto[]>;
 
-    const showSearch = () => {
-        setFindByCriteriaShow(!findByCriteriaShow);
+    const showSearch = () => { setFindByCriteriaShow(!findByCriteriaShow); };
+
+    const handleValidateClick = () => {setIsSearchTriggered(true);};
+
+    const handleCancelClick = () => {
+        setCriteria(new PurchaseCriteria());
+        setIsSearchTriggered(true);
     };
 
     useEffect(() => {
@@ -79,9 +85,13 @@ const List = () => {
                 console.error(error);
             }
         };
+        if (isSearchTriggered) {
+            fetchItems(criteria);
+            setIsSearchTriggered(false);
+        }
         fetchData();
         fetchItems(criteria);
-    }, [criteria]);
+    }, [isSearchTriggered]);
 
     const fetchItems = async (criteria) => {
         try {
@@ -259,7 +269,10 @@ return (
                                         <Dropdown id="6" value={criteria.client} options={clients} onChange={(e) => setCriteria({ ...criteria, client: e.target.value })} optionLabel="fullName" filter showClear placeholder="Client" />
                                         </span>
                         </div>
-                        <Button label="Validate" icon="pi pi-sort-amount-down" className="p-button-info mr-2" onClick={fetchItems} />
+                        <div style={{ marginTop : '1rem', display: 'flex', justifyContent: 'flex-end' }} >
+                            <Button label="Validate" icon="pi pi-sort-amount-down" className="p-button-info mr-2" onClick={handleValidateClick} />
+                            <Button label="Cancel" className="p-button-secondary mr-2"  icon="pi pi-times" onClick={handleCancelClick} />
+                    </div>
                         </div>
                 </Card>
                 )}

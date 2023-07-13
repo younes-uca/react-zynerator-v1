@@ -30,8 +30,8 @@ export const ClientService = {
       return axios.post(API_URL + 'client/multiple', items);
    },
 
-   findPaginatedByCriteria(criteria:ClientCriteria):Promise<AxiosResponse<PaginatedList<BaseDto>>> {
-     return axios.post<PaginatedList<BaseDto>>(API_URL + `client/find-paginated-by-criteria`, criteria);
+   findPaginatedByCriteria(criteria:ClientCriteria):Promise<AxiosResponse<PaginatedList<ClientDto>>> {
+     return axios.post<PaginatedList<ClientDto>>(API_URL + 'client/find-paginated-by-criteria', criteria);
    }
 };
 

@@ -55,10 +55,11 @@ const Create = ({visible, onClose, add, showToast, list}) => {
         let _items = [...items];
         let _item = {...item};
         if (!_item.id) {
-             await ProductService.save(_item);
-              _items.push(_item);
-             add(_item);
-             MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
+            const response = await ProductService.save(_item);
+			_item.id = response.data.id;
+            _items.push(_item);
+            add(_item);
+            MessageService.showToast(showToast, { severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
         }
         setItems(_items);
         onClose();

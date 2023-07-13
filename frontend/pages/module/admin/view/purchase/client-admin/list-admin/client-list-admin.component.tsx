@@ -48,10 +48,16 @@ const List = () => {
     const toast = useRef<Toast>();
     const dt = useRef<DataTable<ClientDto[]>>();
     const [findByCriteriaShow, setFindByCriteriaShow] = useState(false);
+    const [isSearchTriggered, setIsSearchTriggered] = useState(false);
 
 
-    const showSearch = () => {
-        setFindByCriteriaShow(!findByCriteriaShow);
+    const showSearch = () => { setFindByCriteriaShow(!findByCriteriaShow); };
+
+    const handleValidateClick = () => {setIsSearchTriggered(true);};
+
+    const handleCancelClick = () => {
+        setCriteria(new ClientCriteria());
+        setIsSearchTriggered(true);
     };
 
     useEffect(() => {
@@ -63,9 +69,13 @@ const List = () => {
                 console.error(error);
             }
         };
+        if (isSearchTriggered) {
+            fetchItems(criteria);
+            setIsSearchTriggered(false);
+        }
         fetchData();
         fetchItems(criteria);
-    }, [criteria]);
+    }, [isSearchTriggered]);
 
     const fetchItems = async (criteria) => {
         try {
@@ -220,7 +230,10 @@ return (
                                         <label htmlFor="2">Email</label>
                                         </span>
                         </div>
-                        <Button label="Validate" icon="pi pi-sort-amount-down" className="p-button-info mr-2" onClick={fetchItems} />
+                        <div style={{ marginTop : '1rem', display: 'flex', justifyContent: 'flex-end' }} >
+                            <Button label="Validate" icon="pi pi-sort-amount-down" className="p-button-info mr-2" onClick={handleValidateClick} />
+                            <Button label="Cancel" className="p-button-secondary mr-2"  icon="pi pi-times" onClick={handleCancelClick} />
+                    </div>
                         </div>
                 </Card>
                 )}

@@ -367,18 +367,18 @@ return(
                             <#if innerField.dateTime>
                             <div className="field col-6">
                             <label htmlFor="${innerField.name}">${innerField.name}</label>
-                            <Calendar id="${innerField.name}" value={${field.typeAsPojo.name?uncap_first}.${innerField.name}}  onChange={(e) => onInputDateChange${field.name?cap_first}(e, '${field.name?uncap_first}')} dateFormat="dd/mm/yy" showTime  />
+                            <Calendar id="${innerField.name}" value={${field.typeAsPojo.name?uncap_first}.${innerField.name}}  onChange={(e) => onInputDateChange${field.name?cap_first}(e, '${innerField.name?uncap_first}')} dateFormat="dd/mm/yy" showTime  />
                             </div>
                             <#elseif innerField.pureString>
                             <div className="field col-6">
                             <label htmlFor="${innerField.name}">${innerField.name?cap_first}</label>
-                            <InputText id="${innerField.name}" value={${field.typeAsPojo.name?uncap_first}.${innerField.name}} onChange={(e) => onInputTextChange${field.name?cap_first}(e, '${field.name?uncap_first}')} required autoFocus className={classNames({'p-invalid': submitted && !item.${field.name?uncap_first}})}/>
+                            <InputText id="${innerField.name}" value={${field.typeAsPojo.name?uncap_first}.${innerField.name}} onChange={(e) => onInputTextChange${field.name?cap_first}(e, '${innerField.name?uncap_first}')} required autoFocus className={classNames({'p-invalid': submitted && !item.${field.name?uncap_first}})}/>
                             </div>
                             <#elseif innerField.bool>
                             <div className="field col-6">
                             <label htmlFor="${innerField.name}">${innerField.name?cap_first}</label>
                             <span className="p-float-label">
-                            <InputSwitch  id="${innerField.name}" checked={${field.typeAsPojo.name?uncap_first}.${innerField.name}} onChange={(e) => onBooleanInputChange${field.name?cap_first}(e, '${field.name?uncap_first}')} />
+                            <InputSwitch  id="${innerField.name}" checked={${field.typeAsPojo.name?uncap_first}.${innerField.name}} onChange={(e) => onBooleanInputChange${field.name?cap_first}(e, '${innerField.name?uncap_first}')} />
                             </span>
                             </div>
                             <#elseif innerField.simple && innerField.id == false>

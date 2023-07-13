@@ -32,9 +32,9 @@ import {${dependency.name?cap_first}Service} from '/pages/controller/service/${d
     </#list>
 </#if>
 
-import Edit from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?uncap_first}-admin/edit-admin/${pojo.name?uncap_first}-edit-admin.component';
-import Create from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?uncap_first}-admin/create-admin/${pojo.name?uncap_first}-create-admin.component';
-import View from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.name?uncap_first}-admin/view-admin/${pojo.name?uncap_first}-view-admin.component';
+import Edit from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.formatedUrl}-admin/edit-admin/${pojo.formatedUrl}-edit-admin.component';
+import Create from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.formatedUrl}-admin/create-admin/${pojo.formatedUrl}-create-admin.component';
+import View from '/pages/module/admin/view/${pojo.subModule.name}/${pojo.formatedUrl}-admin/view-admin/${pojo.formatedUrl}-view-admin.component';
 
 <#list pojo.fieldsSimple as simpleField>
   <#if simpleField.dateTime>
@@ -225,7 +225,7 @@ const List = () => {
 
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-        <h5 className="m-0">Manage ${pojo.name}s</h5>
+        <h5 className="m-0">Manage ${pojo.formatedNameLowerCase}s</h5>
         <span className="block mt-2 md:mt-0 p-input-icon-left"><i className="pi pi-search" />
         <InputText type="search" onInput={(e) => setGlobalFilter(e.currentTarget.value)} placeholder="Search..." /> </span>
         </div>
